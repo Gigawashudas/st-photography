@@ -45,7 +45,7 @@ export function FeaturedWork() {
             <div className="mb-8 flex items-center gap-4">
               <span className="h-px w-8 bg-foreground/40" />
 
-              <p className="text-[9px] font-medium uppercase tracking-[0.4em] text-muted sm:text-[10px]">01 / Selected Work</p>
+              <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted sm:text-xs">01 / Selected Work</p>
             </div>
 
             <h2 className="max-w-4xl font-serif text-[clamp(4rem,9vw,9rem)] leading-[0.82] tracking-[-0.045em]">

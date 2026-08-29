@@ -43,10 +43,10 @@ export function ProjectCard({ title, category, number, image, priority = false, 
         <div>
           <h3 className="font-serif text-2xl leading-none tracking-[-0.02em] sm:text-3xl">{title}</h3>
 
-          <p className="mt-2 text-[9px] font-medium uppercase tracking-[0.3em] text-muted">{category}</p>
+          <p className="mt-3 text-[10px] font-medium uppercase tracking-[0.22em] text-muted sm:text-[11px]">{category}</p>
         </div>
 
-        <span className="pt-1 text-[9px] font-medium tracking-[0.25em] text-muted">{number}</span>
+        <span className="pt-1 text-[10px] font-medium tracking-[0.2em] text-muted sm:text-[11px]">{number}</span>
       </div>
     </motion.article>
   );

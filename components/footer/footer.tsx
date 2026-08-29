@@ -78,10 +78,9 @@ export function Footer() {
             <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.22em] text-muted sm:text-[11px]">Contact</p>
 
             <div className="flex flex-col items-start gap-3">
-              <a href="mailto:sahatammalphotography@gmail.com" className="text-sm leading-6 text-foreground transition-opacity duration-300 hover:opacity-50">
-                sahatammalphotography
-                <br />
-                @gmail.com
+              <a href="mailto:sahatammalphotography@gmail.com" className="group mt-8 inline-flex items-center gap-3 border-b border-foreground/30 pb-2 text-sm tracking-[0.02em] transition-colors duration-300 hover:border-foreground sm:mt-10 sm:text-base">
+                sahatammalphotography@gmail.com
+                <ArrowUpRight size={15} strokeWidth={1.3} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
               </a>
 
               <a href="tel:+8801839050341" className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50">

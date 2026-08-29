@@ -17,7 +17,7 @@ export function CinematicHero() {
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/15 to-black/25 sm:from-black/70" />
 
       <div className="relative z-10 w-full px-5 pb-8 sm:px-8 sm:pb-12 lg:px-10 lg:pb-14">
-        <div className="flex flex-col items-center text-center text-white">
+        <div className="flex flex-col items-center text-center !text-white">
           <motion.p
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
@@ -26,7 +26,7 @@ export function CinematicHero() {
               delay: 0.2,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="mb-3 text-[9px] font-medium uppercase tracking-[0.38em] text-white/80 sm:mb-4 sm:text-xs"
+            className="mb-3 text-[9px] font-medium uppercase tracking-[0.38em] !text-white/80 sm:mb-4 sm:text-xs"
           >
             ST Photography
           </motion.p>
@@ -39,7 +39,7 @@ export function CinematicHero() {
               delay: 0.35,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="font-serif text-[clamp(3.4rem,17vw,10rem)] leading-[0.82] tracking-[-0.055em] sm:text-[clamp(5rem,12vw,10rem)]"
+            className="font-serif text-[clamp(3.4rem,17vw,10rem)] leading-[0.82] tracking-[-0.055em] !text-white sm:text-[clamp(5rem,12vw,10rem)]"
           >
             Photography
           </motion.h1>
@@ -52,7 +52,7 @@ export function CinematicHero() {
               delay: 0.55,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="mt-4 max-w-[260px] text-[8px] font-medium uppercase leading-[1.7] tracking-[0.3em] text-white/80 sm:mt-5 sm:max-w-none sm:text-xs sm:leading-normal"
+            className="mt-4 max-w-[260px] text-[8px] font-medium uppercase leading-[1.7] tracking-[0.3em] !text-white/80 sm:mt-5 sm:max-w-none sm:text-xs sm:leading-normal"
           >
             Photography &amp; Cinematography
           </motion.p>
@@ -67,10 +67,10 @@ export function CinematicHero() {
           }}
           className="mt-12 flex justify-center sm:mt-14"
         >
-          <a href="#work" className="group flex flex-col items-center gap-2.5 text-[8px] font-medium uppercase tracking-[0.3em] text-white/65 transition-colors duration-300 hover:text-white sm:gap-3 sm:text-[9px]">
+          <a href="#work" className="group flex flex-col items-center gap-3 text-[9px] font-medium uppercase tracking-[0.3em] !text-white/90 transition-colors duration-300 hover:!text-white sm:text-xs">
             <span>Scroll to explore</span>
 
-            <span className="relative h-8 w-px overflow-hidden bg-white/25 sm:h-10">
+            <span className="relative h-8 w-px overflow-hidden bg-white/45 sm:h-10">
               <motion.span
                 initial={{ y: "-100%" }}
                 animate={{ y: "200%" }}

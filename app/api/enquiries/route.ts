@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { supabase } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { rateLimit } from "@/lib/rate-limit";
 
 const enquirySchema = z.object({
@@ -78,6 +78,8 @@ export async function POST(request: Request) {
         message: "Your enquiry has been received.",
       });
     }
+
+    const supabase = await createClient();
 
     const { data: enquiry, error: databaseError } = await supabase
       .from("enquiries")

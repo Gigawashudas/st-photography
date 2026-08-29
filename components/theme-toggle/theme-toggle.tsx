@@ -4,34 +4,31 @@ import { useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
 
 export function ThemeToggle() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    if (typeof window === "undefined") {
+      return true;
+    }
 
-  useEffect(() => {
     const savedTheme = localStorage.getItem("st-theme");
 
-    if (savedTheme === "light") {
-      document.documentElement.classList.remove("dark");
-      setIsDark(false);
-      return;
-    }
+    return savedTheme !== "light";
+  });
 
-    document.documentElement.classList.add("dark");
-    setIsDark(true);
-  }, []);
+  useEffect(() => {
+    const root = document.documentElement;
 
-  const toggleTheme = () => {
-    const nextIsDark = !isDark;
-
-    if (nextIsDark) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("st-theme", "dark");
+    if (isDark) {
+      root.classList.add("dark");
     } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("st-theme", "light");
+      root.classList.remove("dark");
     }
 
-    setIsDark(nextIsDark);
-  };
+    localStorage.setItem("st-theme", isDark ? "dark" : "light");
+  }, [isDark]);
+
+  function toggleTheme() {
+    setIsDark((current) => !current);
+  }
 
   return (
     <button type="button" onClick={toggleTheme} aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"} className="flex h-7 w-7 items-center justify-center rounded-full border border-foreground/20 transition-all duration-300 hover:scale-110 hover:border-foreground/50">

@@ -23,7 +23,7 @@ export function Footer() {
               ST
             </Link>
 
-            <p className="mt-6 max-w-[220px] text-sm leading-6 text-secondary">Photography &amp; Cinematography</p>
+            <p className="mt-6 max-w-55 text-sm leading-6 text-secondary">Photography &amp; Cinematography</p>
           </div>
 
           <div>

@@ -29,34 +29,34 @@ const projects = [
 
 export function FeaturedWork() {
   return (
-    <section id="work" className="bg-background px-6 py-32 sm:px-8 sm:py-40 lg:px-10 lg:py-52">
+    <section id="work" className="bg-background px-5 py-24 sm:px-8 sm:py-40 lg:px-10 lg:py-52">
       <div className="mx-auto max-w-[1440px]">
         <motion.div
-          initial={{ opacity: 0, y: 35 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-15% 0px" }}
           transition={{
             duration: 1,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="mb-24 grid gap-10 md:mb-36 md:grid-cols-[1fr_280px] md:items-end lg:grid-cols-[1fr_340px]"
+          className="mb-16 grid gap-8 md:mb-36 md:grid-cols-[1fr_280px] md:items-end lg:grid-cols-[1fr_340px]"
         >
           <div>
-            <div className="mb-8 flex items-center gap-4">
-              <span className="h-px w-8 bg-foreground/40" />
+            <div className="mb-7 flex items-center gap-3 sm:mb-8 sm:gap-4">
+              <span className="h-px w-6 bg-foreground/40 sm:w-8" />
 
-              <p className="text-[11px] font-medium uppercase tracking-[0.25em] text-muted sm:text-xs">01 / Selected Work</p>
+              <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs sm:tracking-[0.25em]">01 / Selected Work</p>
             </div>
 
-            <h2 className="max-w-4xl font-serif text-[clamp(4rem,9vw,9rem)] leading-[0.82] tracking-[-0.045em]">
+            <h2 className="max-w-4xl font-serif text-[clamp(3.7rem,17vw,9rem)] leading-[0.82] tracking-[-0.055em] sm:text-[clamp(4rem,9vw,9rem)] sm:tracking-[-0.045em]">
               Stories
               <br />
-              <span className="ml-[8vw]">in frames.</span>
+              <span className="ml-[13vw] sm:ml-[8vw]">in frames.</span>
             </h2>
           </div>
 
-          <div className="md:pb-2">
-            <p className="max-w-xs text-sm font-light leading-7 tracking-[0.08em] text-secondary sm:text-base sm:leading-8">
+          <div className="max-w-[230px] md:max-w-xs md:pb-2">
+            <p className="text-[11px] font-light leading-6 tracking-[0.1em] text-secondary sm:text-base sm:leading-8 sm:tracking-[0.08em]">
               Still images.
               <br />
               Moving stories.
@@ -64,7 +64,7 @@ export function FeaturedWork() {
           </div>
         </motion.div>
 
-        <div className="grid gap-20 md:grid-cols-2 md:gap-x-10 md:gap-y-36">
+        <div className="grid gap-16 md:grid-cols-2 md:gap-x-10 md:gap-y-36">
           <div className="md:pt-24">
             <ProjectCard {...projects[0]} priority />
           </div>
@@ -86,9 +86,9 @@ export function FeaturedWork() {
             duration: 0.8,
             delay: 0.1,
           }}
-          className="mt-24 flex justify-center sm:mt-32"
+          className="mt-20 flex justify-center sm:mt-32"
         >
-          <a href="/work" className="group flex items-center gap-6 text-[9px] font-medium uppercase tracking-[0.35em] text-secondary transition-colors duration-300 hover:text-foreground sm:text-[10px]">
+          <a href="/work" className="group flex min-h-11 items-center gap-5 text-[9px] font-medium uppercase tracking-[0.35em] text-secondary transition-colors duration-300 hover:text-foreground sm:gap-6 sm:text-[10px]">
             <span className="relative">
               View all work
               <span className="absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-foreground transition-transform duration-500 group-hover:scale-x-100" />

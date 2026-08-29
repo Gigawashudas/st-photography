@@ -43,6 +43,11 @@
 html {
   scroll-behavior: smooth;
   background: var(--background);
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
 }
 
 body {

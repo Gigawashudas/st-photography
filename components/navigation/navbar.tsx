@@ -1,16 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
+import { ThemeToggle } from "../theme-toggle/theme-toggle";
 
 export function Navbar() {
-  const { resolvedTheme, setTheme } = useTheme();
-
-  const toggleTheme = () => {
-    setTheme(resolvedTheme === "dark" ? "light" : "dark");
-  };
-
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="flex items-start justify-between px-6 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10">
@@ -31,9 +24,9 @@ export function Navbar() {
             Contact
           </Link>
 
-          <button type="button" onClick={toggleTheme} aria-label="Toggle color theme" className="mt-1 flex h-7 w-7 items-center justify-center rounded-full border border-foreground/20 transition-all duration-300 hover:border-foreground/50 hover:scale-110">
-            {resolvedTheme === "dark" ? <Sun size={12} strokeWidth={1.5} /> : <Moon size={12} strokeWidth={1.5} />}
-          </button>
+          <div className="mt-1">
+            <ThemeToggle />
+          </div>
         </nav>
       </div>
     </header>

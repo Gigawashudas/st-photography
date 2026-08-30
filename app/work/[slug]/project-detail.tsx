@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import type { Project } from '@/data/projects';
+import type { Project } from '@/lib/projects/get-project';
 
 type ProjectDetailProps = {
   project: Project;
@@ -11,14 +11,43 @@ type ProjectDetailProps = {
   nextProject?: Project;
 };
 
+function getYoutubeEmbedUrl(url: string | null) {
+  if (!url) {
+    return null;
+  }
+
+  try {
+    const parsedUrl = new URL(url);
+
+    if (parsedUrl.hostname === 'youtu.be') {
+      const videoId = parsedUrl.pathname.replace('/', '').trim();
+
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+
+    if (parsedUrl.hostname === 'youtube.com' || parsedUrl.hostname === 'www.youtube.com') {
+      const videoId = parsedUrl.searchParams.get('v');
+
+      return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+    }
+
+    return null;
+  } catch {
+    return null;
+  }
+}
+
 export function ProjectDetail({ project, previousProject, nextProject }: ProjectDetailProps) {
+  const isCinematography = project.category === 'Interior Cinematography';
+  const youtubeEmbedUrl = getYoutubeEmbedUrl(project.youtube_url);
+
   return (
-    <main className="min-h-screen bg-background">
-      <section className="px-6 pb-20 pt-36 sm:px-8 sm:pb-28 sm:pt-44 lg:px-10 lg:pb-36 lg:pt-52">
+    <main className="bg-background min-h-screen">
+      <section className="px-6 pt-36 pb-20 sm:px-8 sm:pt-44 sm:pb-28 lg:px-10 lg:pt-52 lg:pb-36">
         <div className="mx-auto max-w-[1440px]">
           <Link
             href="/work"
-            className="group mb-16 inline-flex items-center gap-4 text-[9px] font-medium uppercase tracking-[0.28em] text-muted transition-colors duration-300 hover:text-foreground sm:mb-24 sm:text-[10px]"
+            className="group text-muted hover:text-foreground mb-16 inline-flex items-center gap-4 text-[9px] font-medium tracking-[0.28em] uppercase transition-colors duration-300 sm:mb-24 sm:text-[10px]"
           >
             <span className="transition-transform duration-500 group-hover:-translate-x-1">←</span>
             Back to work
@@ -34,9 +63,9 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
               }}
             >
               <div className="mb-8 flex items-center gap-4">
-                <span className="h-px w-8 bg-foreground/40" />
+                <span className="bg-foreground/40 h-px w-8" />
 
-                <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs">
+                <p className="text-muted text-[10px] font-medium tracking-[0.28em] uppercase sm:text-xs">
                   {project.category}
                 </p>
               </div>
@@ -54,25 +83,25 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
                 delay: 0.15,
                 ease: [0.22, 1, 0.36, 1],
               }}
-              className="grid grid-cols-2 gap-x-8 gap-y-8 text-[10px] uppercase tracking-[0.2em] sm:text-[11px]"
+              className="grid grid-cols-2 gap-x-8 gap-y-8 text-[10px] tracking-[0.2em] uppercase sm:text-[11px]"
             >
               <div>
-                <p className="mb-2 text-muted">Location</p>
-                <p>{project.location}</p>
+                <p className="text-muted mb-2">Location</p>
+                <p>{project.location || '—'}</p>
               </div>
 
               <div>
-                <p className="mb-2 text-muted">Year</p>
+                <p className="text-muted mb-2">Year</p>
                 <p>{project.year}</p>
               </div>
 
               <div>
-                <p className="mb-2 text-muted">Category</p>
+                <p className="text-muted mb-2">Category</p>
                 <p>{project.category.replace('Interior ', '')}</p>
               </div>
 
               <div>
-                <p className="mb-2 text-muted">Project</p>
+                <p className="text-muted mb-2">Project</p>
                 <p>{project.id}</p>
               </div>
             </motion.div>
@@ -80,39 +109,69 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
         </div>
       </section>
 
-      <section className="px-6 pb-24 sm:px-8 sm:pb-32 lg:px-10 lg:pb-40">
-        <div className="mx-auto max-w-[1440px]">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 1.2,
-              delay: 0.2,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="relative aspect-[4/3] overflow-hidden bg-subtle sm:aspect-[16/10]"
-          >
-            <Image
-              src={project.coverImage}
-              alt={project.title}
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
-          </motion.div>
+      {isCinematography && youtubeEmbedUrl ? (
+        <section className="px-6 pb-24 sm:px-8 sm:pb-32 lg:px-10 lg:pb-40">
+          <div className="mx-auto max-w-[1440px]">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 1.2,
+                delay: 0.2,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="relative aspect-video overflow-hidden bg-black"
+            >
+              <iframe
+                src={youtubeEmbedUrl}
+                title={`${project.title} — cinematography`}
+                className="absolute inset-0 h-full w-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </motion.div>
 
-          <div className="mt-5 flex items-start justify-between gap-8 text-[9px] font-medium uppercase tracking-[0.2em] text-muted sm:text-[10px]">
-            <span>{project.title}</span>
-            <span>{project.category}</span>
+            <div className="text-muted mt-5 flex items-start justify-between gap-8 text-[9px] font-medium tracking-[0.2em] uppercase sm:text-[10px]">
+              <span>{project.title}</span>
+              <span>Interior Cinematography</span>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      ) : project.cover_image ? (
+        <section className="px-6 pb-24 sm:px-8 sm:pb-32 lg:px-10 lg:pb-40">
+          <div className="mx-auto max-w-[1440px]">
+            <motion.div
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{
+                duration: 1.2,
+                delay: 0.2,
+                ease: [0.22, 1, 0.36, 1],
+              }}
+              className="bg-subtle relative aspect-[4/3] overflow-hidden sm:aspect-[16/10]"
+            >
+              <Image
+                src={project.cover_image}
+                alt={project.title}
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover"
+              />
+            </motion.div>
+
+            <div className="text-muted mt-5 flex items-start justify-between gap-8 text-[9px] font-medium tracking-[0.2em] uppercase sm:text-[10px]">
+              <span>{project.title}</span>
+              <span>{project.category}</span>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="px-6 pb-28 sm:px-8 sm:pb-40 lg:px-10 lg:pb-52">
         <div className="mx-auto grid max-w-[1440px] gap-16 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
           <div>
-            <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-muted sm:text-xs">
+            <p className="text-muted text-[10px] font-medium tracking-[0.25em] uppercase sm:text-xs">
               About the project
             </p>
           </div>
@@ -132,64 +191,68 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
         </div>
       </section>
 
-      <section className="px-6 pb-32 sm:px-8 sm:pb-40 lg:px-10 lg:pb-52">
-        <div className="mx-auto max-w-[1440px]">
-          <div className="mb-12 flex items-center gap-4 sm:mb-16">
-            <span className="h-px w-8 bg-foreground/40" />
+      {project.images.length > 0 && (
+        <section className="px-6 pb-32 sm:px-8 sm:pb-40 lg:px-10 lg:pb-52">
+          <div className="mx-auto max-w-[1440px]">
+            <div className="mb-12 flex items-center gap-4 sm:mb-16">
+              <span className="bg-foreground/40 h-px w-8" />
 
-            <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-muted sm:text-xs">
-              Project Gallery
-            </p>
-          </div>
+              <p className="text-muted text-[10px] font-medium tracking-[0.25em] uppercase sm:text-xs">
+                Project Gallery
+              </p>
+            </div>
 
-          <div className="grid gap-8 sm:grid-cols-2 sm:gap-10">
-            {project.images.map((image, index) => (
-              <motion.div
-                key={`${project.id}-${index}`}
-                initial={{ opacity: 0, y: 35 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-10% 0px' }}
-                transition={{
-                  duration: 0.9,
-                  delay: Math.min(index * 0.08, 0.24),
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className={
-                  index % 3 === 2
-                    ? 'relative overflow-hidden bg-subtle sm:col-span-2 sm:mx-auto sm:w-[78%]'
-                    : 'relative overflow-hidden bg-subtle'
-                }
-              >
-                <div
-                  className={index % 3 === 2 ? 'relative aspect-[16/10]' : 'relative aspect-[4/5]'}
+            <div className="grid gap-8 sm:grid-cols-2 sm:gap-10">
+              {project.images.map((image, index) => (
+                <motion.div
+                  key={`${project.id}-${index}`}
+                  initial={{ opacity: 0, y: 35 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-10% 0px' }}
+                  transition={{
+                    duration: 0.9,
+                    delay: Math.min(index * 0.08, 0.24),
+                    ease: [0.22, 1, 0.36, 1],
+                  }}
+                  className={
+                    index % 3 === 2
+                      ? 'bg-subtle relative overflow-hidden sm:col-span-2 sm:mx-auto sm:w-[78%]'
+                      : 'bg-subtle relative overflow-hidden'
+                  }
                 >
-                  <Image
-                    src={image}
-                    alt={`${project.title} — image ${index + 1}`}
-                    fill
-                    sizes={
-                      index % 3 === 2
-                        ? '(max-width: 640px) 100vw, 78vw'
-                        : '(max-width: 640px) 100vw, 50vw'
+                  <div
+                    className={
+                      index % 3 === 2 ? 'relative aspect-[16/10]' : 'relative aspect-[4/5]'
                     }
-                    className="object-cover transition-transform duration-[1200ms] ease-out hover:scale-[1.035]"
-                  />
-                </div>
-              </motion.div>
-            ))}
+                  >
+                    <Image
+                      src={image}
+                      alt={`${project.title} — image ${index + 1}`}
+                      fill
+                      sizes={
+                        index % 3 === 2
+                          ? '(max-width: 640px) 100vw, 78vw'
+                          : '(max-width: 640px) 100vw, 50vw'
+                      }
+                      className="object-cover transition-transform duration-[1200ms] ease-out hover:scale-[1.035]"
+                    />
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
-      <section className="border-t border-foreground/10">
+      <section className="border-foreground/10 border-t">
         <div className="mx-auto grid max-w-[1440px] md:grid-cols-2">
           {previousProject ? (
             <Link
               href={`/work/${previousProject.slug}`}
-              className="group border-b border-foreground/10 px-6 py-20 transition-colors duration-500 hover:bg-foreground hover:text-background sm:px-8 sm:py-28 lg:px-10 lg:py-36 md:border-r"
+              className="group border-foreground/10 hover:bg-foreground hover:text-background border-b px-6 py-20 transition-colors duration-500 sm:px-8 sm:py-28 md:border-r lg:px-10 lg:py-36"
             >
               <div className="mb-12 flex items-center justify-between">
-                <span className="text-[9px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-500 group-hover:text-background/60 sm:text-[10px]">
+                <span className="text-muted group-hover:text-background/60 text-[9px] font-medium tracking-[0.25em] uppercase transition-colors duration-500 sm:text-[10px]">
                   Previous project
                 </span>
 
@@ -198,7 +261,7 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
                 </span>
               </div>
 
-              <p className="mb-4 text-[9px] font-medium uppercase tracking-[0.2em] text-muted transition-colors duration-500 group-hover:text-background/60 sm:text-[10px]">
+              <p className="text-muted group-hover:text-background/60 mb-4 text-[9px] font-medium tracking-[0.2em] uppercase transition-colors duration-500 sm:text-[10px]">
                 {previousProject.category}
               </p>
 
@@ -213,10 +276,10 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
           {nextProject ? (
             <Link
               href={`/work/${nextProject.slug}`}
-              className="group px-6 py-20 text-left transition-colors duration-500 hover:bg-foreground hover:text-background sm:px-8 sm:py-28 lg:px-10 lg:py-36 md:text-right"
+              className="group hover:bg-foreground hover:text-background px-6 py-20 text-left transition-colors duration-500 sm:px-8 sm:py-28 md:text-right lg:px-10 lg:py-36"
             >
               <div className="mb-12 flex items-center justify-between md:flex-row-reverse">
-                <span className="text-[9px] font-medium uppercase tracking-[0.25em] text-muted transition-colors duration-500 group-hover:text-background/60 sm:text-[10px]">
+                <span className="text-muted group-hover:text-background/60 text-[9px] font-medium tracking-[0.25em] uppercase transition-colors duration-500 sm:text-[10px]">
                   Next project
                 </span>
 
@@ -225,7 +288,7 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
                 </span>
               </div>
 
-              <p className="mb-4 text-[9px] font-medium uppercase tracking-[0.2em] text-muted transition-colors duration-500 group-hover:text-background/60 sm:text-[10px]">
+              <p className="text-muted group-hover:text-background/60 mb-4 text-[9px] font-medium tracking-[0.2em] uppercase transition-colors duration-500 sm:text-[10px]">
                 {nextProject.category}
               </p>
 
@@ -237,10 +300,10 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
         </div>
       </section>
 
-      <section className="border-t border-foreground/10 px-6 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
+      <section className="border-foreground/10 border-t px-6 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
         <div className="mx-auto flex max-w-[1440px] flex-col items-start justify-between gap-10 md:flex-row md:items-end">
           <div>
-            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.25em] text-muted sm:text-xs">
+            <p className="text-muted mb-5 text-[10px] font-medium tracking-[0.25em] uppercase sm:text-xs">
               Continue exploring
             </p>
 
@@ -253,7 +316,7 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
 
           <Link
             href="/work"
-            className="group flex items-center gap-5 border-b border-foreground pb-3 text-[10px] font-medium uppercase tracking-[0.25em] transition-opacity duration-300 hover:opacity-50 sm:text-xs"
+            className="group border-foreground flex items-center gap-5 border-b pb-3 text-[10px] font-medium tracking-[0.25em] uppercase transition-opacity duration-300 hover:opacity-50 sm:text-xs"
           >
             View all work
             <span className="text-base transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1">

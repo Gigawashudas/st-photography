@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation';
-import { projects } from '@/data/projects';
+import { getPublishedProject, getPublishedProjects } from '@/lib/projects/get-project';
 import { ProjectDetail } from './project-detail';
 
 type ProjectPageProps = {
@@ -8,29 +8,34 @@ type ProjectPageProps = {
   }>;
 };
 
-export function generateStaticParams() {
-  return projects
-    .filter((project) => project.published)
-    .map((project) => ({
-      slug: project.slug,
-    }));
+export async function generateStaticParams() {
+  const projects = await getPublishedProjects();
+
+  return projects.map((project) => ({
+    slug: project.slug,
+  }));
 }
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
 
-  const publishedProjects = projects.filter((project) => project.published);
+  const [project, publishedProjects] = await Promise.all([
+    getPublishedProject(slug),
+    getPublishedProjects(),
+  ]);
 
-  const currentIndex = publishedProjects.findIndex((project) => project.slug === slug);
-
-  if (currentIndex === -1) {
+  if (!project) {
     notFound();
   }
 
-  const project = publishedProjects[currentIndex];
+  const currentIndex = publishedProjects.findIndex((item) => item.slug === project.slug);
+
   const previousProject = currentIndex > 0 ? publishedProjects[currentIndex - 1] : undefined;
+
   const nextProject =
-    currentIndex < publishedProjects.length - 1 ? publishedProjects[currentIndex + 1] : undefined;
+    currentIndex >= 0 && currentIndex < publishedProjects.length - 1
+      ? publishedProjects[currentIndex + 1]
+      : undefined;
 
   return (
     <ProjectDetail project={project} previousProject={previousProject} nextProject={nextProject} />

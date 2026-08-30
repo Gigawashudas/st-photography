@@ -1,10 +1,16 @@
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { ProjectForm } from "@/components/admin/project-form";
+import { ProjectEditForm } from "@/components/admin/project-edit-form";
 
-export default async function NewProjectPage() {
+type ProjectPageProps = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+export default async function AdminProjectEditPage({ params }: ProjectPageProps) {
   const supabase = await createClient();
 
   const {
@@ -13,6 +19,14 @@ export default async function NewProjectPage() {
 
   if (!user) {
     redirect("/admin/login");
+  }
+
+  const { id } = await params;
+
+  const { data: project, error } = await supabase.from("projects").select("id, slug, title, category, location, year, description, cover_image, images, featured, featured_order, published").eq("id", id).single();
+
+  if (error || !project) {
+    notFound();
   }
 
   return (
@@ -24,7 +38,7 @@ export default async function NewProjectPage() {
             Projects
           </Link>
 
-          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">New Project</p>
+          <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">Edit Project</span>
         </header>
 
         <section className="pt-20 sm:pt-28 lg:pt-32">
@@ -34,11 +48,13 @@ export default async function NewProjectPage() {
             <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-muted">Portfolio CMS</p>
           </div>
 
-          <h1 className="font-serif text-[clamp(4rem,9vw,9rem)] leading-[0.8] tracking-tighter">New Project.</h1>
+          <h1 className="font-serif text-[clamp(4rem,9vw,9rem)] leading-[0.8] tracking-tighter">Edit.</h1>
+
+          <p className="mt-8 max-w-xl text-sm leading-7 text-secondary">Update the project information, images, publication status, and featured placement.</p>
         </section>
 
         <section className="mt-20 sm:mt-28">
-          <ProjectForm />
+          <ProjectEditForm project={project} />
         </section>
       </div>
     </main>

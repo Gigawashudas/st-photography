@@ -43,7 +43,7 @@ export default async function AdminPage() {
 
   return (
     <main className="min-h-screen bg-background text-foreground transition-colors duration-500">
-      <div className="mx-auto max-w-[1440px] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+      <div className="mx-auto max-w-360 px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
         <header className="flex items-center justify-between border-b border-foreground/10 pb-8">
           <Link href="/" className="text-sm font-medium tracking-[0.18em] transition-opacity duration-300 hover:opacity-50">
             ST

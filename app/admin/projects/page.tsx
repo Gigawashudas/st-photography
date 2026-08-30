@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowLeft, ArrowUpRight, Plus, Star, Eye, EyeOff } from "lucide-react";
 import { redirect } from "next/navigation";
@@ -17,7 +18,7 @@ export default async function AdminProjectsPage() {
   return (
     <main className="min-h-screen bg-background text-foreground transition-colors duration-500">
       {" "}
-      <div className="mx-auto max-w-[1440px] px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
+      <div className="mx-auto max-w-360 px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
         {" "}
         <header className="flex items-center justify-between border-b border-foreground/10 pb-8">
           {" "}
@@ -40,7 +41,7 @@ export default async function AdminProjectsPage() {
                 {" "}
                 <span className="h-px w-8 bg-foreground/40" /> <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-muted"> Portfolio CMS </p>{" "}
               </div>{" "}
-              <h1 className="font-serif text-[clamp(4rem,9vw,9rem)] leading-[0.8] tracking-[-0.05em]"> Projects. </h1>{" "}
+              <h1 className="font-serif text-[clamp(4rem,9vw,9rem)] leading-[0.8] tracking-tighter"> Projects. </h1>{" "}
             </div>{" "}
             <p className="max-w-sm text-sm leading-7 text-secondary"> Manage your interior photography and cinematography portfolio. </p>{" "}
           </div>{" "}
@@ -70,9 +71,8 @@ export default async function AdminProjectsPage() {
                   <div className="flex min-w-0 items-center gap-5">
                     {" "}
                     {project.cover_image ? (
-                      <div className="h-16 w-20 shrink-0 overflow-hidden bg-subtle sm:h-20 sm:w-28">
-                        {" "}
-                        <img src={project.cover_image} alt={project.title} className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />{" "}
+                      <div className="relative h-16 w-20 shrink-0 overflow-hidden bg-subtle sm:h-20 sm:w-28">
+                        <Image src={project.cover_image} alt={project.title} fill sizes="(max-width: 640px) 80px, 112px" className="object-cover transition-transform duration-700 group-hover:scale-105" />
                       </div>
                     ) : (
                       <div className="flex h-16 w-20 shrink-0 items-center justify-center bg-subtle text-[9px] uppercase tracking-[0.15em] text-muted sm:h-20 sm:w-28"> No Image </div>

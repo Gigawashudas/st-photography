@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import Link from "next/link";
 import { WorkGrid } from "./work-grid";
-import { getPublishedProjects } from "@/lib/projects/get-projects";
+import { getPublishedProjects } from "@/lib/projects/get-project";
 
 export default async function WorkPage() {
   const projects = await getPublishedProjects();

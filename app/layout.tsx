@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Instrument_Serif } from 'next/font/google';
 import './globals.css';
+import { Navbar } from '@/components/navigation/navbar';
 
 const geist = Geist({
   variable: '--font-geist',
@@ -25,7 +26,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${geist.variable} ${instrumentSerif.variable}`}>
-      <body>{children}</body>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }

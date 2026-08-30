@@ -133,3 +133,68 @@ a {
     scroll-behavior: auto !important;
   }
 }
+/* --------------------------------------------------
+   Responsive foundation
+   ST Photography
+-------------------------------------------------- */
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  min-width: 320px;
+  overflow-x: hidden;
+}
+
+/* --------------------------------------------------
+   Tablet / iPad Mini
+   768px+
+-------------------------------------------------- */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  html {
+    font-size: 15px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}
+
+/* --------------------------------------------------
+   Large tablet / small desktop
+   900px+
+-------------------------------------------------- */
+
+@media (min-width: 900px) and (max-width: 1023px) {
+  html {
+    font-size: 15.5px;
+  }
+}
+
+/* --------------------------------------------------
+   Touch devices
+-------------------------------------------------- */
+
+@media (hover: none) and (pointer: coarse) {
+  a,
+  button {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* --------------------------------------------------
+   Reduced motion
+-------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

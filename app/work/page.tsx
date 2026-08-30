@@ -1,7 +1,7 @@
-import { motion } from "motion/react";
 import Link from "next/link";
 import { WorkGrid } from "./work-grid";
 import { getPublishedProjects } from "@/lib/projects/get-project";
+import { WorkHeader } from "./work-header";
 
 export default async function WorkPage() {
   const projects = await getPublishedProjects();
@@ -10,31 +10,25 @@ export default async function WorkPage() {
     <main className="min-h-screen bg-background">
       <section className="px-6 pb-24 pt-36 sm:px-8 sm:pb-32 sm:pt-44 lg:px-10 lg:pb-40 lg:pt-52">
         <div className="mx-auto max-w-[1440px]">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: 1,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="flex flex-col justify-between gap-12 lg:flex-row lg:items-end"
-          >
-            <div>
-              <div className="mb-8 flex items-center gap-4">
-                <span className="h-px w-8 bg-foreground/40" />
+          <WorkHeader>
+            <div className="flex flex-col justify-between gap-12 lg:flex-row lg:items-end">
+              <div>
+                <div className="mb-8 flex items-center gap-4">
+                  <span className="h-px w-8 bg-foreground/40" />
 
-                <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs">Selected Work</p>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs">Selected Work</p>
+                </div>
+
+                <h1 className="max-w-5xl font-serif text-[clamp(4rem,10vw,10rem)] leading-[0.8] tracking-[-0.055em]">
+                  Spaces
+                  <br />
+                  <span className="ml-[8vw]">worth remembering.</span>
+                </h1>
               </div>
 
-              <h1 className="max-w-5xl font-serif text-[clamp(4rem,10vw,10rem)] leading-[0.8] tracking-[-0.055em]">
-                Spaces
-                <br />
-                <span className="ml-[8vw]">worth remembering.</span>
-              </h1>
+              <p className="max-w-sm text-sm font-light leading-7 tracking-[0.05em] text-secondary sm:text-base sm:leading-8 lg:pb-2">Interior photography and cinematography for spaces, architecture, designers, developers, hospitality, and brands.</p>
             </div>
-
-            <p className="max-w-sm text-sm font-light leading-7 tracking-[0.05em] text-secondary sm:text-base sm:leading-8 lg:pb-2">Interior photography and cinematography for spaces, architecture, designers, developers, hospitality, and brands.</p>
-          </motion.div>
+          </WorkHeader>
 
           <WorkGrid projects={projects} />
         </div>

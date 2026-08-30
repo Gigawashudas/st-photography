@@ -1,6 +1,7 @@
 "use client";
 
 import { FormEvent, useState } from "react";
+import Link from "next/link";
 import { Loader2, LogIn, Moon, Sun } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
@@ -56,9 +57,9 @@ export default function AdminLoginPage() {
     <main className="min-h-screen bg-background text-foreground transition-colors duration-500">
       <div className="mx-auto flex min-h-screen max-w-360 flex-col px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
         <header className="flex items-center justify-between border-b border-foreground/10 pb-8">
-          <a href="/" className="text-sm font-medium tracking-[0.18em] transition-opacity hover:opacity-50">
+          <Link href="/" className="text-sm font-medium tracking-[0.18em] transition-opacity hover:opacity-50">
             ST
-          </a>
+          </Link>
 
           <button type="button" onClick={toggleTheme} aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"} className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/20 transition-all duration-300 hover:scale-105 hover:border-foreground/50">
             {isDark ? <Sun size={15} strokeWidth={1.4} /> : <Moon size={15} strokeWidth={1.4} />}

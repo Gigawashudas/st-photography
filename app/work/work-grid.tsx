@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { motion } from "motion/react";
 import Link from "next/link";
 import Image from "next/image";
-import type { Project, ProjectCategory } from "@/lib/projects/get-projects";
+import type { Project, ProjectCategory } from "@/lib/projects/get-project";
 
 type Filter = "All" | ProjectCategory;
 

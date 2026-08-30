@@ -2,10 +2,12 @@ import Link from 'next/link';
 import { ArrowUpRight, FolderOpen, ImageIcon, Users } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { AdminLogout } from '@/components/admin/admin-logout';
 import { AdminThemeToggle } from '@/components/admin/admin-theme-toggle';
 
 export default async function AdminPage() {
+  // Regular client is used only for authentication.
   const supabase = await createClient();
 
   const {
@@ -16,21 +18,59 @@ export default async function AdminPage() {
     redirect('/admin/login');
   }
 
+  // Service-role client is used for admin dashboard statistics.
+  // This bypasses RLS so the dashboard can correctly count enquiries.
+  const adminSupabase = createAdminClient();
+
   const [
-    { count: totalProjects },
-    { count: publishedProjects },
-    { count: featuredProjects },
-    { count: totalLeads },
+    { count: totalProjects, error: totalProjectsError },
+    { count: publishedProjects, error: publishedProjectsError },
+    { count: featuredProjects, error: featuredProjectsError },
+    { count: totalLeads, error: totalLeadsError },
   ] = await Promise.all([
-    supabase.from('projects').select('*', { count: 'exact', head: true }),
-    supabase.from('projects').select('*', { count: 'exact', head: true }).eq('published', true),
-    supabase
+    adminSupabase.from('projects').select('*', {
+      count: 'exact',
+      head: true,
+    }),
+
+    adminSupabase
       .from('projects')
-      .select('*', { count: 'exact', head: true })
+      .select('*', {
+        count: 'exact',
+        head: true,
+      })
+      .eq('published', true),
+
+    adminSupabase
+      .from('projects')
+      .select('*', {
+        count: 'exact',
+        head: true,
+      })
       .eq('featured', true)
       .eq('published', true),
-    supabase.from('enquiries').select('*', { count: 'exact', head: true }),
+
+    adminSupabase.from('enquiries').select('*', {
+      count: 'exact',
+      head: true,
+    }),
   ]);
+
+  if (totalProjectsError) {
+    console.error('Dashboard total projects error:', totalProjectsError);
+  }
+
+  if (publishedProjectsError) {
+    console.error('Dashboard published projects error:', publishedProjectsError);
+  }
+
+  if (featuredProjectsError) {
+    console.error('Dashboard featured projects error:', featuredProjectsError);
+  }
+
+  if (totalLeadsError) {
+    console.error('Dashboard leads error:', totalLeadsError);
+  }
 
   const stats = [
     {
@@ -56,9 +96,9 @@ export default async function AdminPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-background text-foreground transition-colors duration-500">
+    <main className="bg-background text-foreground min-h-screen transition-colors duration-500">
       <div className="mx-auto max-w-360 px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
-        <header className="flex items-center justify-between border-b border-foreground/10 pb-8">
+        <header className="border-foreground/10 flex items-center justify-between border-b pb-8">
           <Link
             href="/"
             className="text-sm font-medium tracking-[0.18em] transition-opacity duration-300 hover:opacity-50"
@@ -67,7 +107,7 @@ export default async function AdminPage() {
           </Link>
 
           <div className="flex items-center gap-6">
-            <span className="hidden text-[10px] font-medium uppercase tracking-[0.2em] text-muted sm:block">
+            <span className="text-muted hidden text-[10px] font-medium tracking-[0.2em] uppercase sm:block">
               Admin
             </span>
 
@@ -81,9 +121,9 @@ export default async function AdminPage() {
           <div className="flex flex-col justify-between gap-10 lg:flex-row lg:items-end">
             <div>
               <div className="mb-7 flex items-center gap-4">
-                <span className="h-px w-8 bg-foreground/40" />
+                <span className="bg-foreground/40 h-px w-8" />
 
-                <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-muted">
+                <p className="text-muted text-[10px] font-medium tracking-[0.25em] uppercase">
                   Control Center
                 </p>
               </div>
@@ -93,13 +133,13 @@ export default async function AdminPage() {
               </h1>
             </div>
 
-            <p className="max-w-xs text-sm leading-7 text-secondary">
+            <p className="text-secondary max-w-xs text-sm leading-7">
               Manage your portfolio, featured work, and incoming enquiries.
             </p>
           </div>
         </section>
 
-        <section className="mt-20 border-t border-foreground/10 sm:mt-28">
+        <section className="border-foreground/10 mt-20 border-t sm:mt-28">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
@@ -107,10 +147,12 @@ export default async function AdminPage() {
               return (
                 <div
                   key={stat.label}
-                  className={`border-b border-foreground/10 py-8 sm:px-6 lg:border-b-0 lg:border-r ${index === 0 ? 'lg:pl-0' : ''} ${index === stats.length - 1 ? 'lg:border-r-0 lg:pr-0' : ''}`}
+                  className={`border-foreground/10 border-b py-8 sm:px-6 lg:border-r lg:border-b-0 ${
+                    index === 0 ? 'lg:pl-0' : ''
+                  } ${index === stats.length - 1 ? 'lg:border-r-0 lg:pr-0' : ''}`}
                 >
                   <div className="flex items-center justify-between">
-                    <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
+                    <p className="text-muted text-[10px] font-medium tracking-[0.2em] uppercase">
                       {stat.label}
                     </p>
 
@@ -126,13 +168,13 @@ export default async function AdminPage() {
           </div>
         </section>
 
-        <section className="mt-20 grid gap-px border-y border-foreground/10 bg-foreground/10 sm:mt-28 sm:grid-cols-2">
+        <section className="border-foreground/10 bg-foreground/10 mt-20 grid gap-px border-y sm:mt-28 sm:grid-cols-2">
           <Link
             href="/admin/projects"
-            className="group bg-background p-8 transition-colors duration-500 hover:bg-subtle sm:p-12 lg:p-16"
+            className="group bg-background hover:bg-subtle p-8 transition-colors duration-500 sm:p-12 lg:p-16"
           >
             <div className="flex items-start justify-between">
-              <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
+              <span className="text-muted text-[10px] font-medium tracking-[0.2em] uppercase">
                 01
               </span>
 
@@ -147,17 +189,17 @@ export default async function AdminPage() {
               Projects.
             </h2>
 
-            <p className="mt-5 max-w-sm text-sm leading-7 text-secondary">
+            <p className="text-secondary mt-5 max-w-sm text-sm leading-7">
               Add, edit, publish, and feature photography and cinematography projects.
             </p>
           </Link>
 
           <Link
             href="/admin/leads"
-            className="group bg-background p-8 transition-colors duration-500 hover:bg-subtle sm:p-12 lg:p-16"
+            className="group bg-background hover:bg-subtle p-8 transition-colors duration-500 sm:p-12 lg:p-16"
           >
             <div className="flex items-start justify-between">
-              <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
+              <span className="text-muted text-[10px] font-medium tracking-[0.2em] uppercase">
                 02
               </span>
 
@@ -172,13 +214,13 @@ export default async function AdminPage() {
               Leads.
             </h2>
 
-            <p className="mt-5 max-w-sm text-sm leading-7 text-secondary">
+            <p className="text-secondary mt-5 max-w-sm text-sm leading-7">
               View incoming enquiries and keep track of potential clients.
             </p>
           </Link>
         </section>
 
-        <footer className="mt-20 flex flex-col gap-4 border-t border-foreground/10 pt-8 text-[10px] uppercase tracking-[0.2em] text-muted sm:flex-row sm:items-center sm:justify-between">
+        <footer className="border-foreground/10 text-muted mt-20 flex flex-col gap-4 border-t pt-8 text-[10px] tracking-[0.2em] uppercase sm:flex-row sm:items-center sm:justify-between">
           <span>ST Photography</span>
           <span>Admin Dashboard</span>
         </footer>

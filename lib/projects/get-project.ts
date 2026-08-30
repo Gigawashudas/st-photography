@@ -17,6 +17,14 @@ export type Project = {
   published: boolean;
 };
 
+function normalizeProject(project: Project): Project {
+  return {
+    ...project,
+    category: project.category as ProjectCategory,
+    images: Array.isArray(project.images) ? project.images.filter((image): image is string => typeof image === "string") : [],
+  };
+}
+
 export async function getPublishedProjects(): Promise<Project[]> {
   const supabase = await createClient();
 
@@ -27,9 +35,22 @@ export async function getPublishedProjects(): Promise<Project[]> {
     return [];
   }
 
-  return (data ?? []).map((project) => ({
-    ...project,
-    category: project.category as ProjectCategory,
-    images: Array.isArray(project.images) ? project.images.filter((image): image is string => typeof image === "string") : [],
-  }));
+  return (data ?? []).map(normalizeProject);
+}
+
+export async function getPublishedProject(slug: string): Promise<Project | null> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.from("projects").select("id, slug, title, category, location, year, description, cover_image, images, featured, featured_order, published").eq("slug", slug).eq("published", true).maybeSingle();
+
+  if (error) {
+    console.error("Published project fetch error:", error);
+    return null;
+  }
+
+  if (!data) {
+    return null;
+  }
+
+  return normalizeProject(data);
 }

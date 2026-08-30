@@ -1,15 +1,23 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { motion } from "motion/react";
+import Image from 'next/image';
+import { motion } from 'motion/react';
 
-const heroImage = "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=2400&q=90";
+const heroImage =
+  'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=2400&q=90';
 
 export function CinematicHero() {
   return (
     <section id="hero" className="relative flex min-h-[100svh] items-end overflow-hidden bg-black">
       <div className="absolute inset-0">
-        <Image src={heroImage} alt="Cinematic photography" fill priority sizes="100vw" className="object-cover object-center" />
+        <Image
+          src={heroImage}
+          alt="Cinematic photography"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
       </div>
 
       <div className="absolute inset-0 bg-black/30 sm:bg-black/35" />
@@ -67,17 +75,20 @@ export function CinematicHero() {
           }}
           className="mt-12 flex justify-center sm:mt-14"
         >
-          <a href="#work" className="group flex flex-col items-center gap-3 text-[9px] font-medium uppercase tracking-[0.3em] !text-white/90 transition-colors duration-300 hover:!text-white sm:text-xs">
+          <a
+            href="#work"
+            className="group flex flex-col items-center gap-3 text-[9px] font-medium uppercase tracking-[0.3em] !text-white/90 transition-colors duration-300 hover:!text-white sm:text-xs"
+          >
             <span>Scroll to explore</span>
 
             <span className="relative h-8 w-px overflow-hidden bg-white/45 sm:h-10">
               <motion.span
-                initial={{ y: "-100%" }}
-                animate={{ y: "200%" }}
+                initial={{ y: '-100%' }}
+                animate={{ y: '200%' }}
                 transition={{
                   duration: 1.8,
                   repeat: Infinity,
-                  ease: "linear",
+                  ease: 'linear',
                 }}
                 className="absolute inset-x-0 top-0 h-1/2 bg-white"
               />

@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { motion } from "motion/react";
-import { ProjectCard } from "./project-card";
+import { motion } from 'motion/react';
+import { ProjectCard } from './project-card';
 
 type Project = {
   id: string;
@@ -22,25 +22,27 @@ type FeaturedWorkProps = {
 export function FeaturedWork({ projects }: FeaturedWorkProps) {
   return (
     <section id="work" className="bg-background px-5 py-24 sm:px-8 sm:py-40 lg:px-10 lg:py-52">
-      {" "}
+      {' '}
       <div className="mx-auto max-w-[1440px]">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-15% 0px" }}
+          viewport={{ once: true, margin: '-15% 0px' }}
           transition={{
             duration: 1,
             ease: [0.22, 1, 0.36, 1],
           }}
           className="mb-16 grid gap-8 md:mb-36 md:grid-cols-[1fr_280px] md:items-end lg:grid-cols-[1fr_340px]"
         >
-          {" "}
+          {' '}
           <div>
-            {" "}
+            {' '}
             <div className="mb-7 flex items-center gap-3 sm:mb-8 sm:gap-4">
-              {" "}
+              {' '}
               <span className="h-px w-6 bg-foreground/40 sm:w-8" />
-              <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs sm:tracking-[0.25em]">01 / Selected Work</p>
+              <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs sm:tracking-[0.25em]">
+                01 / Selected Work
+              </p>
             </div>
             <h2 className="max-w-4xl font-serif text-[clamp(3.7rem,17vw,9rem)] leading-[0.82] tracking-[-0.055em] sm:text-[clamp(4rem,9vw,9rem)] sm:tracking-[-0.045em]">
               Stories
@@ -64,12 +66,21 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
                 return null;
               }
 
-              const aspectClass = index === 0 ? "aspect-[4/5]" : index === 1 ? "aspect-[3/4]" : "aspect-[16/10]";
+              const aspectClass =
+                index === 0 ? 'aspect-[4/5]' : index === 1 ? 'aspect-[3/4]' : 'aspect-[16/10]';
 
               if (index === 0) {
                 return (
                   <div key={project.id} className="md:pt-24">
-                    <ProjectCard title={project.title} category={project.category} number={String(index + 1).padStart(2, "0")} image={project.cover_image} aspectClass={aspectClass} slug={project.slug} priority />
+                    <ProjectCard
+                      title={project.title}
+                      category={project.category}
+                      number={String(index + 1).padStart(2, '0')}
+                      image={project.cover_image}
+                      aspectClass={aspectClass}
+                      slug={project.slug}
+                      priority
+                    />
                   </div>
                 );
               }
@@ -77,14 +88,28 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
               if (index === 1) {
                 return (
                   <div key={project.id}>
-                    <ProjectCard title={project.title} category={project.category} number={String(index + 1).padStart(2, "0")} image={project.cover_image} aspectClass={aspectClass} slug={project.slug} />
+                    <ProjectCard
+                      title={project.title}
+                      category={project.category}
+                      number={String(index + 1).padStart(2, '0')}
+                      image={project.cover_image}
+                      aspectClass={aspectClass}
+                      slug={project.slug}
+                    />
                   </div>
                 );
               }
 
               return (
                 <div key={project.id} className="md:col-span-2 md:mx-auto md:w-[70%]">
-                  <ProjectCard title={project.title} category={project.category} number={String(index + 1).padStart(2, "0")} image={project.cover_image} aspectClass={aspectClass} slug={project.slug} />
+                  <ProjectCard
+                    title={project.title}
+                    category={project.category}
+                    number={String(index + 1).padStart(2, '0')}
+                    image={project.cover_image}
+                    aspectClass={aspectClass}
+                    slug={project.slug}
+                  />
                 </div>
               );
             })}
@@ -105,13 +130,18 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
           }}
           className="mt-20 flex justify-center sm:mt-32"
         >
-          <a href="/work" className="group flex min-h-11 items-center gap-5 text-[9px] font-medium uppercase tracking-[0.35em] text-secondary transition-colors duration-300 hover:text-foreground sm:gap-6 sm:text-[10px]">
+          <a
+            href="/work"
+            className="group flex min-h-11 items-center gap-5 text-[9px] font-medium uppercase tracking-[0.35em] text-secondary transition-colors duration-300 hover:text-foreground sm:gap-6 sm:text-[10px]"
+          >
             <span className="relative">
               View all work
               <span className="absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 bg-foreground transition-transform duration-500 group-hover:scale-x-100" />
             </span>
 
-            <span className="text-base font-light transition-transform duration-500 group-hover:translate-x-2">→</span>
+            <span className="text-base font-light transition-transform duration-500 group-hover:translate-x-2">
+              →
+            </span>
           </a>
         </motion.div>
       </div>

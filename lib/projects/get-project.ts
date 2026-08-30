@@ -1,6 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from '@/lib/supabase/server';
 
-export type ProjectCategory = "Interior Photography" | "Interior Cinematography";
+export type ProjectCategory = 'Interior Photography' | 'Interior Cinematography';
 
 export type Project = {
   id: string;
@@ -22,17 +22,25 @@ function normalizeProject(project: Project): Project {
   return {
     ...project,
     category: project.category as ProjectCategory,
-    images: Array.isArray(project.images) ? project.images.filter((image): image is string => typeof image === "string") : [],
+    images: Array.isArray(project.images)
+      ? project.images.filter((image): image is string => typeof image === 'string')
+      : [],
   };
 }
 
 export async function getPublishedProjects(): Promise<Project[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.from("projects").select("id, slug, title, category, location, year, description, cover_image, youtube_url, images, featured, featured_order, published").eq("published", true).order("year", { ascending: false });
+  const { data, error } = await supabase
+    .from('projects')
+    .select(
+      'id, slug, title, category, location, year, description, cover_image, youtube_url, images, featured, featured_order, published',
+    )
+    .eq('published', true)
+    .order('year', { ascending: false });
 
   if (error) {
-    console.error("Published projects fetch error:", error);
+    console.error('Published projects fetch error:', error);
     return [];
   }
 
@@ -42,16 +50,36 @@ export async function getPublishedProjects(): Promise<Project[]> {
 export async function getFeaturedProjects(): Promise<Project[]> {
   const supabase = await createClient();
 
-  const fields = "id, slug, title, category, location, year, description, cover_image, youtube_url, images, featured, featured_order, published";
+  const fields =
+    'id, slug, title, category, location, year, description, cover_image, youtube_url, images, featured, featured_order, published';
 
-  const [photographyResult, cinematographyResult] = await Promise.all([supabase.from("projects").select(fields).eq("published", true).eq("featured", true).eq("category", "Interior Photography").order("featured_order", { ascending: true }).order("year", { ascending: false }).limit(2), supabase.from("projects").select(fields).eq("published", true).eq("featured", true).eq("category", "Interior Cinematography").order("featured_order", { ascending: true }).order("year", { ascending: false }).limit(2)]);
+  const [photographyResult, cinematographyResult] = await Promise.all([
+    supabase
+      .from('projects')
+      .select(fields)
+      .eq('published', true)
+      .eq('featured', true)
+      .eq('category', 'Interior Photography')
+      .order('featured_order', { ascending: true })
+      .order('year', { ascending: false })
+      .limit(2),
+    supabase
+      .from('projects')
+      .select(fields)
+      .eq('published', true)
+      .eq('featured', true)
+      .eq('category', 'Interior Cinematography')
+      .order('featured_order', { ascending: true })
+      .order('year', { ascending: false })
+      .limit(2),
+  ]);
 
   if (photographyResult.error) {
-    console.error("Featured photography projects fetch error:", photographyResult.error);
+    console.error('Featured photography projects fetch error:', photographyResult.error);
   }
 
   if (cinematographyResult.error) {
-    console.error("Featured cinematography projects fetch error:", cinematographyResult.error);
+    console.error('Featured cinematography projects fetch error:', cinematographyResult.error);
   }
 
   const photographyProjects = (photographyResult.data ?? []).map(normalizeProject);
@@ -64,10 +92,17 @@ export async function getFeaturedProjects(): Promise<Project[]> {
 export async function getPublishedProject(slug: string): Promise<Project | null> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.from("projects").select("id, slug, title, category, location, year, description, cover_image, youtube_url, images, featured, featured_order, published").eq("slug", slug).eq("published", true).maybeSingle();
+  const { data, error } = await supabase
+    .from('projects')
+    .select(
+      'id, slug, title, category, location, year, description, cover_image, youtube_url, images, featured, featured_order, published',
+    )
+    .eq('slug', slug)
+    .eq('published', true)
+    .maybeSingle();
 
   if (error) {
-    console.error("Published project fetch error:", error);
+    console.error('Published project fetch error:', error);
     return null;
   }
 

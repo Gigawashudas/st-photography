@@ -1,21 +1,21 @@
-import type { Metadata } from "next";
-import { Geist, Instrument_Serif } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next';
+import { Geist, Instrument_Serif } from 'next/font/google';
+import './globals.css';
 
 const geist = Geist({
-  variable: "--font-geist",
-  subsets: ["latin"],
+  variable: '--font-geist',
+  subsets: ['latin'],
 });
 
 const instrumentSerif = Instrument_Serif({
-  variable: "--font-instrument-serif",
-  subsets: ["latin"],
-  weight: "400",
+  variable: '--font-instrument-serif',
+  subsets: ['latin'],
+  weight: '400',
 });
 
 export const metadata: Metadata = {
-  title: "ST Photography",
-  description: "Photography & Cinematography",
+  title: 'ST Photography',
+  description: 'Photography & Cinematography',
 };
 
 export default function RootLayout({

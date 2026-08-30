@@ -1,13 +1,17 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { ThemeToggle } from "../theme-toggle/theme-toggle";
+import Link from 'next/link';
+import { ThemeToggle } from '../theme-toggle/theme-toggle';
 
 export function Navbar() {
   return (
     <header className="fixed inset-x-0 top-0 z-50">
       <div className="flex items-start justify-between px-6 py-6 sm:px-8 sm:py-8 lg:px-10 lg:py-10">
-        <Link href="/" aria-label="ST Photography home" className="text-sm font-medium tracking-[0.18em] transition-opacity duration-300 hover:opacity-60">
+        <Link
+          href="/"
+          aria-label="ST Photography home"
+          className="text-sm font-medium tracking-[0.18em] transition-opacity duration-300 hover:opacity-60"
+        >
           ST
         </Link>
 

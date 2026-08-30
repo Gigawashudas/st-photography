@@ -1,17 +1,19 @@
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+import Link from 'next/link';
+import { ArrowUpRight } from 'lucide-react';
 
-const instagramLink = "https://www.instagram.com/st_photography_interior?igsi=MTk4cHk4enJhNW50cg==";
+const instagramLink = 'https://www.instagram.com/st_photography_interior?igsi=MTk4cHk4enJhNW50cg==';
 
-const youtubeLink = "https://youtube.com/@stphotography01?si=UuuBA6z8vunGAAD5";
+const youtubeLink = 'https://youtube.com/@stphotography01?si=UuuBA6z8vunGAAD5';
 
-const facebookLink = "https://www.facebook.com/share/1EiPXQt7tZ/";
+const facebookLink = 'https://www.facebook.com/share/1EiPXQt7tZ/';
 
-const whatsappNumber = "8801839050341";
+const whatsappNumber = '8801839050341';
 
-const whatsappMessage = "Hello Sraban, I would like to discuss a photography or cinematography project with ST Photography.";
+const whatsappMessage =
+  'Hello Sraban, I would like to discuss a photography or cinematography project with ST Photography.';
 
-const whatsappLink = "https://wa.me/" + whatsappNumber + "?text=" + encodeURIComponent(whatsappMessage);
+const whatsappLink =
+  'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(whatsappMessage);
 
 export function Footer() {
   return (
@@ -19,71 +21,140 @@ export function Footer() {
       <div className="mx-auto max-w-360">
         <div className="grid grid-cols-2 gap-x-8 gap-y-14 sm:grid-cols-4 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-x-16">
           <div className="col-span-2 sm:col-span-1">
-            <Link href="/" className="inline-block font-serif text-5xl tracking-[-0.06em] transition-opacity duration-300 hover:opacity-50 sm:text-6xl">
+            <Link
+              href="/"
+              className="inline-block font-serif text-5xl tracking-[-0.06em] transition-opacity duration-300 hover:opacity-50 sm:text-6xl"
+            >
               ST
             </Link>
 
-            <p className="mt-6 max-w-55 text-sm leading-6 text-secondary">Photography &amp; Cinematography</p>
+            <p className="mt-6 max-w-55 text-sm leading-6 text-secondary">
+              Photography &amp; Cinematography
+            </p>
           </div>
 
           <div>
-            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.22em] text-muted sm:text-[11px]">Explore</p>
+            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.22em] text-muted sm:text-[11px]">
+              Explore
+            </p>
 
             <nav className="flex flex-col items-start gap-3">
-              <Link href="/" className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50">
+              <Link
+                href="/"
+                className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50"
+              >
                 Home
               </Link>
 
-              <Link href="/work" className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50">
+              <Link
+                href="/work"
+                className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50"
+              >
                 Work
               </Link>
 
-              <Link href="/about" className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50">
+              <Link
+                href="/about"
+                className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50"
+              >
                 About
               </Link>
 
-              <Link href="/contact" className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50">
+              <Link
+                href="/contact"
+                className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50"
+              >
                 Contact
               </Link>
             </nav>
           </div>
 
           <div>
-            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.22em] text-muted sm:text-[11px]">Connect</p>
+            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.22em] text-muted sm:text-[11px]">
+              Connect
+            </p>
 
             <nav className="flex flex-col items-start gap-3">
-              <a href={instagramLink} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 text-sm text-foreground transition-opacity duration-300 hover:opacity-50">
+              <a
+                href={instagramLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 text-sm text-foreground transition-opacity duration-300 hover:opacity-50"
+              >
                 Instagram
-                <ArrowUpRight size={12} strokeWidth={1.3} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight
+                  size={12}
+                  strokeWidth={1.3}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
               </a>
 
-              <a href={youtubeLink} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 text-sm text-foreground transition-opacity duration-300 hover:opacity-50">
+              <a
+                href={youtubeLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 text-sm text-foreground transition-opacity duration-300 hover:opacity-50"
+              >
                 YouTube
-                <ArrowUpRight size={12} strokeWidth={1.3} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight
+                  size={12}
+                  strokeWidth={1.3}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
               </a>
 
-              <a href={facebookLink} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 text-sm text-foreground transition-opacity duration-300 hover:opacity-50">
+              <a
+                href={facebookLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 text-sm text-foreground transition-opacity duration-300 hover:opacity-50"
+              >
                 Facebook
-                <ArrowUpRight size={12} strokeWidth={1.3} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight
+                  size={12}
+                  strokeWidth={1.3}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
               </a>
 
-              <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="group inline-flex items-center gap-1.5 text-sm text-foreground transition-opacity duration-300 hover:opacity-50">
+              <a
+                href={whatsappLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-1.5 text-sm text-foreground transition-opacity duration-300 hover:opacity-50"
+              >
                 WhatsApp
-                <ArrowUpRight size={12} strokeWidth={1.3} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <ArrowUpRight
+                  size={12}
+                  strokeWidth={1.3}
+                  className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                />
               </a>
             </nav>
           </div>
 
           <div className="col-span-2 sm:col-span-1">
-            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.22em] text-muted sm:text-[11px]">Contact</p>
+            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.22em] text-muted sm:text-[11px]">
+              Contact
+            </p>
 
             <div className="flex flex-col items-start gap-3">
-              <a href="mailto:sahatammalphotography@gmail.com" className="group mt-8 inline-flex items-center gap-3 border-b border-foreground/30 pb-2 text-sm tracking-[0.02em] transition-colors duration-300 hover:border-foreground sm:mt-10 sm:text-base">
+              <a
+                href="mailto:sahatammalphotography@gmail.com"
+                className="group mt-8 inline-flex items-center gap-3 border-b border-foreground/30 pb-2 text-sm tracking-[0.02em] transition-colors duration-300 hover:border-foreground sm:mt-10 sm:text-base"
+              >
                 sahatammalphotography@gmail.com
-                <ArrowUpRight size={15} strokeWidth={1.3} className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                <ArrowUpRight
+                  size={15}
+                  strokeWidth={1.3}
+                  className="transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1"
+                />
               </a>
 
-              <a href="tel:+8801839050341" className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50">
+              <a
+                href="tel:+8801839050341"
+                className="text-sm text-foreground transition-opacity duration-300 hover:opacity-50"
+              >
                 +880 1839 050341
               </a>
             </div>

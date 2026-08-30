@@ -1,9 +1,10 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { motion } from "motion/react";
+import Image from 'next/image';
+import { motion } from 'motion/react';
 
-const aboutImage = "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=1400&q=90";
+const aboutImage =
+  'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=1400&q=90';
 
 export function AboutSection() {
   return (
@@ -12,7 +13,7 @@ export function AboutSection() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-15% 0px" }}
+          viewport={{ once: true, margin: '-15% 0px' }}
           transition={{
             duration: 1,
             ease: [0.22, 1, 0.36, 1],
@@ -21,7 +22,9 @@ export function AboutSection() {
         >
           <span className="h-px w-6 bg-foreground/40 sm:w-8" />
 
-          <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs sm:tracking-[0.25em]">02 / About</p>
+          <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs sm:tracking-[0.25em]">
+            02 / About
+          </p>
         </motion.div>
 
         <div className="grid gap-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-24">
@@ -29,7 +32,7 @@ export function AboutSection() {
             <motion.h2
               initial={{ opacity: 0, y: 35 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-15% 0px" }}
+              viewport={{ once: true, margin: '-15% 0px' }}
               transition={{
                 duration: 1.1,
                 ease: [0.22, 1, 0.36, 1],
@@ -61,7 +64,7 @@ export function AboutSection() {
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-10% 0px" }}
+            viewport={{ once: true, margin: '-10% 0px' }}
             transition={{
               duration: 1.1,
               delay: 0.15,
@@ -78,7 +81,13 @@ export function AboutSection() {
                 }}
                 className="absolute inset-0"
               >
-                <Image src={aboutImage} alt="ST Photography portrait" fill sizes="(max-width: 1024px) 100vw, 40vw" className="object-cover" />
+                <Image
+                  src={aboutImage}
+                  alt="ST Photography portrait"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  className="object-cover"
+                />
               </motion.div>
             </div>
 

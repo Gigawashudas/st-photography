@@ -16,7 +16,7 @@ interface ProjectCardProps {
 
 export function ProjectCard({ title, category, number, image, slug, priority = false, aspectClass = "aspect-[4/5]" }: ProjectCardProps) {
   return (
-    <Link href={`/projects/${slug}`} className="block">
+    <Link href={`/work/${slug}`} className="block">
       <motion.article
         initial={{ opacity: 0, y: 45 }}
         whileInView={{ opacity: 1, y: 0 }}

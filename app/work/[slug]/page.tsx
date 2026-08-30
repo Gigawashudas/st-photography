@@ -8,14 +8,6 @@ type ProjectPageProps = {
   }>;
 };
 
-export async function generateStaticParams() {
-  const projects = await getPublishedProjects();
-
-  return projects.map((project) => ({
-    slug: project.slug,
-  }));
-}
-
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug } = await params;
 

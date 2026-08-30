@@ -38,6 +38,19 @@ export async function getPublishedProjects(): Promise<Project[]> {
   return (data ?? []).map(normalizeProject);
 }
 
+export async function getFeaturedProjects(): Promise<Project[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.from("projects").select("id, slug, title, category, location, year, description, cover_image, images, featured, featured_order, published").eq("published", true).eq("featured", true).order("featured_order", { ascending: true }).order("year", { ascending: false });
+
+  if (error) {
+    console.error("Featured projects fetch error:", error);
+    return [];
+  }
+
+  return (data ?? []).map(normalizeProject);
+}
+
 export async function getPublishedProject(slug: string): Promise<Project | null> {
   const supabase = await createClient();
 

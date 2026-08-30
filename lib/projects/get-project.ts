@@ -42,14 +42,23 @@ export async function getPublishedProjects(): Promise<Project[]> {
 export async function getFeaturedProjects(): Promise<Project[]> {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.from("projects").select("id, slug, title, category, location, year, description, cover_image, youtube_url, images, featured, featured_order, published").eq("published", true).eq("featured", true).order("featured_order", { ascending: true }).order("year", { ascending: false }).limit(4);
+  const fields = "id, slug, title, category, location, year, description, cover_image, youtube_url, images, featured, featured_order, published";
 
-  if (error) {
-    console.error("Featured projects fetch error:", error);
-    return [];
+  const [photographyResult, cinematographyResult] = await Promise.all([supabase.from("projects").select(fields).eq("published", true).eq("featured", true).eq("category", "Interior Photography").order("featured_order", { ascending: true }).order("year", { ascending: false }).limit(2), supabase.from("projects").select(fields).eq("published", true).eq("featured", true).eq("category", "Interior Cinematography").order("featured_order", { ascending: true }).order("year", { ascending: false }).limit(2)]);
+
+  if (photographyResult.error) {
+    console.error("Featured photography projects fetch error:", photographyResult.error);
   }
 
-  return (data ?? []).map(normalizeProject);
+  if (cinematographyResult.error) {
+    console.error("Featured cinematography projects fetch error:", cinematographyResult.error);
+  }
+
+  const photographyProjects = (photographyResult.data ?? []).map(normalizeProject);
+
+  const cinematographyProjects = (cinematographyResult.data ?? []).map(normalizeProject);
+
+  return [...photographyProjects, ...cinematographyProjects];
 }
 
 export async function getPublishedProject(slug: string): Promise<Project | null> {

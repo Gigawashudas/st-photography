@@ -1,7 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { motion } from 'motion/react';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import {
   AlertTriangle,
@@ -15,8 +16,8 @@ import {
   Upload,
   X,
 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import Link from 'next/link';
 
 type Project = {
   id: string;
@@ -28,6 +29,7 @@ type Project = {
   description: string;
   cover_image: string | null;
   images: string[] | null;
+  youtube_url: string | null;
   featured: boolean;
   featured_order: number;
   published: boolean;
@@ -43,7 +45,6 @@ const categories = ['Interior Photography', 'Interior Cinematography'];
 
 function getStoragePath(url: string) {
   const marker = `/storage/v1/object/public/${BUCKET}/`;
-
   const index = url.indexOf(marker);
 
   if (index === -1) {
@@ -53,6 +54,25 @@ function getStoragePath(url: string) {
   return decodeURIComponent(url.slice(index + marker.length));
 }
 
+function isValidYoutubeUrl(value: string) {
+  if (!value.trim()) {
+    return false;
+  }
+
+  try {
+    const url = new URL(value.trim());
+
+    return (
+      url.hostname === 'youtube.com' ||
+      url.hostname === 'www.youtube.com' ||
+      url.hostname === 'youtu.be' ||
+      url.hostname === 'www.youtu.be'
+    );
+  } catch {
+    return false;
+  }
+}
+
 export function ProjectEditForm({ project }: ProjectEditFormProps) {
   const router = useRouter();
   const supabase = createClient();
@@ -60,9 +80,11 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
   const [title, setTitle] = useState(project.title);
   const [slug, setSlug] = useState(project.slug);
   const [category, setCategory] = useState(project.category);
-  const [location, setLocation] = useState(project.location);
-  const [year, setYear] = useState(String(project.year));
-  const [description, setDescription] = useState(project.description);
+  const [location, setLocation] = useState(project.location || '');
+  const [year, setYear] = useState(String(project.year || new Date().getFullYear()));
+  const [description, setDescription] = useState(project.description || '');
+  const [youtubeUrl, setYoutubeUrl] = useState(project.youtube_url || '');
+
   const [featured, setFeatured] = useState(project.featured);
   const [featuredOrder, setFeaturedOrder] = useState(String(project.featured_order || 0));
   const [published, setPublished] = useState(project.published);
@@ -106,6 +128,11 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
       return;
     }
 
+    if (file.size > 10 * 1024 * 1024) {
+      setError('Image must be smaller than 10MB.');
+      return;
+    }
+
     setCoverFile(file);
     setError('');
   }
@@ -113,15 +140,19 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
   function handleGalleryChange(event: ChangeEvent<HTMLInputElement>) {
     const files = Array.from(event.target.files || []);
 
-    const validFiles = files.filter((file) => file.type.startsWith('image/'));
+    const invalidFiles = files.filter(
+      (file) => !file.type.startsWith('image/') || file.size > 10 * 1024 * 1024,
+    );
 
-    if (validFiles.length !== files.length) {
-      setError('Only image files can be added to the gallery.');
+    if (invalidFiles.length > 0) {
+      setError('Gallery images must be image files under 10MB.');
+      event.target.value = '';
       return;
     }
 
-    setGalleryFiles((current) => [...current, ...validFiles]);
+    setGalleryFiles((current) => [...current, ...files]);
     setError('');
+    event.target.value = '';
   }
 
   function removeGalleryImage(image: string) {
@@ -141,11 +172,12 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
 
   async function uploadFile(file: File, folder: string) {
     const extension = file.name.split('.').pop()?.toLowerCase() || 'jpg';
+
     const filename = `${crypto.randomUUID()}.${extension}`;
     const path = `${slug}/${folder}/${filename}`;
 
     const { error: uploadError } = await supabase.storage.from(BUCKET).upload(path, file, {
-      cacheControl: '3600',
+      cacheControl: '31536000',
       upsert: false,
       contentType: file.type,
     });
@@ -195,9 +227,19 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
         throw new Error('Please enter a project description.');
       }
 
+      if (category === 'Interior Cinematography' && !youtubeUrl.trim()) {
+        throw new Error('Please enter the YouTube URL for this cinematography project.');
+      }
+
+      if (youtubeUrl.trim() && !isValidYoutubeUrl(youtubeUrl)) {
+        throw new Error('Please enter a valid YouTube URL.');
+      }
+
       let nextCoverImage = coverImage;
 
       if (coverFile) {
+        setMessage('Uploading new thumbnail...');
+
         const uploadedCover = await uploadFile(coverFile, 'cover');
 
         if (coverImage) {
@@ -209,12 +251,17 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
 
       const uploadedGalleryImages: string[] = [];
 
-      for (const file of galleryFiles) {
-        const uploadedImage = await uploadFile(file, 'gallery');
+      for (let index = 0; index < galleryFiles.length; index += 1) {
+        setMessage(`Uploading gallery image ${index + 1} of ${galleryFiles.length}...`);
+
+        const uploadedImage = await uploadFile(galleryFiles[index], 'gallery');
+
         uploadedGalleryImages.push(uploadedImage);
       }
 
       const nextGalleryImages = [...galleryImages, ...uploadedGalleryImages];
+
+      setMessage('Saving project...');
 
       const { error: databaseError } = await supabase
         .from('projects')
@@ -227,6 +274,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
           description: description.trim(),
           cover_image: nextCoverImage,
           images: nextGalleryImages,
+          youtube_url: category === 'Interior Cinematography' ? youtubeUrl.trim() : null,
           featured,
           featured_order: featured ? Number(featuredOrder) || 0 : 0,
           published,
@@ -241,6 +289,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
       setGalleryImages(nextGalleryImages);
       setCoverFile(null);
       setGalleryFiles([]);
+
       setMessage('Project updated successfully.');
 
       router.refresh();
@@ -299,56 +348,58 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
     }
   }
 
+  const isCinematography = category === 'Interior Cinematography';
+
   return (
     <form onSubmit={handleSubmit}>
       <div className="grid gap-16 lg:grid-cols-[1fr_360px] lg:gap-24">
         <div className="space-y-12">
           <section className="space-y-8">
             <div>
-              <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
+              <p className="text-muted mb-3 text-[10px] font-medium tracking-[0.2em] uppercase">
                 Project information
               </p>
 
-              <div className="h-px w-full bg-foreground/10" />
+              <div className="bg-foreground/10 h-px w-full" />
             </div>
 
             <div className="space-y-7">
               <label className="block">
-                <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted">
+                <span className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase">
                   Title
                 </span>
 
                 <input
                   value={title}
                   onChange={(event) => handleTitleChange(event.target.value)}
-                  className="w-full border-b border-foreground/20 bg-transparent py-3 font-serif text-3xl tracking-[-0.02em] outline-none transition-colors placeholder:text-muted focus:border-foreground"
+                  className="border-foreground/20 placeholder:text-muted focus:border-foreground w-full border-b bg-transparent py-3 font-serif text-3xl tracking-[-0.02em] transition-colors outline-none"
                   placeholder="Project title"
                 />
               </label>
 
               <label className="block">
-                <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted">
+                <span className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase">
                   Slug
                 </span>
 
                 <input
                   value={slug}
                   onChange={(event) => setSlug(createSlug(event.target.value))}
-                  className="w-full border-b border-foreground/20 bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-muted focus:border-foreground"
+                  className="border-foreground/20 placeholder:text-muted focus:border-foreground w-full border-b bg-transparent py-3 text-sm transition-colors outline-none"
                   placeholder="project-slug"
                 />
               </label>
 
               <div className="grid gap-7 sm:grid-cols-2">
                 <label className="block">
-                  <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted">
+                  <span className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase">
                     Category
                   </span>
 
                   <select
                     value={category}
                     onChange={(event) => setCategory(event.target.value)}
-                    className="w-full border-b border-foreground/20 bg-background py-3 text-sm outline-none focus:border-foreground"
+                    className="border-foreground/20 bg-background focus:border-foreground w-full border-b py-3 text-sm outline-none"
                   >
                     {categories.map((item) => (
                       <option key={item} value={item}>
@@ -359,34 +410,56 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                 </label>
 
                 <label className="block">
-                  <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted">
+                  <span className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase">
                     Year
                   </span>
 
                   <input
                     type="number"
+                    min="1900"
+                    max="2100"
                     value={year}
                     onChange={(event) => setYear(event.target.value)}
-                    className="w-full border-b border-foreground/20 bg-transparent py-3 text-sm outline-none focus:border-foreground"
+                    className="border-foreground/20 focus:border-foreground w-full border-b bg-transparent py-3 text-sm outline-none"
                   />
                 </label>
               </div>
 
               <label className="block">
-                <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted">
+                <span className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase">
                   Location
                 </span>
 
                 <input
                   value={location}
                   onChange={(event) => setLocation(event.target.value)}
-                  className="w-full border-b border-foreground/20 bg-transparent py-3 text-sm outline-none placeholder:text-muted focus:border-foreground"
+                  className="border-foreground/20 placeholder:text-muted focus:border-foreground w-full border-b bg-transparent py-3 text-sm outline-none"
                   placeholder="Dhaka"
                 />
               </label>
 
+              {isCinematography && (
+                <label className="block">
+                  <span className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase">
+                    YouTube URL
+                  </span>
+
+                  <input
+                    type="url"
+                    value={youtubeUrl}
+                    onChange={(event) => setYoutubeUrl(event.target.value)}
+                    className="border-foreground/20 placeholder:text-muted focus:border-foreground w-full border-b bg-transparent py-3 text-sm outline-none"
+                    placeholder="https://www.youtube.com/watch?v=..."
+                  />
+
+                  <p className="text-muted mt-3 text-[10px] leading-5">
+                    The finished cinematography video is hosted on YouTube.
+                  </p>
+                </label>
+              )}
+
               <label className="block">
-                <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted">
+                <span className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase">
                   Description
                 </span>
 
@@ -394,7 +467,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
                   rows={6}
-                  className="w-full resize-none border border-foreground/15 bg-transparent p-4 text-sm leading-7 outline-none transition-colors placeholder:text-muted focus:border-foreground/40"
+                  className="border-foreground/15 placeholder:text-muted focus:border-foreground/40 w-full resize-none border bg-transparent p-4 text-sm leading-7 transition-colors outline-none"
                   placeholder="Describe the project..."
                 />
               </label>
@@ -403,21 +476,20 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
 
           <section className="space-y-8">
             <div>
-              <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
-                Cover image
+              <p className="text-muted mb-3 text-[10px] font-medium tracking-[0.2em] uppercase">
+                {isCinematography ? 'Video thumbnail' : 'Cover image'}
               </p>
 
-              <div className="h-px w-full bg-foreground/10" />
+              <div className="bg-foreground/10 h-px w-full" />
             </div>
 
             {coverImage || coverFile ? (
-              <div className="relative aspect-[16/9] overflow-hidden bg-subtle">
+              <div className="bg-subtle relative aspect-[16/9] overflow-hidden">
                 {coverFile ? (
-                  <Image
+                  <img
                     src={URL.createObjectURL(coverFile)}
-                    alt="New cover preview"
-                    fill
-                    className="object-cover"
+                    alt="New thumbnail preview"
+                    className="h-full w-full object-cover"
                   />
                 ) : coverImage ? (
                   <Image
@@ -429,12 +501,12 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   />
                 ) : null}
 
-                <label className="absolute bottom-4 left-4 flex cursor-pointer items-center gap-2 bg-background px-4 py-3 text-[9px] font-medium uppercase tracking-[0.16em]">
+                <label className="bg-background absolute bottom-4 left-4 flex cursor-pointer items-center gap-2 px-4 py-3 text-[9px] font-medium tracking-[0.16em] uppercase">
                   <Upload size={13} strokeWidth={1.4} />
                   Replace
                   <input
                     type="file"
-                    accept="image/*"
+                    accept="image/jpeg,image/png,image/webp"
                     className="hidden"
                     onChange={handleCoverChange}
                   />
@@ -444,24 +516,24 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   <button
                     type="button"
                     onClick={() => setCoverFile(null)}
-                    className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center bg-background transition-opacity hover:opacity-60"
-                    aria-label="Remove new cover"
+                    className="bg-background absolute top-4 right-4 flex h-9 w-9 items-center justify-center transition-opacity hover:opacity-60"
+                    aria-label="Remove new thumbnail"
                   >
                     <X size={14} strokeWidth={1.4} />
                   </button>
                 )}
               </div>
             ) : (
-              <label className="flex aspect-[16/9] cursor-pointer flex-col items-center justify-center border border-dashed border-foreground/20 bg-subtle transition-colors hover:border-foreground/40">
+              <label className="border-foreground/20 bg-subtle hover:border-foreground/40 flex aspect-[16/9] cursor-pointer flex-col items-center justify-center border border-dashed transition-colors">
                 <ImagePlus size={24} strokeWidth={1.2} />
 
-                <span className="mt-4 text-[9px] font-medium uppercase tracking-[0.18em]">
-                  Upload cover image
+                <span className="mt-4 text-[9px] font-medium tracking-[0.18em] uppercase">
+                  Upload {isCinematography ? 'video thumbnail' : 'cover image'}
                 </span>
 
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/jpeg,image/png,image/webp"
                   className="hidden"
                   onChange={handleCoverChange}
                 />
@@ -469,102 +541,108 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
             )}
           </section>
 
-          <section className="space-y-8">
-            <div>
-              <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
-                Gallery
-              </p>
+          {!isCinematography && (
+            <section className="space-y-8">
+              <div>
+                <p className="text-muted mb-3 text-[10px] font-medium tracking-[0.2em] uppercase">
+                  Gallery
+                </p>
 
-              <div className="h-px w-full bg-foreground/10" />
-            </div>
-
-            {galleryImages.length > 0 && (
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-                {galleryImages.map((image) => (
-                  <div
-                    key={image}
-                    className="group relative aspect-[4/5] overflow-hidden bg-subtle"
-                  >
-                    <Image
-                      src={image}
-                      alt={title}
-                      fill
-                      sizes="(max-width: 640px) 50vw, 33vw"
-                      className="object-cover"
-                    />
-
-                    <button
-                      type="button"
-                      onClick={() => removeGalleryImage(image)}
-                      className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center bg-background opacity-0 transition-opacity group-hover:opacity-100"
-                      aria-label="Remove gallery image"
-                    >
-                      <X size={13} strokeWidth={1.4} />
-                    </button>
-                  </div>
-                ))}
+                <div className="bg-foreground/10 h-px w-full" />
               </div>
-            )}
 
-            {galleryFiles.length > 0 && (
-              <div className="space-y-2">
-                {galleryFiles.map((file) => (
-                  <div
-                    key={`${file.name}-${file.lastModified}`}
-                    className="flex items-center justify-between border border-foreground/10 px-4 py-3"
-                  >
-                    <span className="truncate text-xs">{file.name}</span>
-
-                    <button
-                      type="button"
-                      onClick={() => removeNewGalleryFile(file)}
-                      className="ml-4 shrink-0 text-muted transition-colors hover:text-foreground"
-                      aria-label={`Remove ${file.name}`}
+              {galleryImages.length > 0 && (
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {galleryImages.map((image) => (
+                    <div
+                      key={image}
+                      className="group bg-subtle relative aspect-[4/5] overflow-hidden"
                     >
-                      <X size={14} strokeWidth={1.4} />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+                      <Image
+                        src={image}
+                        alt={title}
+                        fill
+                        sizes="(max-width: 640px) 50vw, 33vw"
+                        className="object-cover"
+                      />
 
-            <label className="flex cursor-pointer items-center justify-center gap-3 border border-dashed border-foreground/20 px-6 py-8 text-[9px] font-medium uppercase tracking-[0.18em] transition-colors hover:border-foreground/40">
-              <ImagePlus size={16} strokeWidth={1.3} />
-              Add gallery images
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                className="hidden"
-                onChange={handleGalleryChange}
-              />
-            </label>
-          </section>
+                      <button
+                        type="button"
+                        onClick={() => removeGalleryImage(image)}
+                        className="bg-background absolute top-3 right-3 flex h-8 w-8 items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
+                        aria-label="Remove gallery image"
+                      >
+                        <X size={13} strokeWidth={1.4} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {galleryFiles.length > 0 && (
+                <div className="space-y-2">
+                  {galleryFiles.map((file) => (
+                    <div
+                      key={`${file.name}-${file.lastModified}`}
+                      className="border-foreground/10 flex items-center justify-between border px-4 py-3"
+                    >
+                      <span className="truncate text-xs">{file.name}</span>
+
+                      <button
+                        type="button"
+                        onClick={() => removeNewGalleryFile(file)}
+                        className="text-muted hover:text-foreground ml-4 shrink-0 transition-colors"
+                        aria-label={`Remove ${file.name}`}
+                      >
+                        <X size={14} strokeWidth={1.4} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <label className="border-foreground/20 hover:border-foreground/40 flex cursor-pointer items-center justify-center gap-3 border border-dashed px-6 py-8 text-[9px] font-medium tracking-[0.18em] uppercase transition-colors">
+                <ImagePlus size={16} strokeWidth={1.3} />
+                Add gallery images
+                <input
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp"
+                  multiple
+                  className="hidden"
+                  onChange={handleGalleryChange}
+                />
+              </label>
+            </section>
+          )}
         </div>
 
         <aside className="space-y-10 lg:sticky lg:top-10 lg:self-start">
-          <section className="border border-foreground/10 p-6">
-            <p className="mb-6 text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
+          <section className="border-foreground/10 border p-6">
+            <p className="text-muted mb-6 text-[10px] font-medium tracking-[0.2em] uppercase">
               Visibility
             </p>
 
             <button
               type="button"
               onClick={() => setPublished((current) => !current)}
-              className="flex w-full items-center justify-between border-b border-foreground/10 py-4 text-left"
+              className="border-foreground/10 flex w-full items-center justify-between border-b py-4 text-left"
             >
               <div>
                 <p className="text-sm">Published</p>
-                <p className="mt-1 text-[10px] text-muted">
+                <p className="text-muted mt-1 text-[10px]">
                   {published ? 'Visible on the website' : 'Saved as draft'}
                 </p>
               </div>
 
               <span
-                className={`h-5 w-9 rounded-full p-1 transition-colors ${published ? 'bg-foreground' : 'bg-foreground/15'}`}
+                className={`h-5 w-9 rounded-full p-1 transition-colors ${
+                  published ? 'bg-foreground' : 'bg-foreground/15'
+                }`}
               >
                 <span
-                  className={`block h-3 w-3 rounded-full transition-transform ${published ? 'translate-x-4 bg-background' : 'translate-x-0 bg-foreground/50'}`}
+                  className={`block h-3 w-3 rounded-full transition-transform ${
+                    published ? 'bg-background translate-x-4' : 'bg-foreground/50 translate-x-0'
+                  }`}
                 />
               </span>
             </button>
@@ -580,21 +658,25 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   Featured
                 </p>
 
-                <p className="mt-1 text-[10px] text-muted">Show this project in featured work</p>
+                <p className="text-muted mt-1 text-[10px]">Show this project in Featured Work</p>
               </div>
 
               <span
-                className={`h-5 w-9 rounded-full p-1 transition-colors ${featured ? 'bg-foreground' : 'bg-foreground/15'}`}
+                className={`h-5 w-9 rounded-full p-1 transition-colors ${
+                  featured ? 'bg-foreground' : 'bg-foreground/15'
+                }`}
               >
                 <span
-                  className={`block h-3 w-3 rounded-full transition-transform ${featured ? 'translate-x-4 bg-background' : 'translate-x-0 bg-foreground/50'}`}
+                  className={`block h-3 w-3 rounded-full transition-transform ${
+                    featured ? 'bg-background translate-x-4' : 'bg-foreground/50 translate-x-0'
+                  }`}
                 />
               </span>
             </button>
 
             {featured && (
-              <label className="mt-5 block border-t border-foreground/10 pt-5">
-                <span className="mb-3 block text-[9px] font-medium uppercase tracking-[0.18em] text-muted">
+              <label className="border-foreground/10 mt-5 block border-t pt-5">
+                <span className="text-muted mb-3 block text-[9px] font-medium tracking-[0.18em] uppercase">
                   Featured order
                 </span>
 
@@ -603,39 +685,41 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   min="0"
                   value={featuredOrder}
                   onChange={(event) => setFeaturedOrder(event.target.value)}
-                  className="w-full border border-foreground/15 bg-transparent px-3 py-3 text-sm outline-none focus:border-foreground/40"
+                  className="border-foreground/15 focus:border-foreground/40 w-full border bg-transparent px-3 py-3 text-sm outline-none"
                 />
               </label>
             )}
           </section>
 
           {error && (
-            <div className="flex gap-3 border border-foreground/20 p-4 text-sm leading-6">
+            <div className="border-foreground/20 flex gap-3 border p-4 text-sm leading-6">
               <AlertTriangle size={16} strokeWidth={1.3} className="mt-1 shrink-0" />
 
               <p>{error}</p>
             </div>
           )}
 
-          {message && (
-            <div className="flex gap-3 border border-foreground/20 p-4 text-sm leading-6">
+          {message && !error && (
+            <div className="border-foreground/20 flex gap-3 border p-4 text-sm leading-6">
               <Check size={16} strokeWidth={1.3} className="mt-1 shrink-0" />
 
               <p>{message}</p>
             </div>
           )}
+
           <Link
             href={`/admin/projects/${project.id}/preview`}
             target="_blank"
-            className="flex w-full items-center justify-center gap-3 border border-foreground/20 px-6 py-4 text-[10px] font-medium uppercase tracking-[0.2em] transition-all duration-300 hover:border-foreground hover:bg-foreground hover:text-background"
+            className="border-foreground/20 hover:border-foreground hover:bg-foreground hover:text-background flex w-full items-center justify-center gap-3 border px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-all duration-300"
           >
             <Eye size={14} strokeWidth={1.4} />
             Preview
           </Link>
+
           <button
             type="submit"
             disabled={isSaving || isDeleting}
-            className="flex w-full items-center justify-center gap-3 bg-foreground px-6 py-4 text-[10px] font-medium uppercase tracking-[0.2em] text-background transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
+            className="bg-foreground text-background flex w-full items-center justify-center gap-3 px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {isSaving ? (
               <>
@@ -650,12 +734,12 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
             )}
           </button>
 
-          <div className="border-t border-foreground/10 pt-8">
+          <div className="border-foreground/10 border-t pt-8">
             <button
               type="button"
               onClick={handleDelete}
               disabled={isSaving || isDeleting}
-              className="flex w-full items-center justify-center gap-3 border border-foreground/15 px-6 py-4 text-[10px] font-medium uppercase tracking-[0.2em] text-muted transition-colors hover:border-foreground hover:text-foreground disabled:cursor-not-allowed disabled:opacity-40"
+              className="border-foreground/15 text-muted hover:border-foreground hover:text-foreground flex w-full items-center justify-center gap-3 border px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             >
               {isDeleting ? (
                 <>

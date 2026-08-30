@@ -12,7 +12,7 @@ export type Project = {
   description: string;
   cover_image: string | null;
   youtube_url: string | null;
-  images: string[] | null;
+  images: string[];
   featured: boolean;
   featured_order: number;
   published: boolean;
@@ -63,6 +63,7 @@ export async function getFeaturedProjects(): Promise<Project[]> {
       .order('featured_order', { ascending: true })
       .order('year', { ascending: false })
       .limit(2),
+
     supabase
       .from('projects')
       .select(fields)
@@ -83,7 +84,6 @@ export async function getFeaturedProjects(): Promise<Project[]> {
   }
 
   const photographyProjects = (photographyResult.data ?? []).map(normalizeProject);
-
   const cinematographyProjects = (cinematographyResult.data ?? []).map(normalizeProject);
 
   return [...photographyProjects, ...cinematographyProjects];

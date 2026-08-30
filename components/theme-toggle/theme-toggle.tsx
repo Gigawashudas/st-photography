@@ -1,49 +1,48 @@
 'use client';
-
 import { useEffect, useState } from 'react';
 import { Moon, Sun } from 'lucide-react';
-
+const THEME_KEY = 'st-theme';
+function getStoredTheme(): 'dark' | 'light' {
+  if (typeof window === 'undefined') {
+    return 'dark';
+  }
+  const savedTheme = window.localStorage.getItem(THEME_KEY);
+  if (savedTheme === 'light') {
+    return 'light';
+  }
+  return 'dark';
+}
+function applyTheme(theme: 'dark' | 'light') {
+  const root = document.documentElement;
+  root.classList.toggle('dark', theme === 'dark');
+  root.style.colorScheme = theme;
+}
 export function ThemeToggle() {
-  const [isDark, setIsDark] = useState(() => {
-    if (typeof window === 'undefined') return true;
-    const savedTheme = localStorage.getItem('st-theme');
-    if (savedTheme === 'light') return false;
-    if (savedTheme === 'dark') return true;
-    return true;
-  });
-
+  const [theme, setTheme] = useState<'dark' | 'light'>(getStoredTheme);
   useEffect(() => {
-    if (isDark) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isDark]);
-
+    const storedTheme = getStoredTheme();
+    setTheme(storedTheme);
+    applyTheme(storedTheme);
+  }, []);
   function toggleTheme() {
-    setIsDark((current) => {
-      const next = !current;
-
-      if (next) {
-        document.documentElement.classList.add('dark');
-        localStorage.setItem('st-theme', 'dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-        localStorage.setItem('st-theme', 'light');
-      }
-
-      return next;
+    setTheme((currentTheme) => {
+      const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      window.localStorage.setItem(THEME_KEY, nextTheme);
+      applyTheme(nextTheme);
+      return nextTheme;
     });
   }
-
+  const isDark = theme === 'dark';
   return (
     <button
       type="button"
       onClick={toggleTheme}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-      className="flex h-7 w-7 items-center justify-center rounded-full border border-foreground/20 transition-all duration-300 hover:scale-110 hover:border-foreground/50"
+      aria-pressed={isDark}
+      className="border-foreground/20 hover:border-foreground/50 flex h-8 w-8 items-center justify-center rounded-full border transition-all duration-300 hover:scale-110"
     >
-      {isDark ? <Sun size={12} strokeWidth={1.5} /> : <Moon size={12} strokeWidth={1.5} />}
+      {' '}
+      {isDark ? <Sun size={13} strokeWidth={1.5} /> : <Moon size={13} strokeWidth={1.5} />}{' '}
     </button>
   );
 }

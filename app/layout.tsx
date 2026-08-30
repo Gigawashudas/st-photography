@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Geist, Instrument_Serif } from 'next/font/google';
 import './globals.css';
-import { Navbar } from '@/components/navigation/navbar';
 
 const geist = Geist({
   variable: '--font-geist',
@@ -19,17 +18,41 @@ export const metadata: Metadata = {
   description: 'Photography & Cinematography',
 };
 
+const themeScript = `
+(function () {
+  try {
+    var theme = localStorage.getItem('st-theme');
+    var root = document.documentElement;
+
+    if (theme === 'light') {
+      root.classList.remove('dark');
+      root.style.colorScheme = 'light';
+    } else {
+      root.classList.add('dark');
+      root.style.colorScheme = 'dark';
+    }
+  } catch (error) {
+    document.documentElement.classList.add('dark');
+  }
+})();
+`;
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${instrumentSerif.variable}`}>
-      <body>
-        <Navbar />
-        {children}
-      </body>
+    <html
+      lang="en"
+      className={`${geist.variable} ${instrumentSerif.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+
+      <body>{children}</body>
     </html>
   );
 }

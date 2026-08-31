@@ -54,9 +54,9 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background text-foreground transition-colors duration-500">
+    <main className="bg-background text-foreground min-h-screen transition-colors duration-500">
       <div className="mx-auto flex min-h-screen max-w-360 flex-col px-6 py-8 sm:px-8 sm:py-10 lg:px-10 lg:py-12">
-        <header className="flex items-center justify-between border-b border-foreground/10 pb-8">
+        <header className="border-foreground/10 flex items-center justify-between border-b pb-8">
           <Link
             href="/"
             className="text-sm font-medium tracking-[0.18em] transition-opacity hover:opacity-50"
@@ -68,7 +68,7 @@ export default function AdminLoginPage() {
             type="button"
             onClick={toggleTheme}
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-foreground/20 transition-all duration-300 hover:scale-105 hover:border-foreground/50"
+            className="border-foreground/20 hover:border-foreground/50 flex h-9 w-9 items-center justify-center rounded-full border transition-all duration-300 hover:scale-105"
           >
             {isDark ? <Sun size={15} strokeWidth={1.4} /> : <Moon size={15} strokeWidth={1.4} />}
           </button>
@@ -78,9 +78,9 @@ export default function AdminLoginPage() {
           <div className="w-full max-w-md">
             <div className="mb-10">
               <div className="mb-7 flex items-center gap-4">
-                <span className="h-px w-8 bg-foreground/40" />
+                <span className="bg-foreground/40 h-px w-8" />
 
-                <p className="text-[10px] font-medium uppercase tracking-[0.25em] text-muted">
+                <p className="text-muted text-[10px] font-medium tracking-[0.25em] uppercase">
                   Studio Access
                 </p>
               </div>
@@ -89,14 +89,14 @@ export default function AdminLoginPage() {
                 Welcome.
               </h1>
 
-              <p className="mt-5 text-sm leading-7 text-secondary">
+              <p className="text-secondary mt-5 text-sm leading-7">
                 Sign in to manage your ST Photography portfolio.
               </p>
             </div>
 
             <form onSubmit={handleSubmit} className="space-y-7">
               <label className="block">
-                <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted">
+                <span className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase">
                   Email
                 </span>
 
@@ -105,14 +105,15 @@ export default function AdminLoginPage() {
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   autoComplete="email"
+                  inputMode="email"
                   required
-                  className="w-full border-b border-foreground/20 bg-transparent px-0 py-3 text-sm outline-none transition-colors placeholder:text-muted focus:border-foreground"
+                  className="border-foreground/20 text-foreground placeholder:text-secondary focus:border-foreground w-full border-b bg-transparent px-0 py-3.5 text-base leading-7 transition-colors outline-none"
                   placeholder="you@example.com"
                 />
               </label>
 
               <label className="block">
-                <span className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted">
+                <span className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase">
                   Password
                 </span>
 
@@ -122,13 +123,13 @@ export default function AdminLoginPage() {
                   onChange={(event) => setPassword(event.target.value)}
                   autoComplete="current-password"
                   required
-                  className="w-full border-b border-foreground/20 bg-transparent px-0 py-3 text-sm outline-none transition-colors placeholder:text-muted focus:border-foreground"
+                  className="border-foreground/20 text-foreground placeholder:text-secondary focus:border-foreground w-full border-b bg-transparent px-0 py-3.5 text-base leading-7 transition-colors outline-none"
                   placeholder="••••••••"
                 />
               </label>
 
               {error && (
-                <div className="border border-foreground/15 px-4 py-3 text-xs leading-6 text-secondary">
+                <div className="border-foreground/15 text-secondary border px-4 py-3 text-sm leading-6">
                   {error}
                 </div>
               )}
@@ -136,7 +137,7 @@ export default function AdminLoginPage() {
               <button
                 type="submit"
                 disabled={isLoading}
-                className="flex w-full items-center justify-center gap-3 bg-foreground px-6 py-4 text-[10px] font-medium uppercase tracking-[0.2em] text-background transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
+                className="bg-foreground text-background flex min-h-12 w-full items-center justify-center gap-3 px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40 sm:min-h-13"
               >
                 {isLoading ? (
                   <>
@@ -152,7 +153,7 @@ export default function AdminLoginPage() {
               </button>
             </form>
 
-            <p className="mt-10 text-center text-[9px] uppercase tracking-[0.18em] text-muted">
+            <p className="text-muted mt-10 text-center text-[10px] tracking-[0.18em] uppercase">
               ST Photography · Admin
             </p>
           </div>

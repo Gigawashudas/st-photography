@@ -372,7 +372,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                 <input
                   value={title}
                   onChange={(event) => handleTitleChange(event.target.value)}
-                  className="border-foreground/20 placeholder:text-muted focus:border-foreground w-full border-b bg-transparent py-3 font-serif text-3xl tracking-[-0.02em] transition-colors outline-none"
+                  className="border-foreground/20 placeholder:text-muted/60 focus:border-foreground w-full border-b bg-transparent py-4 font-serif text-2xl leading-tight tracking-[-0.02em] transition-colors outline-none sm:text-3xl lg:text-4xl"
                   placeholder="Project title"
                 />
               </label>
@@ -385,7 +385,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                 <input
                   value={slug}
                   onChange={(event) => setSlug(createSlug(event.target.value))}
-                  className="border-foreground/20 placeholder:text-muted focus:border-foreground w-full border-b bg-transparent py-3 text-sm transition-colors outline-none"
+                  className="border-foreground/20 placeholder:text-muted/60 focus:border-foreground min-h-12 w-full border-b bg-transparent py-3 text-base leading-7 transition-colors outline-none sm:min-h-14 sm:text-lg sm:leading-8"
                   placeholder="project-slug"
                 />
               </label>
@@ -399,10 +399,10 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   <select
                     value={category}
                     onChange={(event) => setCategory(event.target.value)}
-                    className="border-foreground/20 bg-background focus:border-foreground w-full border-b py-3 text-sm outline-none"
+                    className="border-foreground/20 bg-background text-foreground focus:border-foreground min-h-12 w-full border-b py-3 text-base leading-7 transition-colors outline-none sm:min-h-14 sm:text-lg sm:leading-8"
                   >
                     {categories.map((item) => (
-                      <option key={item} value={item}>
+                      <option key={item} value={item} className="bg-background text-foreground">
                         {item}
                       </option>
                     ))}
@@ -420,7 +420,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                     max="2100"
                     value={year}
                     onChange={(event) => setYear(event.target.value)}
-                    className="border-foreground/20 focus:border-foreground w-full border-b bg-transparent py-3 text-sm outline-none"
+                    className="border-foreground/20 focus:border-foreground min-h-12 w-full border-b bg-transparent py-3 text-base leading-7 transition-colors outline-none sm:min-h-14 sm:text-lg sm:leading-8"
                   />
                 </label>
               </div>
@@ -433,7 +433,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                 <input
                   value={location}
                   onChange={(event) => setLocation(event.target.value)}
-                  className="border-foreground/20 placeholder:text-muted focus:border-foreground w-full border-b bg-transparent py-3 text-sm outline-none"
+                  className="border-foreground/20 placeholder:text-muted/60 focus:border-foreground min-h-12 w-full border-b bg-transparent py-3 text-base leading-7 transition-colors outline-none sm:min-h-14 sm:text-lg sm:leading-8"
                   placeholder="Dhaka"
                 />
               </label>
@@ -448,11 +448,11 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                     type="url"
                     value={youtubeUrl}
                     onChange={(event) => setYoutubeUrl(event.target.value)}
-                    className="border-foreground/20 placeholder:text-muted focus:border-foreground w-full border-b bg-transparent py-3 text-sm outline-none"
+                    className="border-foreground/20 placeholder:text-muted/60 focus:border-foreground min-h-12 w-full border-b bg-transparent py-3 text-base leading-7 transition-colors outline-none sm:min-h-14 sm:text-lg sm:leading-8"
                     placeholder="https://www.youtube.com/watch?v=..."
                   />
 
-                  <p className="text-muted mt-3 text-[10px] leading-5">
+                  <p className="text-muted mt-3 text-xs leading-6 sm:text-sm sm:leading-7">
                     The finished cinematography video is hosted on YouTube.
                   </p>
                 </label>
@@ -467,7 +467,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   value={description}
                   onChange={(event) => setDescription(event.target.value)}
                   rows={6}
-                  className="border-foreground/15 placeholder:text-muted focus:border-foreground/40 w-full resize-none border bg-transparent p-4 text-sm leading-7 transition-colors outline-none"
+                  className="border-foreground/15 placeholder:text-muted/60 focus:border-foreground/40 min-h-[180px] w-full resize-none border bg-transparent p-4 text-base leading-7 transition-colors outline-none sm:min-h-[200px] sm:text-lg sm:leading-8"
                   placeholder="Describe the project..."
                 />
               </label>
@@ -501,7 +501,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   />
                 ) : null}
 
-                <label className="bg-background absolute bottom-4 left-4 flex cursor-pointer items-center gap-2 px-4 py-3 text-[9px] font-medium tracking-[0.16em] uppercase">
+                <label className="bg-background absolute bottom-4 left-4 flex min-h-11 cursor-pointer items-center gap-2 px-4 py-3 text-[10px] font-medium tracking-[0.16em] uppercase">
                   <Upload size={13} strokeWidth={1.4} />
                   Replace
                   <input
@@ -516,7 +516,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   <button
                     type="button"
                     onClick={() => setCoverFile(null)}
-                    className="bg-background absolute top-4 right-4 flex h-9 w-9 items-center justify-center transition-opacity hover:opacity-60"
+                    className="bg-background absolute top-4 right-4 flex h-10 w-10 items-center justify-center transition-opacity hover:opacity-60"
                     aria-label="Remove new thumbnail"
                   >
                     <X size={14} strokeWidth={1.4} />
@@ -527,7 +527,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
               <label className="border-foreground/20 bg-subtle hover:border-foreground/40 flex aspect-[16/9] cursor-pointer flex-col items-center justify-center border border-dashed transition-colors">
                 <ImagePlus size={24} strokeWidth={1.2} />
 
-                <span className="mt-4 text-[9px] font-medium tracking-[0.18em] uppercase">
+                <span className="mt-4 text-[10px] font-medium tracking-[0.18em] uppercase">
                   Upload {isCinematography ? 'video thumbnail' : 'cover image'}
                 </span>
 
@@ -569,7 +569,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                       <button
                         type="button"
                         onClick={() => removeGalleryImage(image)}
-                        className="bg-background absolute top-3 right-3 flex h-8 w-8 items-center justify-center opacity-0 transition-opacity group-hover:opacity-100"
+                        className="bg-background absolute top-3 right-3 flex h-9 w-9 items-center justify-center opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100"
                         aria-label="Remove gallery image"
                       >
                         <X size={13} strokeWidth={1.4} />
@@ -584,9 +584,9 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   {galleryFiles.map((file) => (
                     <div
                       key={`${file.name}-${file.lastModified}`}
-                      className="border-foreground/10 flex items-center justify-between border px-4 py-3"
+                      className="border-foreground/10 flex min-h-12 items-center justify-between border px-4 py-3"
                     >
-                      <span className="truncate text-xs">{file.name}</span>
+                      <span className="truncate text-sm leading-6 sm:text-base">{file.name}</span>
 
                       <button
                         type="button"
@@ -594,14 +594,14 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                         className="text-muted hover:text-foreground ml-4 shrink-0 transition-colors"
                         aria-label={`Remove ${file.name}`}
                       >
-                        <X size={14} strokeWidth={1.4} />
+                        <X size={15} strokeWidth={1.4} />
                       </button>
                     </div>
                   ))}
                 </div>
               )}
 
-              <label className="border-foreground/20 hover:border-foreground/40 flex cursor-pointer items-center justify-center gap-3 border border-dashed px-6 py-8 text-[9px] font-medium tracking-[0.18em] uppercase transition-colors">
+              <label className="border-foreground/20 hover:border-foreground/40 flex min-h-14 cursor-pointer items-center justify-center gap-3 border border-dashed px-6 py-4 text-[10px] font-medium tracking-[0.18em] uppercase transition-colors">
                 <ImagePlus size={16} strokeWidth={1.3} />
                 Add gallery images
                 <input
@@ -625,11 +625,12 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
             <button
               type="button"
               onClick={() => setPublished((current) => !current)}
-              className="border-foreground/10 flex w-full items-center justify-between border-b py-4 text-left"
+              className="border-foreground/10 flex min-h-16 w-full items-center justify-between border-b py-4 text-left"
             >
               <div>
-                <p className="text-sm">Published</p>
-                <p className="text-muted mt-1 text-[10px]">
+                <p className="text-base">Published</p>
+
+                <p className="text-muted mt-1 text-xs leading-5">
                   {published ? 'Visible on the website' : 'Saved as draft'}
                 </p>
               </div>
@@ -650,15 +651,17 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
             <button
               type="button"
               onClick={() => setFeatured((current) => !current)}
-              className="flex w-full items-center justify-between py-4 text-left"
+              className="flex min-h-16 w-full items-center justify-between py-4 text-left"
             >
               <div>
-                <p className="flex items-center gap-2 text-sm">
+                <p className="flex items-center gap-2 text-base">
                   <Star size={14} strokeWidth={1.3} />
                   Featured
                 </p>
 
-                <p className="text-muted mt-1 text-[10px]">Show this project in Featured Work</p>
+                <p className="text-muted mt-1 text-xs leading-5">
+                  Show this project in Featured Work
+                </p>
               </div>
 
               <span
@@ -676,7 +679,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
 
             {featured && (
               <label className="border-foreground/10 mt-5 block border-t pt-5">
-                <span className="text-muted mb-3 block text-[9px] font-medium tracking-[0.18em] uppercase">
+                <span className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase">
                   Featured order
                 </span>
 
@@ -685,7 +688,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
                   min="0"
                   value={featuredOrder}
                   onChange={(event) => setFeaturedOrder(event.target.value)}
-                  className="border-foreground/15 focus:border-foreground/40 w-full border bg-transparent px-3 py-3 text-sm outline-none"
+                  className="border-foreground/15 focus:border-foreground/40 min-h-12 w-full border bg-transparent px-3 py-3 text-base leading-7 outline-none sm:min-h-14 sm:text-lg"
                 />
               </label>
             )}
@@ -710,7 +713,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
           <Link
             href={`/admin/projects/${project.id}/preview`}
             target="_blank"
-            className="border-foreground/20 hover:border-foreground hover:bg-foreground hover:text-background flex w-full items-center justify-center gap-3 border px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-all duration-300"
+            className="border-foreground/20 hover:border-foreground hover:bg-foreground hover:text-background flex min-h-14 w-full items-center justify-center gap-3 border px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-all duration-300"
           >
             <Eye size={14} strokeWidth={1.4} />
             Preview
@@ -719,7 +722,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
           <button
             type="submit"
             disabled={isSaving || isDeleting}
-            className="bg-foreground text-background flex w-full items-center justify-center gap-3 px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
+            className="bg-foreground text-background flex min-h-14 w-full items-center justify-center gap-3 px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {isSaving ? (
               <>
@@ -739,7 +742,7 @@ export function ProjectEditForm({ project }: ProjectEditFormProps) {
               type="button"
               onClick={handleDelete}
               disabled={isSaving || isDeleting}
-              className="border-foreground/15 text-muted hover:border-foreground hover:text-foreground flex w-full items-center justify-center gap-3 border px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-40"
+              className="border-foreground/15 text-muted hover:border-foreground hover:text-foreground flex min-h-14 w-full items-center justify-center gap-3 border px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-colors disabled:cursor-not-allowed disabled:opacity-40"
             >
               {isDeleting ? (
                 <>

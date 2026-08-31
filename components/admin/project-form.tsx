@@ -266,7 +266,7 @@ export function ProjectForm() {
       <div className="grid gap-16 lg:grid-cols-[1fr_360px] lg:gap-24">
         <div className="space-y-14">
           <section>
-            <p className="mb-6 text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
+            <p className="text-muted mb-6 text-[10px] font-medium tracking-[0.2em] uppercase">
               Project information
             </p>
 
@@ -274,7 +274,7 @@ export function ProjectForm() {
               <div>
                 <label
                   htmlFor="title"
-                  className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted"
+                  className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase"
                 >
                   Title
                 </label>
@@ -284,57 +284,55 @@ export function ProjectForm() {
                   value={title}
                   onChange={(event) => setTitle(event.target.value)}
                   placeholder="House of Stillness"
-                  className="w-full border-b border-foreground/20 bg-transparent py-4 font-serif text-3xl outline-none transition-colors placeholder:text-muted/40 focus:border-foreground sm:text-4xl"
+                  className="border-foreground/20 placeholder:text-muted/50 focus:border-foreground min-h-14 w-full border-b bg-transparent py-4 font-serif text-2xl leading-tight transition-colors outline-none sm:min-h-16 sm:text-3xl lg:text-4xl"
                 />
               </div>
 
-              <div className="grid gap-8 sm:grid-cols-2">
-                <div>
-                  <label
-                    htmlFor="category"
-                    className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted"
-                  >
-                    Category
-                  </label>
+              <div>
+                <label
+                  htmlFor="category"
+                  className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase"
+                >
+                  Category
+                </label>
 
-                  <select
-                    id="category"
-                    value={category}
-                    onChange={(event) => setCategory(event.target.value)}
-                    className="w-full border-b border-foreground/20 bg-background py-4 text-sm outline-none transition-colors focus:border-foreground"
-                  >
-                    {categories.map((item) => (
-                      <option key={item} value={item}>
-                        {item}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <select
+                  id="category"
+                  value={category}
+                  onChange={(event) => setCategory(event.target.value)}
+                  className="border-foreground/20 bg-background text-foreground focus:border-foreground min-h-14 w-full border-b py-3 text-base leading-7 transition-colors outline-none sm:min-h-16 sm:text-lg sm:leading-8"
+                >
+                  {categories.map((item) => (
+                    <option key={item} value={item} className="bg-background text-foreground">
+                      {item}
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-                <div>
-                  <label
-                    htmlFor="year"
-                    className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted"
-                  >
-                    Year
-                  </label>
+              <div>
+                <label
+                  htmlFor="year"
+                  className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase"
+                >
+                  Year
+                </label>
 
-                  <input
-                    id="year"
-                    type="number"
-                    min="1900"
-                    max="2100"
-                    value={year}
-                    onChange={(event) => setYear(event.target.value)}
-                    className="w-full border-b border-foreground/20 bg-transparent py-4 text-sm outline-none transition-colors focus:border-foreground"
-                  />
-                </div>
+                <input
+                  id="year"
+                  type="number"
+                  min="1900"
+                  max="2100"
+                  value={year}
+                  onChange={(event) => setYear(event.target.value)}
+                  className="border-foreground/20 focus:border-foreground min-h-14 w-full border-b bg-transparent py-3 text-base leading-7 transition-colors outline-none sm:min-h-16 sm:text-lg sm:leading-8"
+                />
               </div>
 
               <div>
                 <label
                   htmlFor="location"
-                  className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted"
+                  className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase"
                 >
                   Location
                 </label>
@@ -344,7 +342,7 @@ export function ProjectForm() {
                   value={location}
                   onChange={(event) => setLocation(event.target.value)}
                   placeholder="Dhaka"
-                  className="w-full border-b border-foreground/20 bg-transparent py-4 text-sm outline-none transition-colors placeholder:text-muted/40 focus:border-foreground"
+                  className="border-foreground/20 placeholder:text-muted/60 focus:border-foreground min-h-14 w-full border-b bg-transparent py-3 text-base leading-7 transition-colors outline-none sm:min-h-16 sm:text-lg sm:leading-8"
                 />
               </div>
 
@@ -352,7 +350,7 @@ export function ProjectForm() {
                 <div>
                   <label
                     htmlFor="youtubeUrl"
-                    className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted"
+                    className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase"
                   >
                     YouTube URL
                   </label>
@@ -363,10 +361,10 @@ export function ProjectForm() {
                     value={youtubeUrl}
                     onChange={(event) => setYoutubeUrl(event.target.value)}
                     placeholder="https://www.youtube.com/watch?v=..."
-                    className="w-full border-b border-foreground/20 bg-transparent py-4 text-sm outline-none transition-colors placeholder:text-muted/40 focus:border-foreground"
+                    className="border-foreground/20 placeholder:text-muted/60 focus:border-foreground min-h-14 w-full border-b bg-transparent py-3 text-base leading-7 transition-colors outline-none sm:min-h-16 sm:text-lg sm:leading-8"
                   />
 
-                  <p className="mt-3 text-[10px] leading-5 text-muted">
+                  <p className="text-muted mt-3 text-xs leading-6 sm:text-sm sm:leading-7">
                     The finished cinematography video will be embedded from YouTube. Upload the
                     thumbnail below.
                   </p>
@@ -376,7 +374,7 @@ export function ProjectForm() {
               <div>
                 <label
                   htmlFor="description"
-                  className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted"
+                  className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase"
                 >
                   Description
                 </label>
@@ -387,19 +385,19 @@ export function ProjectForm() {
                   onChange={(event) => setDescription(event.target.value)}
                   placeholder="Describe the project..."
                   rows={6}
-                  className="w-full resize-none border-b border-foreground/20 bg-transparent py-4 text-sm leading-7 outline-none transition-colors placeholder:text-muted/40 focus:border-foreground"
+                  className="border-foreground/20 placeholder:text-muted/60 focus:border-foreground min-h-[180px] w-full resize-none border-b bg-transparent py-4 text-base leading-7 transition-colors outline-none sm:min-h-[210px] sm:text-lg sm:leading-8"
                 />
               </div>
             </div>
           </section>
 
           <section>
-            <p className="mb-6 text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
+            <p className="text-muted mb-6 text-[10px] font-medium tracking-[0.2em] uppercase">
               {category === 'Interior Cinematography' ? 'Video thumbnail' : 'Cover image'}
             </p>
 
             {coverPreview ? (
-              <div className="relative aspect-[16/10] overflow-hidden bg-subtle">
+              <div className="bg-subtle relative aspect-[16/10] overflow-hidden">
                 <img
                   src={coverPreview}
                   alt="Cover preview"
@@ -409,25 +407,27 @@ export function ProjectForm() {
                 <button
                   type="button"
                   onClick={removeCover}
-                  className="absolute right-4 top-4 flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white transition-transform hover:scale-105"
+                  className="absolute top-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-black/70 text-white transition-transform hover:scale-105"
                   aria-label="Remove cover image"
                 >
                   <X size={15} strokeWidth={1.5} />
                 </button>
               </div>
             ) : (
-              <label className="group flex aspect-[16/10] cursor-pointer flex-col items-center justify-center border border-dashed border-foreground/20 bg-subtle transition-colors hover:border-foreground/50">
+              <label className="group border-foreground/20 bg-subtle hover:border-foreground/50 flex aspect-[16/10] cursor-pointer flex-col items-center justify-center border border-dashed px-6 text-center transition-colors">
                 <ImagePlus
                   size={24}
                   strokeWidth={1.2}
                   className="text-muted transition-transform duration-300 group-hover:scale-110"
                 />
 
-                <span className="mt-5 text-[10px] font-medium uppercase tracking-[0.2em]">
+                <span className="mt-5 text-[10px] font-medium tracking-[0.2em] uppercase">
                   Select {category === 'Interior Cinematography' ? 'thumbnail' : 'cover image'}
                 </span>
 
-                <span className="mt-2 text-[10px] text-muted">JPG, PNG or WebP · Max 10MB</span>
+                <span className="text-muted mt-2 text-xs leading-5 sm:text-sm">
+                  JPG, PNG or WebP · Max 10MB
+                </span>
 
                 <input
                   type="file"
@@ -440,16 +440,18 @@ export function ProjectForm() {
           </section>
 
           <section>
-            <div className="mb-6 flex items-end justify-between gap-6">
+            <div className="mb-6 flex flex-col items-start justify-between gap-5 sm:flex-row sm:items-end sm:gap-6">
               <div>
-                <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
+                <p className="text-muted text-[10px] font-medium tracking-[0.2em] uppercase">
                   Gallery
                 </p>
 
-                <p className="mt-2 text-xs text-secondary">Add additional project images.</p>
+                <p className="text-secondary mt-2 text-sm leading-6">
+                  Add additional project images.
+                </p>
               </div>
 
-              <label className="flex shrink-0 cursor-pointer items-center gap-2 border border-foreground/20 px-4 py-3 text-[9px] font-medium uppercase tracking-[0.15em] transition-colors hover:border-foreground">
+              <label className="border-foreground/20 hover:border-foreground flex min-h-11 shrink-0 cursor-pointer items-center gap-2 border px-4 py-3 text-[10px] font-medium tracking-[0.15em] uppercase transition-colors">
                 <ImagePlus size={13} strokeWidth={1.4} />
                 Add Images
                 <input
@@ -467,14 +469,14 @@ export function ProjectForm() {
                 {galleryImages.map((image) => (
                   <div
                     key={image.id}
-                    className="group relative aspect-[4/3] overflow-hidden bg-subtle"
+                    className="group bg-subtle relative aspect-[4/3] overflow-hidden"
                   >
                     <img src={image.preview} alt="" className="h-full w-full object-cover" />
 
                     <button
                       type="button"
                       onClick={() => removeGalleryImage(image.id)}
-                      className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-black/70 text-white opacity-0 transition-opacity group-hover:opacity-100"
+                      className="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-black/70 text-white opacity-100 transition-opacity sm:opacity-0 sm:group-hover:opacity-100"
                       aria-label="Remove gallery image"
                     >
                       <X size={14} strokeWidth={1.5} />
@@ -483,8 +485,8 @@ export function ProjectForm() {
                 ))}
               </div>
             ) : (
-              <div className="border border-dashed border-foreground/15 py-16 text-center">
-                <p className="text-[10px] uppercase tracking-[0.18em] text-muted">
+              <div className="border-foreground/15 border border-dashed py-16 text-center">
+                <p className="text-muted text-[10px] tracking-[0.18em] uppercase">
                   No gallery images selected
                 </p>
               </div>
@@ -493,16 +495,17 @@ export function ProjectForm() {
         </div>
 
         <aside className="lg:sticky lg:top-10 lg:self-start">
-          <div className="border-t border-foreground/10 pt-8">
-            <p className="mb-8 text-[10px] font-medium uppercase tracking-[0.2em] text-muted">
+          <div className="border-foreground/10 border-t pt-8">
+            <p className="text-muted mb-8 text-[10px] font-medium tracking-[0.2em] uppercase">
               Publishing
             </p>
 
             <div className="space-y-7">
-              <label className="flex cursor-pointer items-center justify-between gap-6">
+              <label className="flex min-h-16 cursor-pointer items-center justify-between gap-6">
                 <div>
-                  <p className="text-sm">Published</p>
-                  <p className="mt-1 text-xs text-secondary">
+                  <p className="text-base">Published</p>
+
+                  <p className="text-secondary mt-1 text-sm leading-6">
                     Make this project visible on the website.
                   </p>
                 </div>
@@ -511,21 +514,24 @@ export function ProjectForm() {
                   type="checkbox"
                   checked={published}
                   onChange={(event) => setPublished(event.target.checked)}
-                  className="h-4 w-4 accent-current"
+                  className="h-5 w-5 accent-current"
                 />
               </label>
 
-              <label className="flex cursor-pointer items-center justify-between gap-6">
+              <label className="flex min-h-16 cursor-pointer items-center justify-between gap-6">
                 <div>
-                  <p className="text-sm">Featured</p>
-                  <p className="mt-1 text-xs text-secondary">Show this project in Featured Work.</p>
+                  <p className="text-base">Featured</p>
+
+                  <p className="text-secondary mt-1 text-sm leading-6">
+                    Show this project in Featured Work.
+                  </p>
                 </div>
 
                 <input
                   type="checkbox"
                   checked={featured}
                   onChange={(event) => setFeatured(event.target.checked)}
-                  className="h-4 w-4 accent-current"
+                  className="h-5 w-5 accent-current"
                 />
               </label>
 
@@ -533,7 +539,7 @@ export function ProjectForm() {
                 <div>
                   <label
                     htmlFor="featuredOrder"
-                    className="mb-3 block text-[10px] font-medium uppercase tracking-[0.18em] text-muted"
+                    className="text-muted mb-3 block text-[10px] font-medium tracking-[0.18em] uppercase"
                   >
                     Featured order
                   </label>
@@ -544,7 +550,7 @@ export function ProjectForm() {
                     min="0"
                     value={featuredOrder}
                     onChange={(event) => setFeaturedOrder(event.target.value)}
-                    className="w-full border-b border-foreground/20 bg-transparent py-3 text-sm outline-none focus:border-foreground"
+                    className="border-foreground/20 focus:border-foreground min-h-12 w-full border-b bg-transparent py-3 text-base leading-7 outline-none sm:min-h-14 sm:text-lg sm:leading-8"
                   />
                 </div>
               )}
@@ -552,7 +558,7 @@ export function ProjectForm() {
           </div>
 
           {(error || success) && (
-            <div className="mt-10 border-t border-foreground/10 pt-8">
+            <div className="border-foreground/10 mt-10 border-t pt-8">
               {error && <p className="text-sm leading-6 text-red-500">{error}</p>}
 
               {success && !error && (
@@ -567,7 +573,7 @@ export function ProjectForm() {
           <button
             type="submit"
             disabled={isSaving}
-            className="mt-10 flex w-full items-center justify-center gap-3 bg-foreground px-6 py-4 text-[10px] font-medium uppercase tracking-[0.2em] text-background transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
+            className="bg-foreground text-background mt-10 flex min-h-14 w-full items-center justify-center gap-3 px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
           >
             {isSaving ? (
               <>
@@ -583,7 +589,7 @@ export function ProjectForm() {
             type="button"
             onClick={() => router.push('/admin/projects')}
             disabled={isSaving}
-            className="mt-3 flex w-full items-center justify-center gap-2 px-6 py-4 text-[10px] font-medium uppercase tracking-[0.2em] text-muted transition-colors hover:text-foreground"
+            className="text-muted hover:text-foreground mt-3 flex min-h-14 w-full items-center justify-center gap-2 px-6 py-4 text-[10px] font-medium tracking-[0.2em] uppercase transition-colors"
           >
             <ArrowLeft size={13} strokeWidth={1.4} />
             Cancel

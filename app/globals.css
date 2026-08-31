@@ -42,6 +42,7 @@
 
 html {
   min-width: 320px;
+  overflow-x: hidden;
   scroll-behavior: smooth;
   background: var(--background);
   color-scheme: dark;
@@ -55,9 +56,11 @@ html:not(.dark) {
 }
 
 body {
-  margin: 0;
+  width: 100%;
+  min-width: 320px;
   min-height: 100vh;
   min-height: 100svh;
+  margin: 0;
   overflow-x: hidden;
   background: var(--background);
   color: var(--foreground);
@@ -81,11 +84,6 @@ img {
   height: auto;
 }
 
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
 button {
   font: inherit;
 }
@@ -96,6 +94,11 @@ input,
 textarea,
 select {
   touch-action: manipulation;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
 }
 
 a {
@@ -113,58 +116,38 @@ a {
   color: var(--background);
 }
 
+/* --------------------------------------------------
+   Mobile typography foundation
+-------------------------------------------------- */
+
 @media (max-width: 639px) {
   body {
     overflow-x: clip;
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+  /*
+    Keep the editorial aesthetic while improving
+    readability on smaller screens.
+  */
+
+  p,
+  li {
+    line-height: 1.6;
   }
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-}
-/* --------------------------------------------------
-   Responsive foundation
-   ST Photography
--------------------------------------------------- */
-
-html {
-  overflow-x: hidden;
-}
-
-body {
-  min-width: 320px;
-  overflow-x: hidden;
 }
 
 /* --------------------------------------------------
-   Tablet / iPad Mini
-   768px+
+   Tablet
 -------------------------------------------------- */
 
 @media (min-width: 768px) and (max-width: 1023px) {
   html {
     font-size: 15px;
   }
-
-  body {
-    overflow-x: hidden;
-  }
 }
 
 /* --------------------------------------------------
    Large tablet / small desktop
-   900px+
 -------------------------------------------------- */
 
 @media (min-width: 900px) and (max-width: 1023px) {
@@ -189,12 +172,16 @@ body {
 -------------------------------------------------- */
 
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {
-    scroll-behavior: auto !important;
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

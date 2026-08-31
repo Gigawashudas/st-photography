@@ -18,14 +18,16 @@ const whatsappMessage =
 const whatsappLink =
   'https://wa.me/' + whatsappNumber + '?text=' + encodeURIComponent(whatsappMessage);
 
-const services = ['Photography', 'Cinematography', 'Event', 'Portrait', 'Interior', 'Other'];
+const services = ['Photography', 'Cinematography'] as const;
+
+type Service = (typeof services)[number];
 
 type FormData = {
   website: string;
   name: string;
   email: string;
   phone: string;
-  service: string;
+  service: Service[];
   projectDate: string;
   location: string;
   budget: string;
@@ -37,7 +39,7 @@ const initialForm: FormData = {
   name: '',
   email: '',
   phone: '',
-  service: '',
+  service: [],
   projectDate: '',
   location: '',
   budget: '',
@@ -50,11 +52,26 @@ export function ContactSection() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
 
-  function updateField(field: keyof FormData, value: string) {
+  function updateField(field: Exclude<keyof FormData, 'service'>, value: string) {
     setForm((current) => ({
       ...current,
       [field]: value,
     }));
+
+    setError('');
+  }
+
+  function toggleService(service: Service) {
+    setForm((current) => {
+      const isSelected = current.service.includes(service);
+
+      return {
+        ...current,
+        service: isSelected
+          ? current.service.filter((item) => item !== service)
+          : [...current.service, service],
+      };
+    });
 
     setError('');
   }
@@ -64,6 +81,12 @@ export function ContactSection() {
 
     setIsSubmitting(true);
     setError('');
+
+    if (form.service.length === 0) {
+      setError('Please select at least one service.');
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
       const databaseResponse = await fetch('/api/enquiries', {
@@ -78,7 +101,6 @@ export function ContactSection() {
 
       if (!databaseResponse.ok || !databaseResult.success) {
         setError(databaseResult.message || 'Unable to save your enquiry. Please try again.');
-
         return;
       }
 
@@ -90,12 +112,12 @@ export function ContactSection() {
         },
         body: JSON.stringify({
           access_key: process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY,
-          subject: `New enquiry — ${form.service} — ${form.name}`,
+          subject: `New enquiry — ${form.service.join(' + ')} — ${form.name}`,
           from_name: 'ST Photography Website',
           name: form.name,
           email: form.email,
           phone: form.phone || 'Not provided',
-          service: form.service,
+          service: form.service.join(', '),
           project_date: form.projectDate || 'Not specified',
           location: form.location || 'Not specified',
           budget: form.budget || 'Not specified',
@@ -132,8 +154,8 @@ export function ContactSection() {
 
       setForm(initialForm);
       setIsSubmitted(true);
-    } catch (error) {
-      console.error('Enquiry submission error:', error);
+    } catch (submitError) {
+      console.error('Enquiry submission error:', submitError);
 
       setError('Unable to send your enquiry. Please check your connection and try again.');
     } finally {
@@ -154,9 +176,9 @@ export function ContactSection() {
           }}
           className="mb-16 flex items-center gap-3 sm:mb-20 sm:gap-4 lg:mb-28"
         >
-          <span className="h-px w-6 bg-foreground/40 sm:w-8" />
+          <span className="bg-foreground/40 h-px w-6 sm:w-8" />
 
-          <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs sm:tracking-[0.25em]">
+          <p className="text-muted text-[9px] font-medium tracking-[0.28em] uppercase sm:text-xs sm:tracking-[0.25em]">
             03 / Contact
           </p>
         </motion.div>
@@ -188,14 +210,14 @@ export function ContactSection() {
               }}
               className="mt-9 max-w-md sm:mt-16"
             >
-              <p className="text-sm leading-7 text-secondary sm:text-lg sm:leading-9">
+              <p className="text-secondary text-sm leading-7 sm:text-lg sm:leading-9">
                 Tell us a little about your project, and let&apos;s explore what we can create
                 together.
               </p>
 
               <a
                 href="mailto:sahatammalphotography@gmail.com"
-                className="group mt-7 inline-flex min-h-11 items-center gap-3 border-b border-foreground/30 pb-2 text-[11px] tracking-[0.02em] transition-colors duration-300 hover:border-foreground sm:mt-10 sm:text-base"
+                className="group border-foreground/30 hover:border-foreground mt-7 inline-flex min-h-11 items-center gap-3 border-b pb-2 text-[11px] tracking-[0.02em] transition-colors duration-300 sm:mt-10 sm:text-base"
               >
                 sahatammalphotography@gmail.com
                 <ArrowUpRight
@@ -218,8 +240,8 @@ export function ContactSection() {
             }}
           >
             {isSubmitted ? (
-              <div className="flex min-h-[480px] flex-col justify-center border-t border-foreground/15 py-14 sm:min-h-[600px] sm:py-16">
-                <div className="mb-7 flex h-11 w-11 items-center justify-center rounded-full border border-foreground/20">
+              <div className="border-foreground/15 flex min-h-[480px] flex-col justify-center border-t py-14 sm:min-h-[600px] sm:py-16">
+                <div className="border-foreground/20 mb-7 flex h-11 w-11 items-center justify-center rounded-full border">
                   <Check size={19} strokeWidth={1.4} />
                 </div>
 
@@ -227,7 +249,7 @@ export function ContactSection() {
                   Enquiry sent.
                 </h3>
 
-                <p className="mt-5 max-w-md text-sm leading-7 text-secondary sm:mt-6 sm:text-base sm:leading-8">
+                <p className="text-secondary mt-5 max-w-md text-sm leading-7 sm:mt-6 sm:text-base sm:leading-8">
                   Thank you for getting in touch. Your enquiry has been received and we&apos;ll get
                   back to you shortly.
                 </p>
@@ -235,13 +257,13 @@ export function ContactSection() {
                 <button
                   type="button"
                   onClick={() => setIsSubmitted(false)}
-                  className="mt-9 min-h-11 w-fit border-b border-foreground/30 pb-2 text-[10px] font-medium uppercase tracking-[0.2em] transition-opacity duration-300 hover:opacity-50 sm:mt-10 sm:text-xs"
+                  className="border-foreground/30 mt-9 min-h-11 w-fit border-b pb-2 text-[10px] font-medium tracking-[0.2em] uppercase transition-opacity duration-300 hover:opacity-50 sm:mt-10 sm:text-xs"
                 >
                   Send another enquiry
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="border-t border-foreground/15">
+              <form onSubmit={handleSubmit} className="border-foreground/15 border-t">
                 <input
                   type="text"
                   name="website"
@@ -281,15 +303,7 @@ export function ContactSection() {
                     onChange={(value) => updateField('phone', value)}
                   />
 
-                  <SelectField
-                    label="Service"
-                    id="service"
-                    value={form.service}
-                    placeholder="Select a service"
-                    options={services}
-                    required
-                    onChange={(value) => updateField('service', value)}
-                  />
+                  <ServiceField value={form.service} onToggle={toggleService} />
 
                   <Field
                     label="Project date"
@@ -308,10 +322,10 @@ export function ContactSection() {
                     onChange={(value) => updateField('location', value)}
                   />
 
-                  <div className="border-b border-foreground/15 py-6 sm:col-span-2 sm:py-7">
+                  <div className="border-foreground/15 border-b py-6 sm:col-span-2 sm:py-7">
                     <label
                       htmlFor="budget"
-                      className="mb-3 block text-[9px] font-medium uppercase tracking-[0.24em] text-muted sm:mb-4 sm:text-[11px]"
+                      className="text-muted mb-3 block text-[10px] font-medium tracking-[0.24em] uppercase sm:mb-4 sm:text-[11px]"
                     >
                       Budget
                     </label>
@@ -321,34 +335,34 @@ export function ContactSection() {
                       name="budget"
                       value={form.budget}
                       onChange={(event) => updateField('budget', event.target.value)}
-                      className="min-h-11 w-full appearance-none bg-transparent text-[15px] text-foreground outline-none sm:text-lg"
+                      className="text-foreground placeholder:text-muted/70 min-h-12 w-full appearance-none bg-transparent text-base leading-7 outline-none focus:outline-none sm:min-h-14 sm:text-lg sm:leading-8"
                     >
-                      <option value="" className="bg-background">
+                      <option value="" className="bg-background text-foreground">
                         Prefer not to say
                       </option>
 
-                      <option value="Under ৳25,000" className="bg-background">
+                      <option value="Under ৳25,000" className="bg-background text-foreground">
                         Under ৳25,000
                       </option>
 
-                      <option value="৳25,000 – ৳50,000" className="bg-background">
+                      <option value="৳25,000 – ৳50,000" className="bg-background text-foreground">
                         ৳25,000 – ৳50,000
                       </option>
 
-                      <option value="৳50,000 – ৳100,000" className="bg-background">
+                      <option value="৳50,000 – ৳100,000" className="bg-background text-foreground">
                         ৳50,000 – ৳100,000
                       </option>
 
-                      <option value="৳100,000+" className="bg-background">
+                      <option value="৳100,000+" className="bg-background text-foreground">
                         ৳100,000+
                       </option>
                     </select>
                   </div>
 
-                  <div className="border-b border-foreground/15 py-6 sm:col-span-2 sm:py-7">
+                  <div className="border-foreground/15 border-b py-6 sm:col-span-2 sm:py-7">
                     <label
                       htmlFor="message"
-                      className="mb-3 block text-[9px] font-medium uppercase tracking-[0.24em] text-muted sm:mb-4 sm:text-[11px]"
+                      className="text-muted mb-3 block text-[10px] font-medium tracking-[0.24em] uppercase sm:mb-4 sm:text-[11px]"
                     >
                       Tell us about the project
                     </label>
@@ -361,7 +375,7 @@ export function ContactSection() {
                       placeholder="A few words about your project, vision, date, or anything else you would like us to know."
                       required
                       rows={5}
-                      className="w-full resize-none bg-transparent text-[15px] leading-7 text-foreground outline-none placeholder:text-muted/60 sm:text-lg sm:leading-8"
+                      className="text-foreground placeholder:text-muted/70 min-h-[150px] w-full resize-none bg-transparent text-base leading-7 outline-none focus:outline-none sm:min-h-[170px] sm:text-lg sm:leading-8"
                     />
                   </div>
                 </div>
@@ -373,7 +387,7 @@ export function ContactSection() {
                 )}
 
                 <div className="flex flex-col gap-7 pt-7 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:pt-8">
-                  <p className="max-w-xs text-[10px] leading-5 text-muted sm:text-xs">
+                  <p className="text-muted max-w-xs text-[10px] leading-5 sm:text-xs">
                     By submitting this form, you agree that we may contact you regarding your
                     enquiry.
                   </p>
@@ -381,7 +395,7 @@ export function ContactSection() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="group inline-flex min-h-11 items-center gap-4 border-b border-foreground pb-3 text-[10px] font-medium uppercase tracking-[0.22em] transition-opacity duration-300 hover:opacity-50 disabled:cursor-not-allowed disabled:opacity-50 sm:text-sm"
+                    className="group border-foreground inline-flex min-h-12 items-center gap-4 border-b pb-3 text-[11px] font-medium tracking-[0.22em] uppercase transition-opacity duration-300 hover:opacity-50 disabled:cursor-not-allowed disabled:opacity-50 sm:min-h-11 sm:text-sm"
                   >
                     {isSubmitting ? (
                       <>
@@ -405,8 +419,8 @@ export function ContactSection() {
           </motion.div>
         </div>
 
-        <div className="mt-24 border-t border-foreground/10 pt-8 sm:mt-40 sm:pt-10 lg:mt-52">
-          <div className="flex flex-wrap gap-x-7 gap-y-4 text-[9px] font-medium uppercase tracking-[0.22em] text-muted sm:gap-x-8 sm:text-xs">
+        <div className="border-foreground/10 mt-24 border-t pt-8 sm:mt-40 sm:pt-10 lg:mt-52">
+          <div className="text-muted flex flex-wrap gap-x-7 gap-y-4 text-[9px] font-medium tracking-[0.22em] uppercase sm:gap-x-8 sm:text-xs">
             <a
               href={instagramLink}
               target="_blank"
@@ -449,6 +463,56 @@ export function ContactSection() {
   );
 }
 
+type ServiceFieldProps = {
+  value: Service[];
+  onToggle: (service: Service) => void;
+};
+
+function ServiceField({ value, onToggle }: ServiceFieldProps) {
+  return (
+    <div className="border-foreground/15 border-b py-6 sm:py-7">
+      <p className="text-muted mb-3 block text-[10px] font-medium tracking-[0.24em] uppercase sm:mb-4 sm:text-[11px]">
+        Service
+      </p>
+
+      <div className="flex flex-col gap-3 sm:flex-row sm:gap-8">
+        {services.map((service) => {
+          const checked = value.includes(service);
+
+          return (
+            <label key={service} className="group flex min-h-11 cursor-pointer items-center gap-3">
+              <input
+                type="checkbox"
+                checked={checked}
+                onChange={() => onToggle(service)}
+                className="peer sr-only"
+              />
+
+              <span
+                className={`flex h-5 w-5 items-center justify-center border transition-all duration-200 ${
+                  checked
+                    ? 'border-foreground bg-foreground'
+                    : 'border-foreground/30 group-hover:border-foreground'
+                }`}
+              >
+                {checked && <Check size={13} strokeWidth={1.8} className="text-background" />}
+              </span>
+
+              <span
+                className={`text-sm transition-colors duration-200 sm:text-base ${
+                  checked ? 'text-foreground' : 'text-secondary'
+                }`}
+              >
+                {service}
+              </span>
+            </label>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 type FieldProps = {
   label: string;
   name: string;
@@ -469,10 +533,10 @@ function Field({
   onChange,
 }: FieldProps) {
   return (
-    <div className="border-b border-foreground/15 py-6 sm:py-7">
+    <div className="border-foreground/15 border-b py-6 sm:py-7">
       <label
         htmlFor={name}
-        className="mb-3 block text-[9px] font-medium uppercase tracking-[0.24em] text-muted sm:mb-4 sm:text-[11px]"
+        className="text-muted mb-3 block text-[10px] font-medium tracking-[0.24em] uppercase sm:mb-4 sm:text-[11px]"
       >
         {label}
       </label>
@@ -485,58 +549,8 @@ function Field({
         placeholder={placeholder}
         required={required}
         onChange={(event) => onChange(event.target.value)}
-        className="min-h-11 w-full bg-transparent text-[15px] text-foreground outline-none placeholder:text-muted/60 sm:text-lg"
+        className="text-foreground placeholder:text-muted/70 min-h-12 w-full bg-transparent text-base leading-7 outline-none focus:outline-none sm:min-h-14 sm:text-lg sm:leading-8"
       />
-    </div>
-  );
-}
-
-type SelectFieldProps = {
-  label: string;
-  id: string;
-  value: string;
-  placeholder: string;
-  options: string[];
-  required?: boolean;
-  onChange: (value: string) => void;
-};
-
-function SelectField({
-  label,
-  id,
-  value,
-  placeholder,
-  options,
-  required = false,
-  onChange,
-}: SelectFieldProps) {
-  return (
-    <div className="border-b border-foreground/15 py-6 sm:py-7">
-      <label
-        htmlFor={id}
-        className="mb-3 block text-[9px] font-medium uppercase tracking-[0.24em] text-muted sm:mb-4 sm:text-[11px]"
-      >
-        {label}
-      </label>
-
-      <select
-        id={id}
-        name={id}
-        value={value}
-        onChange={(event) => onChange(event.target.value)}
-        required={required}
-        className="min-h-11 w-full appearance-none bg-transparent text-[15px] text-foreground outline-none sm:text-lg"
-      >
-        <option value="" disabled className="bg-background">
-          {placeholder}
-        </option>
-
-        {options.map((option) => (
-          <option key={option} value={option} className="bg-background text-foreground">
-            {option}
-          </option>
-        ))}
-      </select>
     </div>
   );
 }

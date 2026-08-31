@@ -24,7 +24,7 @@ export function Navbar() {
           </Link>
 
           <Link
-            href="/#about"
+            href="/about"
             className="min-h-5 transition-opacity duration-300 hover:opacity-50 md:min-h-6"
           >
             About

@@ -46,22 +46,26 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
         {projects.length > 0 ? (
           <div className="mt-16 grid gap-5 sm:mt-20 sm:grid-cols-2 lg:mt-24 lg:gap-7">
             {' '}
-            {projects.map((project, index) => {
-              const projectCardProps = { project } as any;
-
-              return (
-                <motion.div
-                  key={project.id}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: '-80px' }}
-                  transition={{ duration: 0.8, delay: index * 0.08 }}
-                >
-                  {' '}
-                  <ProjectCard {...projectCardProps} />{' '}
-                </motion.div>
-              );
-            })}{' '}
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-80px' }}
+                transition={{ duration: 0.8, delay: index * 0.08 }}
+              >
+                {' '}
+                <ProjectCard
+                  title={project.title}
+                  category={project.category}
+                  number={String(index + 1).padStart(2, '0')}
+                  image={project.cover_image ?? ''}
+                  slug={project.slug}
+                  priority={index < 2}
+                  aspectClass={index % 3 === 2 ? 'aspect-[16/10] sm:col-span-2' : 'aspect-[4/5]'}
+                />{' '}
+              </motion.div>
+            ))}{' '}
           </div>
         ) : (
           <div className="border-foreground/10 mt-16 border-y py-20 text-center sm:mt-20 sm:py-28">
@@ -83,7 +87,7 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
           {' '}
           <Link
             href="/work"
-            className="group text-secondary hover:text-foreground flex min-h-11 items-center gap-5 text-[9px] font-medium tracking-[0.35em] uppercase transition-colors duration-300 sm:gap-6 sm:text-[10px]"
+            className="text-secondary hover:text-foreground group flex min-h-11 items-center gap-5 text-[9px] font-medium tracking-[0.35em] uppercase transition-colors duration-300 sm:gap-6 sm:text-[10px]"
           >
             {' '}
             <span className="relative">

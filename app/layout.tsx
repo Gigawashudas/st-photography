@@ -15,8 +15,25 @@ const instrumentSerif = Instrument_Serif({
 
 export const metadata: Metadata = {
   title: 'ST Photography',
-  description: 'Photography & Cinematography',
+  description: 'Interior Photography & Cinematography',
 };
+
+const themeScript = `
+(function () {
+  try {
+    var storedTheme = localStorage.getItem('theme');
+    var theme = storedTheme === 'dark' || storedTheme === 'light'
+      ? storedTheme
+      : 'light';
+
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.style.colorScheme = theme;
+  } catch (error) {
+    document.documentElement.classList.remove('dark');
+    document.documentElement.style.colorScheme = 'light';
+  }
+})();
+`;
 
 export default function RootLayout({
   children,
@@ -29,7 +46,10 @@ export default function RootLayout({
       className={`${geist.variable} ${instrumentSerif.variable}`}
       suppressHydrationWarning
     >
-      <body suppressHydrationWarning>{children}</body>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
+      <body>{children}</body>
     </html>
   );
 }

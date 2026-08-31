@@ -1,37 +1,51 @@
 'use client';
+
 import { Moon, Sun } from 'lucide-react';
-import { useState } from 'react';
-type Theme = 'dark' | 'light';
-function getCurrentTheme(): Theme {
-  if (typeof document === 'undefined') {
-    return 'dark';
-  }
-  return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+import { useSyncExternalStore } from 'react';
+
+function subscribe(callback: () => void) {
+  window.addEventListener('storage', callback);
+
+  return () => {
+    window.removeEventListener('storage', callback);
+  };
 }
-function applyTheme(theme: Theme) {
-  const root = document.documentElement;
-  root.classList.toggle('dark', theme === 'dark');
-  root.style.colorScheme = theme;
+
+function getSnapshot() {
+  return document.documentElement.classList.contains('dark');
 }
+
+function getServerSnapshot() {
+  return false;
+}
+
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(getCurrentTheme);
+  const isDark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
   function toggleTheme() {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    window.localStorage.setItem('st-theme', nextTheme);
-    applyTheme(nextTheme);
-    setTheme(nextTheme);
+    const root = document.documentElement;
+    const nextTheme = isDark ? 'light' : 'dark';
+
+    root.classList.toggle('dark', nextTheme === 'dark');
+    root.style.colorScheme = nextTheme;
+    localStorage.setItem('theme', nextTheme);
+
+    window.dispatchEvent(new Event('storage'));
   }
-  const isDark = theme === 'dark';
+
   return (
     <button
       type="button"
       onClick={toggleTheme}
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       aria-pressed={isDark}
-      className="border-foreground/20 hover:border-foreground/50 flex h-8 w-8 items-center justify-center rounded-full border transition-all duration-300 hover:scale-110"
+      className="border-foreground/20 hover:border-foreground/50 flex h-8 w-8 items-center justify-center transition-colors duration-300"
     >
-      {' '}
-      {isDark ? <Sun size={13} strokeWidth={1.5} /> : <Moon size={13} strokeWidth={1.5} />}{' '}
+      {isDark ? (
+        <Sun size={13} strokeWidth={1.5} aria-hidden="true" />
+      ) : (
+        <Moon size={13} strokeWidth={1.5} aria-hidden="true" />
+      )}
     </button>
   );
 }

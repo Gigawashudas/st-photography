@@ -1,27 +1,47 @@
 'use client';
+
 import { Moon, Sun } from 'lucide-react';
-import { useState } from 'react';
+import { useSyncExternalStore } from 'react';
+
 type Theme = 'dark' | 'light';
-function getCurrentTheme(): Theme {
-  if (typeof document === 'undefined') {
-    return 'dark';
-  }
+
+function subscribe(callback: () => void) {
+  window.addEventListener('storage', callback);
+
+  return () => {
+    window.removeEventListener('storage', callback);
+  };
+}
+
+function getSnapshot(): Theme {
   return document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 }
+
+function getServerSnapshot(): Theme {
+  return 'light';
+}
+
 function applyTheme(theme: Theme) {
   const root = document.documentElement;
+
   root.classList.toggle('dark', theme === 'dark');
   root.style.colorScheme = theme;
+  localStorage.setItem('theme', theme);
+
+  window.dispatchEvent(new Event('storage'));
 }
+
 export function AdminThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(getCurrentTheme);
-  function toggleTheme() {
-    const nextTheme = theme === 'dark' ? 'light' : 'dark';
-    window.localStorage.setItem('st-theme', nextTheme);
-    applyTheme(nextTheme);
-    setTheme(nextTheme);
-  }
+  const theme = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
   const isDark = theme === 'dark';
+
+  function toggleTheme() {
+    const nextTheme: Theme = isDark ? 'light' : 'dark';
+
+    applyTheme(nextTheme);
+  }
+
   return (
     <button
       type="button"
@@ -30,8 +50,11 @@ export function AdminThemeToggle() {
       aria-pressed={isDark}
       className="border-foreground/40 bg-background text-foreground hover:border-foreground flex h-10 w-10 shrink-0 items-center justify-center rounded-full border shadow-sm transition-all duration-300 hover:scale-105"
     >
-      {' '}
-      {isDark ? <Sun size={17} strokeWidth={1.5} /> : <Moon size={17} strokeWidth={1.5} />}{' '}
+      {isDark ? (
+        <Sun size={17} strokeWidth={1.5} aria-hidden="true" />
+      ) : (
+        <Moon size={17} strokeWidth={1.5} aria-hidden="true" />
+      )}
     </button>
   );
 }

@@ -45,7 +45,7 @@ export default function AboutPage() {
   return (
     <main className="bg-background text-foreground">
       <section className="min-h-screen px-5 pt-36 pb-20 sm:px-8 sm:pt-44 sm:pb-28 lg:px-10 lg:pt-48 lg:pb-32">
-        <div className="mx-auto max-w-[1440px]">
+        <div className="mx-auto max-w-360">
           <div className="flex min-h-[70vh] flex-col justify-between">
             <div>
               <div className="mb-8 flex items-center gap-4 sm:mb-10">
@@ -89,7 +89,7 @@ export default function AboutPage() {
         id="story"
         className="border-foreground/10 border-t px-5 py-24 sm:px-8 sm:py-36 lg:px-10 lg:py-48"
       >
-        <div className="mx-auto max-w-[1440px]">
+        <div className="mx-auto max-w-360">
           <div className="grid gap-16 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
             <div>
               <p className="text-muted text-[10px] font-medium tracking-[0.25em] uppercase sm:text-xs">
@@ -98,7 +98,7 @@ export default function AboutPage() {
             </div>
 
             <div className="max-w-4xl">
-              <h2 className="font-serif text-[clamp(3.5rem,7vw,7rem)] leading-[0.84] tracking-[-0.05em]">
+              <h2 className="font-serif text-[clamp(3.5rem,7vw,7rem)] leading-[0.84] tracking-tighter">
                 Images should feel
                 <br />
                 <span className="text-secondary">like something.</span>
@@ -130,7 +130,7 @@ export default function AboutPage() {
       </section>
 
       <section className="border-foreground/10 border-t px-5 py-24 sm:px-8 sm:py-36 lg:px-10 lg:py-48">
-        <div className="mx-auto max-w-[1440px]">
+        <div className="mx-auto max-w-360">
           <div className="mb-16 flex items-center gap-4 sm:mb-24">
             <span className="bg-foreground/40 h-px w-8" />
 
@@ -163,7 +163,7 @@ export default function AboutPage() {
       </section>
 
       <section className="border-foreground/10 border-t px-5 py-24 sm:px-8 sm:py-36 lg:px-10 lg:py-48">
-        <div className="mx-auto max-w-[1440px]">
+        <div className="mx-auto max-w-360">
           <div className="grid gap-16 lg:grid-cols-[0.7fr_1.3fr] lg:gap-24">
             <div>
               <p className="text-muted text-[10px] font-medium tracking-[0.25em] uppercase sm:text-xs">
@@ -172,7 +172,7 @@ export default function AboutPage() {
             </div>
 
             <div>
-              <h2 className="max-w-4xl font-serif text-[clamp(3.5rem,7vw,7rem)] leading-[0.84] tracking-[-0.05em]">
+              <h2 className="max-w-4xl font-serif text-[clamp(3.5rem,7vw,7rem)] leading-[0.84] tracking-tighter">
                 Quietly
                 <br />
                 <span className="text-secondary">intentional.</span>
@@ -204,7 +204,7 @@ export default function AboutPage() {
       </section>
 
       <section className="border-foreground/10 border-t px-5 py-28 sm:px-8 sm:py-40 lg:px-10 lg:py-52">
-        <div className="mx-auto max-w-[1440px]">
+        <div className="mx-auto max-w-360">
           <div className="max-w-5xl">
             <p className="text-muted mb-8 text-[10px] font-medium tracking-[0.25em] uppercase sm:text-xs">
               Start a Project

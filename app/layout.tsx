@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import { Geist, Instrument_Serif } from 'next/font/google';
 import './globals.css';
 
@@ -33,6 +34,7 @@ const themeScript = `
     }
   } catch (error) {
     document.documentElement.classList.add('dark');
+    document.documentElement.style.colorScheme = 'dark';
   }
 })();
 `;
@@ -49,9 +51,12 @@ export default function RootLayout({
       suppressHydrationWarning
     >
       <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <Script
+          id="theme-script"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: themeScript }}
+        />
       </head>
-
       <body>{children}</body>
     </html>
   );

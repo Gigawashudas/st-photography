@@ -8,92 +8,128 @@ const aboutImage =
 
 export function AboutSection() {
   return (
-    <section id="about" className="bg-background px-5 py-24 sm:px-8 sm:py-40 lg:px-10 lg:py-52">
-      <div className="mx-auto max-w-[1440px]">
+    <section
+      id="about"
+      className="bg-background text-foreground px-5 py-28 sm:px-8 sm:py-36 lg:px-10 lg:py-48"
+    >
+      <div className="mx-auto max-w-[1600px]">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-15% 0px' }}
+          viewport={{ once: true, margin: '-10% 0px' }}
           transition={{
-            duration: 1,
+            duration: 0.9,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="mb-16 flex items-center gap-3 sm:mb-20 sm:gap-4 lg:mb-28"
+          className="mb-20 flex items-center gap-4 sm:mb-28"
         >
-          <span className="h-px w-6 bg-foreground/40 sm:w-8" />
+          <span className="editorial-rule" />
 
-          <p className="text-[9px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs sm:tracking-[0.25em]">
-            02 / About
-          </p>
+          <p className="type-label text-muted">About the studio</p>
         </motion.div>
 
-        <div className="grid gap-16 lg:grid-cols-[1.15fr_0.85fr] lg:items-center lg:gap-24">
-          <div>
-            <motion.h2
-              initial={{ opacity: 0, y: 35 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-15% 0px' }}
-              transition={{
-                duration: 1.1,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className="max-w-4xl font-serif text-[clamp(3.25rem,14vw,7.5rem)] leading-[0.86] tracking-[-0.055em] sm:text-[clamp(3.5rem,7vw,7.5rem)] sm:tracking-[-0.045em]"
-            >
+        <div className="grid gap-20 lg:grid-cols-12 lg:gap-10 xl:gap-16">
+          <motion.div
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10% 0px' }}
+            transition={{
+              duration: 1,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="lg:col-span-8"
+          >
+            <h2 className="max-w-6xl text-[clamp(3.5rem,8vw,8.5rem)] leading-[0.86] font-medium tracking-[-0.055em]">
               We photograph
               <br />
-              <span className="ml-[10vw] sm:ml-[7vw]">what deserves</span>
+              spaces with
               <br />
-              to be remembered.
-            </motion.h2>
+              <span className="ml-[8vw]">purpose.</span>
+            </h2>
+          </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.9,
-                delay: 0.25,
-              }}
-              className="mt-9 flex flex-wrap gap-x-7 gap-y-3 text-[9px] font-medium uppercase tracking-[0.22em] text-muted sm:mt-16 sm:gap-x-10 sm:text-xs sm:tracking-[0.2em]"
-            >
-              <span>Photography</span>
-              <span>Cinematography</span>
-            </motion.div>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10% 0px' }}
+            transition={{
+              duration: 1,
+              delay: 0.1,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="flex flex-col justify-end lg:col-span-4 lg:pb-2"
+          >
+            <p className="type-body-lg text-secondary max-w-md">
+              ST Photography creates considered visual stories for interiors, architecture, and the
+              people behind the spaces.
+            </p>
 
+            <div className="text-muted mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-[10px] font-medium tracking-[0.2em] uppercase sm:mt-14 sm:text-[11px]">
+              <span>Interior Photography</span>
+
+              <span aria-hidden="true" className="bg-foreground/20 h-px w-5" />
+
+              <span>Interior Cinematography</span>
+            </div>
+          </motion.div>
+        </div>
+
+        <div className="mt-24 grid gap-16 sm:mt-32 lg:mt-40 lg:grid-cols-12 lg:gap-10 xl:gap-16">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-10% 0px' }}
             transition={{
-              duration: 1.1,
-              delay: 0.15,
+              duration: 1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="lg:ml-auto lg:w-[78%]"
+            className="lg:col-span-5 lg:col-start-2"
           >
-            <div className="relative aspect-[4/5] overflow-hidden bg-subtle">
+            <div className="bg-subtle relative aspect-[4/5] overflow-hidden">
               <motion.div
                 whileHover={{ scale: 1.035 }}
                 transition={{
-                  duration: 1,
+                  duration: 1.2,
                   ease: [0.22, 1, 0.36, 1],
                 }}
                 className="absolute inset-0"
               >
                 <Image
                   src={aboutImage}
-                  alt="ST Photography portrait"
+                  alt="ST Photography studio portrait"
                   fill
-                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  sizes="(max-width: 1023px) 100vw, 42vw"
                   className="object-cover"
                 />
               </motion.div>
             </div>
+          </motion.div>
 
-            <div className="mt-3 flex justify-between text-[9px] uppercase tracking-[0.2em] text-muted sm:mt-4 sm:text-[11px]">
-              <span>ST Photography</span>
-              <span>02</span>
+          <motion.div
+            initial={{ opacity: 0, y: 35 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10% 0px' }}
+            transition={{
+              duration: 1,
+              delay: 0.1,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="flex flex-col justify-end lg:col-span-5 lg:col-start-8 lg:pb-1"
+          >
+            <div className="border-foreground/10 border-t pt-6">
+              <p className="type-label-sm text-muted mb-8">The approach</p>
+
+              <p className="max-w-xl text-[clamp(1.5rem,2.5vw,2.5rem)] leading-[1.05] font-medium tracking-[-0.035em]">
+                Every space has its own character. Our work is about finding it, understanding it,
+                and making it visible.
+              </p>
+            </div>
+
+            <div className="border-foreground/10 mt-14 border-t pt-6 sm:mt-20">
+              <p className="type-body text-secondary max-w-lg">
+                From natural light and material details to movement through a room, we create images
+                and films that communicate how a space actually feels.
+              </p>
             </div>
           </motion.div>
         </div>

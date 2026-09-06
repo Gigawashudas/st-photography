@@ -1,7 +1,10 @@
 'use client';
+
+import { useMemo, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { ProjectCard } from './project-card';
+
 type Project = {
   id: string;
   slug: string;
@@ -13,98 +16,254 @@ type Project = {
   featured: boolean;
   featured_order: number;
 };
-type FeaturedWorkProps = { projects: Project[] };
+
+type FeaturedWorkProps = {
+  projects: Project[];
+};
+
+type Category = 'Photography' | 'Cinematography';
+
 export function FeaturedWork({ projects }: FeaturedWorkProps) {
+  const [activeCategory, setActiveCategory] = useState<Category>('Photography');
+
+  const visibleProjects = useMemo(() => {
+    const category =
+      activeCategory === 'Photography' ? 'Interior Photography' : 'Interior Cinematography';
+
+    return projects
+      .filter((project) => project.category === category)
+      .sort((a, b) => a.featured_order - b.featured_order)
+      .slice(0, 2);
+  }, [activeCategory, projects]);
+
+  const photographyActive = activeCategory === 'Photography';
+  const cinematographyActive = activeCategory === 'Cinematography';
+
   return (
-    <section className="bg-background text-foreground px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
-      {' '}
-      <div className="mx-auto max-w-360">
-        {' '}
-        <div className="flex flex-col justify-between gap-10 sm:flex-row sm:items-end">
-          {' '}
-          <div>
-            {' '}
-            <div className="mb-7 flex items-center gap-4">
-              {' '}
-              <span className="bg-foreground/40 h-px w-8" />{' '}
-              <p className="text-muted text-[10px] font-medium tracking-[0.25em] uppercase sm:text-[11px]">
-                {' '}
-                Selected Work{' '}
-              </p>{' '}
-            </div>{' '}
-            <h2 className="font-serif text-[clamp(3.5rem,8vw,8rem)] leading-[0.82] tracking-[-0.055em]">
-              {' '}
-              Featured.{' '}
-            </h2>{' '}
-          </div>{' '}
-          <p className="text-secondary max-w-sm text-sm leading-7 sm:pb-2">
-            {' '}
-            A selection of photography and cinematography created with intention, atmosphere, and
-            attention to detail.{' '}
-          </p>{' '}
-        </div>{' '}
-        {projects.length > 0 ? (
-          <div className="mt-16 grid gap-5 sm:mt-20 sm:grid-cols-2 lg:mt-24 lg:gap-7">
-            {' '}
-            {projects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{ duration: 0.8, delay: index * 0.08 }}
-              >
-                {' '}
-                <ProjectCard
-                  title={project.title}
-                  category={project.category}
-                  number={String(index + 1).padStart(2, '0')}
-                  image={project.cover_image ?? ''}
-                  slug={project.slug}
-                  priority={index < 2}
-                  aspectClass={index % 3 === 2 ? 'aspect-[16/10] sm:col-span-2' : 'aspect-[4/5]'}
-                />{' '}
-              </motion.div>
-            ))}{' '}
-          </div>
-        ) : (
-          <div className="border-foreground/10 mt-16 border-y py-20 text-center sm:mt-20 sm:py-28">
-            {' '}
-            <p className="text-muted text-[10px] font-medium tracking-[0.25em] uppercase">
-              {' '}
-              No featured projects{' '}
-            </p>{' '}
-            <p className="text-secondary mt-4 text-sm"> Featured work will appear here. </p>{' '}
-          </div>
-        )}{' '}
+    <section
+      id="work"
+      className="bg-background text-foreground px-5 py-28 sm:px-8 sm:py-36 lg:px-10 lg:py-48"
+    >
+      <div className="mx-auto max-w-[1600px]">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className="mt-20 flex justify-center sm:mt-32"
+          viewport={{ once: true, margin: '-10% 0px' }}
+          transition={{
+            duration: 0.9,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="mb-20 sm:mb-28"
         >
-          {' '}
-          <Link
-            href="/work"
-            className="text-secondary hover:text-foreground group flex min-h-11 items-center gap-5 text-[9px] font-medium tracking-[0.35em] uppercase transition-colors duration-300 sm:gap-6 sm:text-[10px]"
+          <div className="flex items-center justify-between gap-8">
+            <div className="flex items-center gap-4">
+              <span className="editorial-rule" />
+              <p className="type-label text-muted">Selected work</p>
+            </div>
+
+            <Link href="/work" className="editorial-link group hidden sm:flex">
+              View all work
+              <span
+                aria-hidden="true"
+                className="text-sm transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
+              >
+                ↗
+              </span>
+            </Link>
+          </div>
+        </motion.div>
+
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-10 xl:gap-16">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10% 0px' }}
+            transition={{
+              duration: 1,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="lg:col-span-4"
           >
-            {' '}
-            <span className="relative">
-              {' '}
-              View all work{' '}
-              <span className="bg-foreground absolute -bottom-2 left-0 h-px w-full origin-left scale-x-0 transition-transform duration-500 group-hover:scale-x-100" />{' '}
-            </span>{' '}
+            <h2 className="type-display-md max-w-xl">
+              Spaces
+              <br />
+              worth seeing.
+            </h2>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-10% 0px' }}
+            transition={{
+              duration: 1,
+              delay: 0.1,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+            className="lg:col-span-8 lg:flex lg:items-end lg:justify-between lg:gap-12"
+          >
+            <p className="type-body-lg text-secondary max-w-xl">
+              Interiors photographed and filmed with an eye for atmosphere, proportion, material,
+              and light.
+            </p>
+
+            <div className="mt-8 flex shrink-0 flex-col items-start gap-5 lg:mt-0 lg:flex-row lg:items-center lg:gap-8">
+              <button
+                type="button"
+                onClick={() => setActiveCategory('Photography')}
+                aria-pressed={photographyActive}
+                className={[
+                  'relative pb-2',
+                  'text-[10px] font-medium tracking-[0.2em] uppercase sm:text-[11px]',
+                  'transition-colors duration-300',
+                  photographyActive ? 'text-foreground' : 'text-muted hover:text-foreground',
+                ].join(' ')}
+              >
+                Photography
+                <span
+                  aria-hidden="true"
+                  className={[
+                    'absolute inset-x-0 bottom-0 h-px origin-left',
+                    'bg-foreground transition-transform duration-500',
+                    photographyActive ? 'scale-x-100' : 'scale-x-0',
+                  ].join(' ')}
+                />
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveCategory('Cinematography')}
+                aria-pressed={cinematographyActive}
+                className={[
+                  'relative pb-2',
+                  'text-[10px] font-medium tracking-[0.2em] uppercase sm:text-[11px]',
+                  'transition-colors duration-300',
+                  cinematographyActive ? 'text-foreground' : 'text-muted hover:text-foreground',
+                ].join(' ')}
+              >
+                Cinematography
+                <span
+                  aria-hidden="true"
+                  className={[
+                    'absolute inset-x-0 bottom-0 h-px origin-left',
+                    'bg-foreground transition-transform duration-500',
+                    cinematographyActive ? 'scale-x-100' : 'scale-x-0',
+                  ].join(' ')}
+                />
+              </button>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div
+          key={activeCategory}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.7,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="mt-20 sm:mt-24 lg:mt-28"
+        >
+          {visibleProjects.length > 0 ? (
+            <div className="grid gap-12 md:grid-cols-2 md:gap-8 lg:gap-10">
+              {visibleProjects.map((project, index) => {
+                const hasImage = Boolean(project.cover_image?.trim());
+
+                return (
+                  <motion.div
+                    key={project.id}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.8,
+                      delay: index * 0.1,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
+                  >
+                    <Link href={`/work/${project.slug}`} className="group block">
+                      <article>
+                        <div className="bg-subtle relative aspect-[16/10] overflow-hidden">
+                          {hasImage ? (
+                            <motion.div
+                              className="absolute inset-0"
+                              whileHover={{ scale: 1.035 }}
+                              transition={{
+                                duration: 1.3,
+                                ease: [0.22, 1, 0.36, 1],
+                              }}
+                            >
+                              <Image
+                                src={project.cover_image as string}
+                                alt={project.title}
+                                fill
+                                priority={index < 2}
+                                sizes="(max-width: 767px) 100vw, 50vw"
+                                className="object-cover"
+                              />
+                            </motion.div>
+                          ) : (
+                            <div className="absolute inset-0 flex items-center justify-center">
+                              <span className="type-label-sm text-muted">ST Photography</span>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="border-foreground/10 mt-5 border-t pt-4">
+                          <div className="flex items-start justify-between gap-6">
+                            <div className="min-w-0">
+                              <h3 className="project-card-title">{project.title}</h3>
+
+                              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-2">
+                                <p className="project-card-category text-muted">
+                                  {project.category.replace('Interior ', '')}
+                                </p>
+
+                                <span className="bg-foreground/20 h-px w-4" />
+
+                                <p className="project-card-category text-muted">
+                                  {project.location}
+                                </p>
+
+                                <span className="bg-foreground/20 h-px w-4" />
+
+                                <p className="project-card-category text-muted">{project.year}</p>
+                              </div>
+                            </div>
+
+                            <span
+                              aria-hidden="true"
+                              className="text-muted mt-1 shrink-0 text-base transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
+                            >
+                              ↗
+                            </span>
+                          </div>
+                        </div>
+                      </article>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="border-foreground/10 flex min-h-[360px] items-center border-y">
+              <p className="type-label-sm text-muted">No featured projects</p>
+            </div>
+          )}
+        </motion.div>
+
+        <div className="border-foreground/10 mt-16 border-t pt-6 sm:mt-20 sm:hidden">
+          <Link href="/work" className="editorial-link group">
+            View all work
             <span
               aria-hidden="true"
-              className="transition-transform duration-300 group-hover:translate-x-1"
+              className="text-sm transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
             >
-              {' '}
-              →{' '}
-            </span>{' '}
-          </Link>{' '}
-        </motion.div>{' '}
-      </div>{' '}
+              ↗
+            </span>
+          </Link>
+        </div>
+      </div>
     </section>
   );
 }

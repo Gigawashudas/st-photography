@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
-import { createAdminClient } from '@/lib/supabase/admin';
+
 import { rateLimit } from '@/lib/rate-limit';
+import { createAdminClient } from '@/lib/supabase/admin';
 
 const enquirySchema = z.object({
   website: z.string().max(0).optional(),
@@ -22,6 +23,21 @@ const enquirySchema = z.object({
     .max(2, 'Please select a valid service.'),
 
   projectDate: z.string().optional().or(z.literal('')),
+
+  projectSizeSqft: z
+    .string()
+    .trim()
+    .refine((value) => {
+      if (!value) {
+        return true;
+      }
+
+      const size = Number(value);
+
+      return Number.isFinite(size) && size > 0 && size <= 1000000;
+    }, 'Please enter a valid project size.')
+    .optional()
+    .or(z.literal('')),
 
   location: z.string().trim().max(150, 'Location is too long.').optional().or(z.literal('')),
 
@@ -81,8 +97,18 @@ export async function POST(request: Request) {
       );
     }
 
-    const { website, name, email, phone, service, projectDate, location, budget, message } =
-      result.data;
+    const {
+      website,
+      name,
+      email,
+      phone,
+      service,
+      projectDate,
+      projectSizeSqft,
+      location,
+      budget,
+      message,
+    } = result.data;
 
     if (website) {
       return NextResponse.json({
@@ -93,17 +119,9 @@ export async function POST(request: Request) {
 
     const supabase = createAdminClient();
 
-    /*
-     * The form sends an array:
-     *
-     * ['Photography']
-     * ['Cinematography']
-     * ['Photography', 'Cinematography']
-     *
-     * We store it as a single readable string in the existing
-     * database service column.
-     */
     const serviceValue = service.join(', ');
+
+    const projectSizeValue = projectSizeSqft ? Number(projectSizeSqft) : null;
 
     const { data: enquiry, error: databaseError } = await supabase
       .from('enquiries')
@@ -113,6 +131,7 @@ export async function POST(request: Request) {
         phone: phone || null,
         service: serviceValue,
         project_date: projectDate || null,
+        project_size_sqft: projectSizeValue,
         location: location || null,
         budget: budget || null,
         message,

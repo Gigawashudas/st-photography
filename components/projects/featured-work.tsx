@@ -59,7 +59,7 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
           <div className="flex items-center justify-between gap-8">
             <div className="flex items-center gap-4">
               <span className="editorial-rule" />
-              <p className="type-label text-muted">Selected work</p>
+              <p className="type-label text-muted">Featured work</p>
             </div>
 
             <Link href="/work" className="editorial-link group hidden sm:flex">
@@ -83,13 +83,17 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
               duration: 1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="lg:col-span-4"
+            className="lg:col-span-full"
           >
-            <h2 className="type-display-md max-w-xl">
-              Spaces
-              <br />
-              worth seeing.
-            </h2>
+            <div className="flex w-dvw flex-col items-center justify-center gap-5">
+              <h2 className="type-display-md min-w-200 text-center whitespace-nowrap">
+                Spaces We’ve Captured
+              </h2>
+              <p className="w-300 text-center">
+                A curated collection of spaces we’ve captured, showcing the beauty, details, and
+                design behind every projects.
+              </p>
+            </div>
           </motion.div>
 
           <motion.div
@@ -101,13 +105,8 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
               delay: 0.1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="lg:col-span-8 lg:flex lg:items-end lg:justify-between lg:gap-12"
+            className="lg:col-span-8 lg:flex lg:flex-col lg:items-end lg:justify-between lg:gap-12"
           >
-            <p className="type-body-lg text-secondary max-w-xl">
-              Interiors photographed and filmed with an eye for atmosphere, proportion, material,
-              and light.
-            </p>
-
             <div className="mt-8 flex shrink-0 flex-col items-start gap-5 lg:mt-0 lg:flex-row lg:items-center lg:gap-8">
               <button
                 type="button"

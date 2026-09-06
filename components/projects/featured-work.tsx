@@ -85,11 +85,11 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
             }}
             className="lg:col-span-full"
           >
-            <div className="flex w-dvw flex-col items-center justify-center gap-5">
-              <h2 className="type-display-md min-w-200 text-center whitespace-nowrap">
+            <div className="flex w-full flex-col items-center justify-center gap-5">
+              <h2 className="type-display-md min-w-full text-center whitespace-nowrap">
                 Spaces We’ve Captured
               </h2>
-              <p className="w-300 text-center">
+              <p className="w-full text-center">
                 A curated collection of spaces we’ve captured, showcing the beauty, details, and
                 design behind every projects.
               </p>

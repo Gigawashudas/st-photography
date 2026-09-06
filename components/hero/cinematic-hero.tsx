@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import { motion } from 'motion/react';
+import heroImage from './hero.jpeg';
 
-const heroImage =
-  'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=2400&q=90';
+// const heroImage ='https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=2400&q=90';
 
 export function CinematicHero() {
   return (

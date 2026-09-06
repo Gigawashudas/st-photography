@@ -94,7 +94,6 @@ export function ContactSection() {
       setStatus('success');
     } catch (error) {
       console.error('Enquiry submission error:', error);
-
       setStatus('error');
       setErrorMessage('Something went wrong. Please try again.');
     }
@@ -109,14 +108,13 @@ export function ContactSection() {
     <section
       id="contact"
       aria-labelledby="contact-heading"
-      className="border-b border-black/10 py-24 sm:py-28 lg:py-32 dark:border-white/10"
+      className="border-b border-black/10 py-20 sm:py-24 lg:py-28 dark:border-white/10"
     >
       <div className="mx-auto max-w-[1440px] px-6 sm:px-8 lg:px-10">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
-            <div className="mb-20 flex items-center gap-4 sm:mb-28">
+            <div className="mb-12 flex items-center gap-4 sm:mb-16">
               <span className="editorial-rule" />
-
               <p className="type-label text-muted">Start a project</p>
             </div>
 
@@ -129,7 +127,7 @@ export function ContactSection() {
               your space.
             </h2>
 
-            <div className="mt-16 max-w-md sm:mt-20">
+            <div className="mt-12 max-w-md sm:mt-16">
               <div className="border-foreground/10 border-t pt-6">
                 <p className="type-label-sm text-muted mb-8">Before we begin</p>
 
@@ -139,7 +137,7 @@ export function ContactSection() {
                 </p>
               </div>
 
-              <div className="border-foreground/10 mt-14 border-t pt-6 sm:mt-20">
+              <div className="border-foreground/10 mt-10 border-t pt-6 sm:mt-14">
                 <p className="type-body text-secondary max-w-lg">
                   Tell us what you are planning, where the project is, and whether you need
                   photography, cinematography, or both.
@@ -148,7 +146,7 @@ export function ContactSection() {
             </div>
           </div>
 
-          <div className="lg:col-span-7 lg:mt-32">
+          <div className="lg:col-span-7 lg:mt-24">
             <form
               onSubmit={handleSubmit}
               className="rounded-lg border border-black/15 bg-transparent p-5 sm:p-6 dark:border-white/15"

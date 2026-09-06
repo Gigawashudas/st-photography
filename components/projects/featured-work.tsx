@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'motion/react';
@@ -42,7 +43,7 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
   return (
     <section
       id="work"
-      className="bg-background text-foreground px-5 py-28 sm:px-8 sm:py-36 lg:px-10 lg:py-48"
+      className="bg-background text-foreground px-5 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-32"
     >
       <div className="mx-auto max-w-[1600px]">
         <motion.div
@@ -53,7 +54,7 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
             duration: 0.9,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="mb-20 sm:mb-28"
+          className="mb-12 sm:mb-16"
         >
           <div className="flex items-center justify-between gap-8">
             <div className="flex items-center gap-4">
@@ -163,7 +164,7 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
             duration: 0.7,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="mt-20 sm:mt-24 lg:mt-28"
+          className="mt-14 sm:mt-16 lg:mt-20"
         >
           {visibleProjects.length > 0 ? (
             <div className="grid gap-12 md:grid-cols-2 md:gap-8 lg:gap-10">
@@ -246,13 +247,13 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
               })}
             </div>
           ) : (
-            <div className="border-foreground/10 flex min-h-[360px] items-center border-y">
+            <div className="border-foreground/10 flex min-h-[280px] items-center border-y">
               <p className="type-label-sm text-muted">No featured projects</p>
             </div>
           )}
         </motion.div>
 
-        <div className="border-foreground/10 mt-16 border-t pt-6 sm:mt-20 sm:hidden">
+        <div className="border-foreground/10 mt-12 border-t pt-6 sm:mt-16 sm:hidden">
           <Link href="/work" className="editorial-link group">
             View all work
             <span

@@ -10,7 +10,7 @@ export function AboutSection() {
   return (
     <section
       id="about"
-      className="bg-background text-foreground px-5 py-28 sm:px-8 sm:py-36 lg:px-10 lg:py-48"
+      className="bg-background text-foreground px-5 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-32"
     >
       <div className="mx-auto max-w-[1600px]">
         <motion.div
@@ -21,14 +21,13 @@ export function AboutSection() {
             duration: 0.9,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="mb-20 flex items-center gap-4 sm:mb-28"
+          className="mb-12 flex items-center gap-4 sm:mb-16"
         >
           <span className="editorial-rule" />
-
           <p className="type-label text-muted">About the studio</p>
         </motion.div>
 
-        <div className="grid gap-20 lg:grid-cols-12 lg:gap-10 xl:gap-16">
+        <div className="grid gap-16 lg:grid-cols-12 lg:gap-10 xl:gap-16">
           <motion.div
             initial={{ opacity: 0, y: 35 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -64,17 +63,15 @@ export function AboutSection() {
               people behind the spaces.
             </p>
 
-            <div className="text-muted mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-[10px] font-medium tracking-[0.2em] uppercase sm:mt-14 sm:text-[11px]">
+            <div className="text-muted mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-[10px] font-medium tracking-[0.2em] uppercase sm:mt-10 sm:text-[11px]">
               <span>Interior Photography</span>
-
               <span aria-hidden="true" className="bg-foreground/20 h-px w-5" />
-
               <span>Interior Cinematography</span>
             </div>
           </motion.div>
         </div>
 
-        <div className="mt-24 grid gap-16 sm:mt-32 lg:mt-40 lg:grid-cols-12 lg:gap-10 xl:gap-16">
+        <div className="mt-16 grid gap-12 sm:mt-20 lg:mt-24 lg:grid-cols-12 lg:gap-10 xl:gap-16">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -125,7 +122,7 @@ export function AboutSection() {
               </p>
             </div>
 
-            <div className="border-foreground/10 mt-14 border-t pt-6 sm:mt-20">
+            <div className="border-foreground/10 mt-10 border-t pt-6 sm:mt-14">
               <p className="type-body text-secondary max-w-lg">
                 From natural light and material details to movement through a room, we create images
                 and films that communicate how a space actually feels.

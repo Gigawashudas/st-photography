@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 import { ThemeToggle } from '../theme-toggle/theme-toggle';
 
@@ -21,10 +22,15 @@ const navigation = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
 
   function closeMenu() {
     setMenuOpen(false);
+  }
+
+  function isActive(href: string) {
+    return pathname === href || pathname.startsWith(`${href}/`);
   }
 
   useEffect(() => {
@@ -50,15 +56,26 @@ export function Navbar() {
 
           <div className="hidden items-center lg:flex">
             <nav aria-label="Main navigation" className="flex items-center gap-10">
-              {navigation.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="type-nav text-foreground transition-opacity duration-300 hover:opacity-50"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navigation.map((item) => {
+                const active = isActive(item.href);
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    aria-current={active ? 'page' : undefined}
+                    className={[
+                      'type-nav text-foreground relative',
+                      'transition-opacity duration-300 hover:opacity-50',
+                      'after:absolute after:-bottom-2 after:left-0 after:h-px',
+                      'after:bg-foreground after:transition-all after:duration-500',
+                      active ? 'after:w-full' : 'after:w-0',
+                    ].join(' ')}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </nav>
 
             <div className="border-foreground/10 ml-10 border-l pl-6">
@@ -119,35 +136,45 @@ export function Navbar() {
             }`}
           >
             <span className="editorial-rule" />
-
             <span className="type-label-sm text-muted">Navigation</span>
           </div>
 
           <nav aria-label="Mobile navigation" className="flex flex-col">
-            {navigation.map((item, index) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={closeMenu}
-                className={`group border-foreground/10 text-foreground flex items-center justify-between border-b py-6 transition-all duration-700 sm:py-8 ${
-                  menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
-                }`}
-                style={{
-                  transitionDelay: menuOpen ? `${100 + index * 90}ms` : '0ms',
-                }}
-              >
-                <span className="text-[clamp(2.5rem,12vw,5rem)] leading-[0.9] font-medium tracking-[-0.055em] transition-transform duration-500 group-hover:translate-x-2">
-                  {item.label}
-                </span>
+            {navigation.map((item, index) => {
+              const active = isActive(item.href);
 
-                <span
-                  aria-hidden="true"
-                  className="text-muted text-lg font-light transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={closeMenu}
+                  aria-current={active ? 'page' : undefined}
+                  className={`group border-foreground/10 text-foreground flex items-center justify-between border-b py-6 transition-all duration-700 sm:py-8 ${
+                    menuOpen ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
+                  }`}
+                  style={{
+                    transitionDelay: menuOpen ? `${100 + index * 90}ms` : '0ms',
+                  }}
                 >
-                  ↗
-                </span>
-              </Link>
-            ))}
+                  <span
+                    className={`flex items-center gap-4 text-[clamp(2.5rem,12vw,5rem)] leading-[0.9] font-medium tracking-[-0.055em] transition-transform duration-500 group-hover:translate-x-2`}
+                  >
+                    {active && (
+                      <span aria-hidden="true" className="bg-foreground h-px w-6 shrink-0 sm:w-8" />
+                    )}
+
+                    {item.label}
+                  </span>
+
+                  <span
+                    aria-hidden="true"
+                    className="text-muted text-lg font-light transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
+                  >
+                    ↗
+                  </span>
+                </Link>
+              );
+            })}
           </nav>
 
           <div
@@ -160,15 +187,12 @@ export function Navbar() {
           >
             <div>
               <p className="type-label-sm text-muted mb-2">Studio</p>
-
               <p className="type-meta text-foreground">ST Photography</p>
             </div>
 
             <div>
               <p className="type-label-sm text-muted mb-2">Speciality</p>
-
               <p className="type-meta text-foreground">Interior Photography</p>
-
               <p className="type-meta text-foreground mt-1">&amp; Cinematography</p>
             </div>
           </div>

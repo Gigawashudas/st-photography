@@ -1,36 +1,33 @@
 import Link from 'next/link';
+
 import { WorkGrid } from './work-grid';
-import { getPublishedProjects } from '@/lib/projects/get-project';
 import { WorkHeader } from './work-header';
+import { Footer } from '@/components/footer/footer';
+
+import { getPublishedProjects } from '@/lib/projects/get-project';
 
 export default async function WorkPage() {
   const projects = await getPublishedProjects();
 
   return (
-    <main className="min-h-screen bg-background">
-      <section className="px-6 pb-24 pt-36 sm:px-8 sm:pb-32 sm:pt-44 lg:px-10 lg:pb-40 lg:pt-52">
+    <main className="bg-background text-foreground min-h-screen">
+      <section className="px-5 pt-32 pb-20 sm:px-8 sm:pt-40 sm:pb-28 lg:px-10 lg:pt-44 lg:pb-32">
         <div className="mx-auto max-w-[1440px]">
           <WorkHeader>
-            <div className="flex flex-col justify-between gap-12 lg:flex-row lg:items-end">
-              <div>
-                <div className="mb-8 flex items-center gap-4">
-                  <span className="h-px w-8 bg-foreground/40" />
+            <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">
+              <div className="lg:col-span-7">
+                <div className="mb-7 flex items-center gap-4"></div>
 
-                  <p className="text-[10px] font-medium uppercase tracking-[0.28em] text-muted sm:text-xs">
-                    Selected Work
-                  </p>
-                </div>
-
-                <h1 className="max-w-5xl font-serif text-[clamp(4rem,10vw,10rem)] leading-[0.8] tracking-[-0.055em]">
-                  Spaces
+                <h1 className="max-w-4xl text-[clamp(3.25rem,6vw,6rem)] leading-[0.88] font-medium tracking-[-0.05em]">
+                  A collection of spaces,
                   <br />
-                  <span className="ml-[8vw]">worth remembering.</span>
+                  captured with intention.
                 </h1>
               </div>
 
-              <p className="max-w-sm text-sm font-light leading-7 tracking-[0.05em] text-secondary sm:text-base sm:leading-8 lg:pb-2">
-                Interior photography and cinematography for spaces, architecture, designers,
-                developers, hospitality, and brands.
+              <p className="type-body-lg text-secondary max-w-lg lg:col-span-4 lg:col-start-9 lg:pb-1">
+                Interior photography and cinematography for architecture, designers, hospitality,
+                developers, and brands.
               </p>
             </div>
           </WorkHeader>
@@ -39,31 +36,35 @@ export default async function WorkPage() {
         </div>
       </section>
 
-      <section className="border-t border-foreground/10 px-6 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-40">
+      <section className="border-foreground/10 border-t px-5 py-24 sm:px-8 sm:py-32 lg:px-10 lg:py-36">
         <div className="mx-auto flex max-w-[1440px] flex-col items-start justify-between gap-10 md:flex-row md:items-end">
           <div>
-            <p className="mb-5 text-[10px] font-medium uppercase tracking-[0.25em] text-muted sm:text-xs">
+            <p className="text-muted mb-5 text-[10px] font-medium tracking-[0.25em] uppercase sm:text-xs">
               Have a space to photograph?
             </p>
 
-            <h2 className="max-w-3xl font-serif text-[clamp(3.5rem,7vw,7rem)] leading-[0.84] tracking-[-0.05em]">
-              Let&apos;s make
+            <h2 className="max-w-2xl text-[clamp(3rem,5.5vw,5.5rem)] leading-[0.86] font-medium tracking-[-0.05em]">
+              Let&apos;s create
               <br />
-              it memorable.
+              something considered.
             </h2>
           </div>
 
           <Link
             href="/#contact"
-            className="group flex items-center gap-5 border-b border-foreground pb-3 text-[10px] font-medium uppercase tracking-[0.25em] transition-opacity duration-300 hover:opacity-50 sm:text-xs"
+            className="group border-foreground flex items-center gap-5 border-b pb-3 text-[10px] font-medium tracking-[0.25em] uppercase transition-opacity duration-300 hover:opacity-50 sm:text-xs"
           >
             Start a project
-            <span className="text-base transition-transform duration-500 group-hover:translate-x-1">
+            <span
+              aria-hidden="true"
+              className="text-base transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
+            >
               ↗
             </span>
           </Link>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

@@ -16,9 +16,9 @@ const whatsappLink =
 
 export function Footer() {
   return (
-    <footer className="border-foreground/10 bg-background border-t px-6 pt-20 pb-8 sm:px-8 sm:pt-24 lg:px-10 lg:pt-28">
-      <div className="mx-auto max-w-[1440px]">
-        <div className="relative grid grid-cols-2 gap-x-8 gap-y-14 pb-28 sm:grid-cols-5 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-x-16">
+    <footer className="border-foreground/10 bg-background border-t px-6 pt-20 sm:px-8 sm:pt-24 lg:px-10 lg:pt-28">
+      <div className="mx-auto max-w-360">
+        <div className="relative grid grid-cols-2 gap-x-8 gap-y-14 px-3 pb-20 sm:grid-cols-5 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-x-16">
           <div className="col-span-2 sm:col-span-1">
             <Link
               href="/"
@@ -27,7 +27,7 @@ export function Footer() {
               ST
             </Link>
 
-            <p className="text-secondary mt-6 max-w-[220px] text-sm leading-6">
+            <p className="text-secondary mt-6 max-w-55 text-sm leading-6">
               Photography &amp; Cinematography
             </p>
           </div>
@@ -121,7 +121,7 @@ export function Footer() {
 
           <nav
             aria-label="Social media"
-            className="col-span-2 mt-2 flex items-end justify-start gap-5 sm:col-span-5 sm:justify-start lg:absolute lg:right-0 lg:bottom-0 lg:col-span-1 lg:mt-0 lg:justify-end"
+            className="col-span-2 mt-2 flex items-end justify-start gap-5 sm:col-span-5 sm:justify-start sm:pb-5 lg:absolute lg:right-0 lg:bottom-0 lg:col-span-1 lg:mt-0 lg:justify-end"
           >
             <a
               href={instagramLink}

@@ -10,7 +10,7 @@ export function AboutSection() {
   return (
     <section
       id="about"
-      className="bg-background text-foreground px-5 py-20 sm:px-8 sm:py-24 lg:px-10 lg:py-32"
+      className="bg-background text-foreground px-5 pt-20 sm:px-8 sm:pt-24 lg:px-10 lg:pt-32"
     >
       <div className="mx-auto max-w-[1600px]">
         <motion.div
@@ -24,7 +24,7 @@ export function AboutSection() {
           className="mb-12 flex items-center gap-4 sm:mb-16"
         >
           <span className="editorial-rule" />
-          <p className="type-label text-muted">About the studio</p>
+          <p className="type-label text-muted">About ST Photography</p>
         </motion.div>
 
         <div className="grid gap-16 lg:grid-cols-12 lg:gap-10 xl:gap-16">
@@ -38,13 +38,16 @@ export function AboutSection() {
             }}
             className="lg:col-span-8"
           >
-            <h2 className="max-w-6xl text-[clamp(3.5rem,8vw,8.5rem)] leading-[0.86] font-medium tracking-[-0.055em]">
-              We photograph
-              <br />
-              spaces with
-              <br />
-              <span className="ml-[8vw]">purpose.</span>
-            </h2>
+            <div className="flex flex-col">
+              <h2 className="max-w-full text-center text-4xl! leading-[0.86] font-medium tracking-[-0.055em]">
+                We capture the beauty, character, and essence of thoughtfully designed interior
+                spaces.
+                <p className="type-body-lg text-secondary w-full pt-3 text-center">
+                  ST Photography creates considered visual stories for interiors, architecture, and
+                  the people behind the spaces.
+                </p>
+              </h2>
+            </div>
           </motion.div>
 
           <motion.div
@@ -58,11 +61,6 @@ export function AboutSection() {
             }}
             className="flex flex-col justify-end lg:col-span-4 lg:pb-2"
           >
-            <p className="type-body-lg text-secondary max-w-md">
-              ST Photography creates considered visual stories for interiors, architecture, and the
-              people behind the spaces.
-            </p>
-
             <div className="text-muted mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-[10px] font-medium tracking-[0.2em] uppercase sm:mt-10 sm:text-[11px]">
               <span>Interior Photography</span>
               <span aria-hidden="true" className="bg-foreground/20 h-px w-5" />

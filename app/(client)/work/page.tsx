@@ -15,20 +15,21 @@ export default async function WorkPage() {
         <div className="mx-auto max-w-[1440px]">
           <WorkHeader>
             <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">
-              <div className="lg:col-span-7">
+              <div className="lg:col-span-full">
                 <div className="mb-7 flex items-center gap-4"></div>
 
-                <h1 className="max-w-4xl text-[clamp(3.25rem,6vw,6rem)] leading-[0.88] font-medium tracking-[-0.05em]">
-                  A collection of spaces,
-                  <br />
-                  captured with intention.
-                </h1>
+                <div className="flex flex-col gap-5">
+                  <h1 className="w-full text-center leading-[0.88] font-medium tracking-tighter">
+                    A collection of spaces,
+                    <br />
+                    captured with intention.
+                  </h1>
+                  <p className="type-body-lg text-secondary w-full text-center lg:col-span-4 lg:col-start-9 lg:pb-1">
+                    Interior photography and cinematography for architecture, designers,
+                    hospitality, developers, and brands.
+                  </p>
+                </div>
               </div>
-
-              <p className="type-body-lg text-secondary max-w-lg lg:col-span-4 lg:col-start-9 lg:pb-1">
-                Interior photography and cinematography for architecture, designers, hospitality,
-                developers, and brands.
-              </p>
             </div>
           </WorkHeader>
 

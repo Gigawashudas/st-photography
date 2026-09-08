@@ -44,9 +44,9 @@ const principles = [
 export default function AboutPage() {
   return (
     <main className="bg-background text-foreground">
-      <section className="min-h-screen px-5 pt-36 pb-20 sm:px-8 sm:pt-44 sm:pb-28 lg:px-10 lg:pt-48 lg:pb-32">
+      <section className="px-5 pt-36 pb-20 sm:px-8 sm:pt-44 sm:pb-28 lg:px-10 lg:pt-48 lg:pb-32">
         <div className="mx-auto max-w-360">
-          <div className="flex min-h-[70vh] flex-col justify-between">
+          <div className="flex flex-col justify-between">
             <div>
               <div className="mb-8 flex items-center gap-4 sm:mb-10">
                 <span className="bg-foreground/40 h-px w-8" />
@@ -63,7 +63,7 @@ export default function AboutPage() {
               </h1>
             </div>
 
-            <div className="mt-20 flex flex-col justify-between gap-10 sm:mt-28 lg:flex-row lg:items-end">
+            <div className="mt-5 flex flex-col justify-between gap-5 sm:mt-8 lg:flex-row lg:items-end">
               <p className="text-secondary max-w-xl text-base leading-8 sm:text-lg sm:leading-9">
                 ST Photography is a visual studio focused on photography and cinematography. We
                 create considered imagery for people, places, events, and brands.

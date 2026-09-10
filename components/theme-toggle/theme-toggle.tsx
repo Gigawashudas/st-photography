@@ -1,7 +1,7 @@
 'use client';
 
 import { Moon, Sun } from 'lucide-react';
-import { useSyncExternalStore } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 
 function subscribe(callback: () => void) {
   window.addEventListener('storage', callback);
@@ -16,11 +16,21 @@ function getSnapshot() {
 }
 
 function getServerSnapshot() {
-  return false;
+  return true;
 }
 
 export function ThemeToggle() {
   const isDark = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem('theme');
+
+    const theme = savedTheme === 'light' ? 'light' : 'dark';
+
+    root.classList.toggle('dark', theme === 'dark');
+    root.style.colorScheme = theme;
+  }, []);
 
   function toggleTheme() {
     const root = document.documentElement;

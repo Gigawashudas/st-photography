@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { motion } from 'motion/react';
-import aboutImage from './about.jpeg';
+import aboutImage from './about.jpg';
 
 // const aboutImage ='https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=1400&q=90';
 
@@ -65,21 +65,22 @@ export function AboutSection() {
             }}
             className="lg:col-span-5 lg:col-start-2"
           >
-            <div className="bg-subtle relative aspect-square overflow-hidden">
+            <div className="relative overflow-hidden">
               <motion.div
                 whileHover={{ scale: 1.035 }}
                 transition={{
                   duration: 1.2,
                   ease: [0.22, 1, 0.36, 1],
                 }}
-                className="absolute inset-0"
+                className="relative"
               >
                 <Image
                   src={aboutImage}
                   alt="ST Photography studio portrait"
-                  fill
+                  width={1200}
+                  height={1200}
                   sizes="(max-width: 1023px) 100vw, 42vw"
-                  className="object-cover"
+                  className="h-auto w-full"
                 />
               </motion.div>
             </div>

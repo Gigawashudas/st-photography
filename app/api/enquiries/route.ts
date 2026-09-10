@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+
+import { Resend } from 'resend';
 import { z } from 'zod';
 
 import { rateLimit } from '@/lib/rate-limit';
@@ -53,7 +55,6 @@ const enquirySchema = z.object({
 export async function POST(request: Request) {
   const forwardedFor = request.headers.get('x-forwarded-for');
   const realIp = request.headers.get('x-real-ip');
-
   const identifier = forwardedFor?.split(',')[0]?.trim() || realIp || 'unknown';
 
   const limit = rateLimit(identifier);
@@ -75,7 +76,6 @@ export async function POST(request: Request) {
 
   try {
     const body = await request.json();
-
     const result = enquirySchema.safeParse(body);
 
     if (!result.success) {
@@ -118,9 +118,7 @@ export async function POST(request: Request) {
     }
 
     const supabase = createAdminClient();
-
     const serviceValue = service.join(', ');
-
     const projectSizeValue = projectSizeSqft ? Number(projectSizeSqft) : null;
 
     const { data: enquiry, error: databaseError } = await supabase
@@ -146,6 +144,173 @@ export async function POST(request: Request) {
         {
           success: false,
           message: 'Unable to save your enquiry right now.',
+        },
+        { status: 500 },
+      );
+    }
+
+    const resendApiKey = process.env.RESEND_API_KEY;
+    const resendFromEmail = process.env.RESEND_FROM_EMAIL;
+    const resendToEmail = process.env.RESEND_TO_EMAIL;
+
+    if (!resendApiKey || !resendFromEmail || !resendToEmail) {
+      console.error('Resend environment variables are missing.');
+
+      return NextResponse.json(
+        {
+          success: false,
+          enquiryId: enquiry.id,
+          message: 'Your enquiry was saved, but the notification email could not be sent.',
+        },
+        { status: 500 },
+      );
+    }
+
+    const resend = new Resend(resendApiKey);
+
+    const { error: emailError } = await resend.emails.send({
+      from: resendFromEmail,
+      to: [resendToEmail],
+      replyTo: email,
+      subject: `New enquiry from ${name}`,
+      html: `
+        <div style="font-family: Arial, Helvetica, sans-serif; color: #000000; max-width: 680px; margin: 0 auto; padding: 40px 24px;">
+          <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #66666e; margin: 0 0 24px;">
+            ST Photography
+          </p>
+
+          <h1 style="font-size: 32px; line-height: 1.1; font-weight: 500; margin: 0 0 40px;">
+            New enquiry
+          </h1>
+
+          <div style="border-top: 1px solid #e6e6e9;">
+            <div style="padding: 20px 0; border-bottom: 1px solid #e6e6e9;">
+              <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #9999a1; margin: 0 0 8px;">
+                Name
+              </p>
+              <p style="font-size: 16px; margin: 0;">
+                ${name}
+              </p>
+            </div>
+
+            <div style="padding: 20px 0; border-bottom: 1px solid #e6e6e9;">
+              <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #9999a1; margin: 0 0 8px;">
+                Email
+              </p>
+              <p style="font-size: 16px; margin: 0;">
+                ${email}
+              </p>
+            </div>
+
+            ${
+              phone
+                ? `
+                  <div style="padding: 20px 0; border-bottom: 1px solid #e6e6e9;">
+                    <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #9999a1; margin: 0 0 8px;">
+                      Phone
+                    </p>
+                    <p style="font-size: 16px; margin: 0;">
+                      ${phone}
+                    </p>
+                  </div>
+                `
+                : ''
+            }
+
+            <div style="padding: 20px 0; border-bottom: 1px solid #e6e6e9;">
+              <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #9999a1; margin: 0 0 8px;">
+                Service
+              </p>
+              <p style="font-size: 16px; margin: 0;">
+                ${serviceValue}
+              </p>
+            </div>
+
+            ${
+              projectDate
+                ? `
+                  <div style="padding: 20px 0; border-bottom: 1px solid #e6e6e9;">
+                    <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #9999a1; margin: 0 0 8px;">
+                      Project Date
+                    </p>
+                    <p style="font-size: 16px; margin: 0;">
+                      ${projectDate}
+                    </p>
+                  </div>
+                `
+                : ''
+            }
+
+            ${
+              projectSizeSqft
+                ? `
+                  <div style="padding: 20px 0; border-bottom: 1px solid #e6e6e9;">
+                    <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #9999a1; margin: 0 0 8px;">
+                      Project Size
+                    </p>
+                    <p style="font-size: 16px; margin: 0;">
+                      ${projectSizeSqft} sq ft
+                    </p>
+                  </div>
+                `
+                : ''
+            }
+
+            ${
+              location
+                ? `
+                  <div style="padding: 20px 0; border-bottom: 1px solid #e6e6e9;">
+                    <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #9999a1; margin: 0 0 8px;">
+                      Location
+                    </p>
+                    <p style="font-size: 16px; margin: 0;">
+                      ${location}
+                    </p>
+                  </div>
+                `
+                : ''
+            }
+
+            ${
+              budget
+                ? `
+                  <div style="padding: 20px 0; border-bottom: 1px solid #e6e6e9;">
+                    <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #9999a1; margin: 0 0 8px;">
+                      Budget
+                    </p>
+                    <p style="font-size: 16px; margin: 0;">
+                      ${budget}
+                    </p>
+                  </div>
+                `
+                : ''
+            }
+
+            <div style="padding: 20px 0; border-bottom: 1px solid #e6e6e9;">
+              <p style="font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #9999a1; margin: 0 0 8px;">
+                Message
+              </p>
+              <p style="font-size: 16px; line-height: 1.6; white-space: pre-wrap; margin: 0;">
+                ${message}
+              </p>
+            </div>
+          </div>
+
+          <p style="font-size: 11px; color: #9999a1; margin: 32px 0 0;">
+            Enquiry ID: ${enquiry.id}
+          </p>
+        </div>
+      `,
+    });
+
+    if (emailError) {
+      console.error('Resend enquiry notification error:', emailError);
+
+      return NextResponse.json(
+        {
+          success: false,
+          enquiryId: enquiry.id,
+          message: 'Your enquiry was saved, but the notification email could not be sent.',
         },
         { status: 500 },
       );

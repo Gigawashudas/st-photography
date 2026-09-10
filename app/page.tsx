@@ -1,4 +1,5 @@
 import { AboutSection } from '@/components/about/about-section';
+import { AchievementsSection } from '@/components/achievements/achievements-section';
 import { CinematicHero } from '@/components/hero/cinematic-hero';
 import { ContactSection } from '@/components/contact/contact-section';
 import { FeaturedWork } from '@/components/projects/featured-work';
@@ -12,15 +13,11 @@ export default async function Home() {
   return (
     <main className="bg-background text-foreground">
       <Navbar />
-
       <CinematicHero />
-
+      <AchievementsSection />
       <FeaturedWork projects={projects} />
-
       <AboutSection />
-
       <ContactSection />
-
       <Footer />
     </main>
   );

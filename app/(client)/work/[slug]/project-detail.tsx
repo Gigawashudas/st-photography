@@ -112,11 +112,6 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
                 <p className="text-muted mb-2">Category</p>
                 <p>{project.category.replace('Interior ', '')}</p>
               </div>
-
-              <div>
-                <p className="text-muted mb-2">Project</p>
-                <p>{project.id}</p>
-              </div>
             </motion.div>
           </div>
         </div>
@@ -225,7 +220,7 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
               duration: 1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="max-w-4xl font-serif text-[clamp(2.5rem,5vw,5.5rem)] leading-[0.9] tracking-[-0.04em]"
+            className="max-w-4xl font-serif text-xl leading-[0.9] tracking-[-0.04em]"
           >
             {project.description}
           </motion.p>

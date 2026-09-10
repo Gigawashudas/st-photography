@@ -2,9 +2,9 @@
 
 import Image from 'next/image';
 import { motion } from 'motion/react';
+import aboutImage from './about.jpeg';
 
-const aboutImage =
-  'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=1400&q=90';
+// const aboutImage ='https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=1400&q=90';
 
 export function AboutSection() {
   return (
@@ -36,35 +36,20 @@ export function AboutSection() {
               duration: 1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="lg:col-span-8"
+            className="lg:col-span-full"
           >
-            <div className="flex flex-col">
-              <h2 className="max-w-full text-center text-4xl! leading-[0.86] font-medium tracking-[-0.055em]">
-                We capture the beauty, character, and essence of thoughtfully designed interior
-                spaces.
+            <div className="flex flex-col items-center">
+              <h2 className="max-w-235 text-center text-4xl! leading-[0.86] font-medium tracking-[-0.055em]">
+                We are a creative visual production agency dedicated to transforming ideas, spaces,
+                products, and experiences into powerful visual stories
                 <p className="type-body-lg text-secondary w-full pt-3 text-center">
-                  ST Photography creates considered visual stories for interiors, architecture, and
-                  the people behind the spaces.
+                  At ST Photography, we combine professional photography, cinematic storytelling,
+                  and creative expertise to create high-quality visual content that helps brands
+                  stand out in a competitive market. Our experienced team of photographers,
+                  cinematographers, and editors works with precision and purpose from concept and
+                  production to the final frame
                 </p>
               </h2>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-10% 0px' }}
-            transition={{
-              duration: 1,
-              delay: 0.1,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="flex flex-col justify-end lg:col-span-4 lg:pb-2"
-          >
-            <div className="text-muted mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-[10px] font-medium tracking-[0.2em] uppercase sm:mt-10 sm:text-[11px]">
-              <span>Interior Photography</span>
-              <span aria-hidden="true" className="bg-foreground/20 h-px w-5" />
-              <span>Interior Cinematography</span>
             </div>
           </motion.div>
         </div>
@@ -115,15 +100,16 @@ export function AboutSection() {
               <p className="type-label-sm text-muted mb-8">The approach</p>
 
               <p className="max-w-xl text-[clamp(1.5rem,2.5vw,2.5rem)] leading-[1.05] font-medium tracking-[-0.035em]">
-                Every space has its own character. Our work is about finding it, understanding it,
-                and making it visible.
+                With a strong focus on quality, creativity, and attention to detail, we turn every
+                project into a visual experience that represents your brand at its best
               </p>
             </div>
 
             <div className="border-foreground/10 mt-10 border-t pt-6 sm:mt-14">
               <p className="type-body text-secondary max-w-lg">
-                From natural light and material details to movement through a room, we create images
-                and films that communicate how a space actually feels.
+                We believe great visuals are more than just beautiful images. They are a powerful
+                tool to communicate your brand’s identity, showcase your work, attract the right
+                audience, and create lasting impressions
               </p>
             </div>
           </motion.div>

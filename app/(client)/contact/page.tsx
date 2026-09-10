@@ -1,7 +1,28 @@
+import type { Metadata } from 'next';
+
 import Link from 'next/link';
+
 import { ArrowUpRight, Mail, MessageCircle } from 'lucide-react';
+
 import { ContactSection } from '@/components/contact/contact-section';
+
 import { Footer } from '@/components/footer/footer';
+
+export const metadata: Metadata = {
+  title: 'Contact',
+  description:
+    'Contact ST Photography to discuss interior photography, cinematography, and visual projects for architecture, interiors, hospitality, and brands in Bangladesh.',
+  alternates: {
+    canonical: '/contact',
+  },
+  openGraph: {
+    title: 'Contact | ST Photography',
+    description:
+      'Get in touch with ST Photography about interior photography, cinematography, and visual projects in Bangladesh.',
+    url: '/contact',
+    type: 'website',
+  },
+};
 
 const whatsappNumber = '8801839050341';
 

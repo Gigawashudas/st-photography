@@ -1,6 +1,7 @@
 import { AboutSection } from '@/components/about/about-section';
 import { AchievementsSection } from '@/components/achievements/achievements-section';
 import { CinematicHero } from '@/components/hero/cinematic-hero';
+import { ClientMarquee } from '@/components/clients/client-marquee';
 import { ContactSection } from '@/components/contact/contact-section';
 import { FeaturedWork } from '@/components/projects/featured-work';
 import { Footer } from '@/components/footer/footer';
@@ -17,6 +18,7 @@ export default async function Home() {
       <AchievementsSection />
       <FeaturedWork projects={projects} />
       <AboutSection />
+      <ClientMarquee />
       <ContactSection />
       <Footer />
     </main>

@@ -1,10 +1,30 @@
+import type { Metadata } from 'next';
+
 import Link from 'next/link';
 
 import { WorkGrid } from './work-grid';
+
 import { WorkHeader } from './work-header';
+
 import { Footer } from '@/components/footer/footer';
 
 import { getPublishedProjects } from '@/lib/projects/get-project';
+
+export const metadata: Metadata = {
+  title: 'Work',
+  description:
+    'Explore ST Photography’s interior photography and cinematography projects across architecture, interiors, hospitality, design, development, and brands in Bangladesh.',
+  alternates: {
+    canonical: '/work',
+  },
+  openGraph: {
+    title: 'Work | ST Photography',
+    description:
+      'Explore ST Photography’s interior photography and cinematography work for architecture, interiors, hospitality, design, developers, and brands in Bangladesh.',
+    url: '/work',
+    type: 'website',
+  },
+};
 
 export default async function WorkPage() {
   const projects = await getPublishedProjects();
@@ -16,7 +36,7 @@ export default async function WorkPage() {
           <WorkHeader>
             <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">
               <div className="lg:col-span-full">
-                <div className="mb-7 flex items-center gap-4"></div>
+                <div className="mb-7 flex items-center gap-4" />
 
                 <div className="flex flex-col gap-5">
                   <h1 className="w-full text-center leading-[0.88] font-medium tracking-tighter">
@@ -24,6 +44,7 @@ export default async function WorkPage() {
                     <br />
                     captured with intention.
                   </h1>
+
                   <p className="type-body-lg text-secondary w-full text-center lg:col-span-4 lg:col-start-9 lg:pb-1">
                     Interior photography and cinematography for architecture, designers,
                     hospitality, developers, and brands.
@@ -65,6 +86,7 @@ export default async function WorkPage() {
           </Link>
         </div>
       </section>
+
       <Footer />
     </main>
   );

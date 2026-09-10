@@ -1,5 +1,9 @@
+import type { Metadata } from 'next';
+
 import Link from 'next/link';
+
 import { ArrowDown, ArrowUpRight } from 'lucide-react';
+
 import { Footer } from '@/components/footer/footer';
 
 const services = [
@@ -41,6 +45,22 @@ const principles = [
   },
 ];
 
+export const metadata: Metadata = {
+  title: 'About',
+  description:
+    'ST Photography is a visual studio creating considered interior photography, cinematography, and visual stories for spaces, architecture, people, and brands in Bangladesh.',
+  alternates: {
+    canonical: '/about',
+  },
+  openGraph: {
+    title: 'About | ST Photography',
+    description:
+      'ST Photography creates considered visual stories through photography and cinematography for spaces, architecture, people, and brands in Bangladesh.',
+    url: '/about',
+    type: 'website',
+  },
+};
+
 export default function AboutPage() {
   return (
     <main className="bg-background text-foreground">
@@ -50,7 +70,6 @@ export default function AboutPage() {
             <div>
               <div className="mb-8 flex items-center gap-4 sm:mb-10">
                 <span className="bg-foreground/40 h-px w-8" />
-
                 <p className="text-muted text-[10px] font-medium tracking-[0.25em] uppercase sm:text-xs">
                   02 / About
                 </p>
@@ -133,7 +152,6 @@ export default function AboutPage() {
         <div className="mx-auto max-w-360">
           <div className="mb-16 flex items-center gap-4 sm:mb-24">
             <span className="bg-foreground/40 h-px w-8" />
-
             <p className="text-muted text-[10px] font-medium tracking-[0.25em] uppercase sm:text-xs">
               What We Do
             </p>

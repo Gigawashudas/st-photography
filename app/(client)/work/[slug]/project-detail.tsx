@@ -1,8 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+
 import Link from 'next/link';
+
 import { useState } from 'react';
+
 import { motion } from 'motion/react';
 
 import type { Project } from '@/lib/projects/get-project';
@@ -50,6 +53,10 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   const isCinematography = project.category === 'Interior Cinematography';
+
+  const projectType = project.category.replace('Interior ', '');
+
+  const imageAlt = `${project.title} — ${projectType} in ${project.location}`;
 
   const embedUrl =
     isCinematography && project.youtube_url ? getYoutubeEmbedUrl(project.youtube_url) : '';
@@ -110,7 +117,7 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
 
               <div>
                 <p className="text-muted mb-2">Category</p>
-                <p>{project.category.replace('Interior ', '')}</p>
+                <p>{projectType}</p>
               </div>
             </motion.div>
           </div>
@@ -140,7 +147,7 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
                   {project.cover_image ? (
                     <Image
                       src={project.cover_image}
-                      alt={project.title}
+                      alt={imageAlt}
                       fill
                       priority
                       sizes="100vw"
@@ -187,7 +194,7 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
               {project.cover_image && (
                 <Image
                   src={project.cover_image}
-                  alt={project.title}
+                  alt={imageAlt}
                   fill
                   priority
                   sizes="100vw"
@@ -255,7 +262,7 @@ export function ProjectDetail({ project, previousProject, nextProject }: Project
                   <div className="relative aspect-[16/10]">
                     <Image
                       src={image}
-                      alt={`${project.title} — image ${index + 1}`}
+                      alt={`${project.title} — ${projectType}, image ${index + 1}`}
                       fill
                       sizes="(max-width: 640px) 100vw, 50vw"
                       className="object-cover transition-transform duration-[1200ms] ease-out hover:scale-[1.035]"

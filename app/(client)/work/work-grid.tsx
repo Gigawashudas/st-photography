@@ -3,7 +3,9 @@
 import { useMemo, useState } from 'react';
 
 import Image from 'next/image';
+
 import Link from 'next/link';
+
 import { motion } from 'motion/react';
 
 import type { Project, ProjectCategory } from '@/lib/projects/get-project';
@@ -23,7 +25,6 @@ function getYoutubeVideoId(url: string | null) {
 
   try {
     const parsedUrl = new URL(url);
-
     const hostname = parsedUrl.hostname.toLowerCase();
 
     if (hostname === 'youtu.be') {
@@ -73,6 +74,11 @@ function WorkProjectCard({ project, index }: WorkProjectCardProps) {
 
   const youtubeVideoId = getYoutubeVideoId(project.youtube_url);
 
+  const imageAlt = `${project.title} — ${project.category.replace(
+    'Interior ',
+    '',
+  )} in ${project.location}`;
+
   function handlePlay(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
     event.stopPropagation();
@@ -114,7 +120,7 @@ function WorkProjectCard({ project, index }: WorkProjectCardProps) {
               >
                 <Image
                   src={project.cover_image as string}
-                  alt={project.title}
+                  alt={imageAlt}
                   fill
                   sizes="(max-width: 767px) 100vw, 50vw"
                   className="object-cover"

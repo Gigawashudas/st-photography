@@ -77,47 +77,6 @@ export function AchievementsSection() {
           </div>
         </div>
       </div>
-
-      <div className="border-foreground/10 border-t">
-        <div className="mx-auto max-w-[1440px] px-6 pt-16 sm:px-8 sm:pt-20 lg:px-10">
-          <div className="editorial-label">
-            <span className="editorial-rule" />
-
-            <span className="type-label-sm text-muted">Our Clients / We Worked With</span>
-          </div>
-        </div>
-
-        <div className="border-foreground/10 relative mt-14 overflow-hidden border-y py-8 sm:mt-16 sm:py-10">
-          <motion.div
-            className="flex w-max items-center"
-            animate={{ x: ['-50%', '0%'] }}
-            transition={{
-              duration: 40,
-              ease: 'linear',
-              repeat: Infinity,
-            }}
-          >
-            {marqueeClients.map((logo, index) => (
-              <div
-                key={`${logo}-${index}`}
-                aria-hidden={index >= clients.length}
-                className="flex h-24 w-60 shrink-0 items-center justify-center px-6 sm:h-28 sm:w-72 sm:px-8"
-              >
-                <div className="inline-flex items-center justify-center bg-white">
-                  <Image
-                    src={logo}
-                    alt={index >= clients.length ? '' : `Client ${index + 1}`}
-                    width={220}
-                    height={100}
-                    sizes="220px"
-                    className="h-16 w-auto object-contain sm:h-20"
-                  />
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </div>
     </section>
   );
 }

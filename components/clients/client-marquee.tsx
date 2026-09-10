@@ -42,7 +42,7 @@ export function ClientMarquee() {
     <section className="border-foreground/10 border-t">
       <div className="mx-auto max-w-[1440px] px-6 pt-16 sm:px-8 sm:pt-40 lg:px-10">
         <div className="editorial-label w-full text-center">
-          <span className="type-label-sm text-muted w-full text-center text-xl!">
+          <span className="w-full text-center text-2xl font-bold text-black dark:text-white">
             We Worked With
           </span>
         </div>

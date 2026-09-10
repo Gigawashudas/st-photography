@@ -63,7 +63,7 @@ export function ClientMarquee() {
             className="flex w-max items-center"
             animate={{ x: ['-50%', '0%'] }}
             transition={{
-              duration: 40,
+              duration: 70,
               ease: 'linear',
               repeat: Infinity,
             }}

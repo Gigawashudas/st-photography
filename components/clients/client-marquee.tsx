@@ -40,10 +40,11 @@ const marqueeClients = [...clients, ...clients];
 export function ClientMarquee() {
   return (
     <section className="border-foreground/10 border-t">
-      <div className="mx-auto max-w-[1440px] px-6 pt-16 sm:px-8 sm:pt-20 lg:px-10">
-        <div className="editorial-label">
-          <span className="editorial-rule" />
-          <span className="type-label-sm text-muted">Our Clients / We Worked With</span>
+      <div className="mx-auto max-w-[1440px] px-6 pt-16 sm:px-8 sm:pt-40 lg:px-10">
+        <div className="editorial-label w-full text-center">
+          <span className="type-label-sm text-muted w-full text-center text-xl!">
+            We Worked With
+          </span>
         </div>
       </div>
 

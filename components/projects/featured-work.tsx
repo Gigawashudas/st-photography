@@ -253,7 +253,7 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
             </div>
 
             <Link href="/work" className="editorial-link group hidden shrink-0 sm:flex">
-              View all work
+              <span className="text-2xl">View all work</span>
               <span
                 aria-hidden="true"
                 className="text-sm transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"
@@ -323,9 +323,9 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
           {renderProjects(cinematographyProjects)}
         </section>
 
-        <div className="border-foreground/10 mt-12 border-t pt-6 sm:mt-16 sm:hidden">
+        <div className="border-foreground/10 mt-12 border-t pt-6 sm:mt-16">
           <Link href="/work" className="editorial-link group">
-            View all work
+            <span className="text-2xl">View all work</span>
             <span
               aria-hidden="true"
               className="text-sm transition-transform duration-500 group-hover:translate-x-1 group-hover:-translate-y-1"

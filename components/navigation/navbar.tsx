@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -7,18 +8,9 @@ import { usePathname } from 'next/navigation';
 import { ThemeToggle } from '../theme-toggle/theme-toggle';
 
 const navigation = [
-  {
-    label: 'Work',
-    href: '/work',
-  },
-  {
-    label: 'About',
-    href: '/about',
-  },
-  {
-    label: 'Contact',
-    href: '/contact',
-  },
+  { label: 'Work', href: '/work' },
+  { label: 'About', href: '/about' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 export function Navbar() {
@@ -49,9 +41,18 @@ export function Navbar() {
             href="/"
             aria-label="ST Photography home"
             onClick={closeMenu}
-            className="type-nav text-foreground transition-opacity duration-300 hover:opacity-50"
+            className="flex items-center gap-3 transition-opacity duration-300 hover:opacity-50"
           >
-            ST Photography
+            <Image
+              src="/logo-dark.png"
+              alt="ST Photography logo"
+              width={40}
+              height={40}
+              priority
+              className="h-7 w-7 object-contain sm:h-8 sm:w-8"
+            />
+
+            <span className="type-nav text-foreground whitespace-nowrap">ST Photography</span>
           </Link>
 
           <div className="hidden items-center lg:flex">
@@ -156,9 +157,7 @@ export function Navbar() {
                     transitionDelay: menuOpen ? `${100 + index * 90}ms` : '0ms',
                   }}
                 >
-                  <span
-                    className={`flex items-center gap-4 text-[clamp(2.5rem,12vw,5rem)] leading-[0.9] font-medium tracking-[-0.055em] transition-transform duration-500 group-hover:translate-x-2`}
-                  >
+                  <span className="flex items-center gap-4 text-[clamp(2.5rem,12vw,5rem)] leading-[0.9] font-medium tracking-[-0.055em] transition-transform duration-500 group-hover:translate-x-2">
                     {active && (
                       <span aria-hidden="true" className="bg-foreground h-px w-6 shrink-0 sm:w-8" />
                     )}

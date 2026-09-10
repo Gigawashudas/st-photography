@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 
 const instagramLink = 'https://www.instagram.com/st_photography_interior?igsi=MTk4cHk4enJhNW50cg==';
@@ -22,9 +23,17 @@ export function Footer() {
           <div className="col-span-2 sm:col-span-1">
             <Link
               href="/"
-              className="inline-block text-5xl font-medium tracking-[-0.06em] transition-opacity duration-300 hover:opacity-50 sm:text-6xl"
+              aria-label="ST Photography home"
+              className="inline-flex transition-opacity duration-300 hover:opacity-50"
             >
-              ST
+              <Image
+                src="/logo-dark.png"
+                alt="ST Photography logo"
+                width={128}
+                height={128}
+                priority
+                className="h-28 w-28 object-contain sm:h-32 sm:w-32"
+              />
             </Link>
 
             <p className="text-secondary mt-6 max-w-55 text-sm leading-6">
@@ -193,7 +202,6 @@ export function Footer() {
         <div className="border-foreground/10 border-t pt-6 sm:pt-8">
           <div className="text-muted flex flex-col gap-4 text-[10px] tracking-[0.18em] uppercase sm:flex-row sm:items-center sm:justify-between sm:text-[11px]">
             <p>© {new Date().getFullYear()} ST Photography</p>
-
             <p>Photography &amp; Cinematography</p>
 
             <a href="#" className="transition-opacity duration-300 hover:opacity-50">

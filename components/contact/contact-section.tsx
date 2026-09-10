@@ -1,12 +1,9 @@
 'use client';
 
 import { FormEvent, useState } from 'react';
-
 import { ArrowRight, LoaderCircle } from 'lucide-react';
 
 const services = ['Photography', 'Cinematography'] as const;
-
-const budgetOptions = ['Under ৳25,000', '৳25,000 – ৳50,000', '৳50,000 – ৳100,000', '৳100,000+'];
 
 type Service = (typeof services)[number];
 
@@ -38,7 +35,6 @@ export function ContactSection() {
       projectDate: String(formData.get('projectDate') ?? ''),
       projectSizeSqft: String(formData.get('projectSizeSqft') ?? ''),
       location: String(formData.get('location') ?? ''),
-      budget: String(formData.get('budget') ?? ''),
       message: String(formData.get('message') ?? ''),
     };
 
@@ -80,7 +76,6 @@ export function ContactSection() {
               project_date: payload.projectDate,
               project_size_sqft: payload.projectSizeSqft,
               location: payload.location,
-              budget: payload.budget,
               message: payload.message,
               replyto: payload.email,
             }),
@@ -307,33 +302,6 @@ export function ContactSection() {
                     disabled={isSubmitting}
                     className={inputClassName}
                   />
-                </div>
-
-                <div className="sm:col-span-2">
-                  <label
-                    htmlFor="contact-budget"
-                    className="text-sm font-medium text-black dark:text-white"
-                  >
-                    Estimated budget
-                  </label>
-
-                  <select
-                    id="contact-budget"
-                    name="budget"
-                    disabled={isSubmitting}
-                    defaultValue=""
-                    className={`${inputClassName} appearance-none`}
-                  >
-                    <option value="" disabled>
-                      Select a budget range
-                    </option>
-
-                    {budgetOptions.map((budget) => (
-                      <option key={budget} value={budget}>
-                        {budget}
-                      </option>
-                    ))}
-                  </select>
                 </div>
 
                 <div className="sm:col-span-2">

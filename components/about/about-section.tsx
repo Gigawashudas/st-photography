@@ -65,7 +65,7 @@ export function AboutSection() {
             }}
             className="lg:col-span-5 lg:col-start-2"
           >
-            <div className="bg-subtle relative aspect-[4/5] overflow-hidden">
+            <div className="bg-subtle relative aspect-square overflow-hidden">
               <motion.div
                 whileHover={{ scale: 1.035 }}
                 transition={{

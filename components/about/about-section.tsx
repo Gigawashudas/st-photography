@@ -97,8 +97,6 @@ export function AboutSection() {
             className="flex flex-col justify-end lg:col-span-5 lg:col-start-8 lg:pb-1"
           >
             <div className="border-foreground/10 border-t pt-6">
-              <p className="type-label-sm text-muted mb-8">The approach</p>
-
               <p className="max-w-xl text-[clamp(1.5rem,2.5vw,2.5rem)] leading-[1.05] font-medium tracking-[-0.035em]">
                 With a strong focus on quality, creativity, and attention to detail, we turn every
                 project into a visual experience that represents your brand at its best

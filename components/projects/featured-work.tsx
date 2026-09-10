@@ -295,11 +295,7 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
               ease: [0.22, 1, 0.36, 1],
             }}
             className="mb-8 flex items-center gap-4 sm:mb-10"
-          >
-            <span className="editorial-rule" />
-
-            <p className="type-label text-muted">Photography</p>
-          </motion.div>
+          ></motion.div>
 
           {renderProjects(photographyProjects)}
         </section>
@@ -314,11 +310,7 @@ export function FeaturedWork({ projects }: FeaturedWorkProps) {
               ease: [0.22, 1, 0.36, 1],
             }}
             className="mb-8 flex items-center gap-4 sm:mb-10"
-          >
-            <span className="editorial-rule" />
-
-            <p className="type-label text-muted">Cinematography</p>
-          </motion.div>
+          ></motion.div>
 
           {renderProjects(cinematographyProjects)}
         </section>

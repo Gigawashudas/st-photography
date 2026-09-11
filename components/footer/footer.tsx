@@ -20,7 +20,7 @@ export function Footer() {
     <footer className="border-foreground/10 bg-background border-t px-6 pt-20 sm:px-8 sm:pt-24 lg:px-10 lg:pt-28">
       <div className="mx-auto max-w-360">
         <div className="relative grid grid-cols-2 gap-x-8 gap-y-14 px-3 pb-20 sm:grid-cols-5 lg:grid-cols-[1.5fr_1fr_1fr_1fr] lg:gap-x-16">
-          <div className="col-span-2 sm:col-span-1">
+          <div className="justified-start col-span-2 flex flex-col items-center sm:col-span-1">
             <Link
               href="/"
               aria-label="ST Photography home"

@@ -109,7 +109,7 @@ export function Footer() {
                 href="mailto:sahatammalphotography@gmail.com"
                 className="border-foreground/30 hover:border-foreground inline-flex max-w-full border-b pb-2 text-sm tracking-[0.02em] transition-colors duration-300 sm:text-base"
               >
-                <span className="break-all">sahatammalphotography@gmail.com</span>
+                <span className="text-nowrap break-all">sahatammalphotography@gmail.com</span>
               </a>
 
               <a
